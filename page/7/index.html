@@ -61,54 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-change-the-user-who-runs-php-fmp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" class="article-date">
-  <time datetime="2014-05-23T17:00:58.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/change-the-user-who-runs-php-fmp/">修改PHP-FMP的运行用户</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover" alt="cover-image"><br>今天又折腾了一下VPS. </p>
-<p>把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  </p>
-<p>####流程如下…</p>
-<p>进入php5-fpm的配置目录<code>/etc/php5/fpm/pool.d/</code>为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[username]</span><br><span class="line"></span><br><span class="line">user = <span class="variable">$USERNAME</span></span><br><span class="line"><span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">listen = /tmp/<span class="variable">$USERNAME-fpm</span>.sock</span><br><span class="line">listen.owner = <span class="variable">$USERNAME</span></span><br><span class="line">listen.<span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line">listen.mode = <span class="number">0660</span></span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line">pm.max_children = <span class="number">10</span></span><br><span class="line">pm.start_servers = <span class="number">3</span></span><br><span class="line">pm.min_spare_servers = <span class="number">1</span></span><br><span class="line">pm.max_spare_servers = <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>进入nginx的配置目录<code>/etc/nginx/sites-enabled/</code>把用户的php套接字路径改为(也要替换$USERNAME)<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass unix:/tmp/<span class="variable">$USERNAME-fpm</span>.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    include fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">重启php5-fpm和装载nginx配置生效.</span><br></pre></td></tr></table></figure></p>
-<p>service php5-fpm restart<br>nginx -s reload<br>```</p>
-<p>###后话.</p>
-<p>其实还有一个问题仍然存在, 用nginx直接反代的配置并没有通过apache, 这在一些使用.htaccess文件来设置rewrite规则的程序来讲(比如wordpress等)是不可接受的, 因为nginx的rewrite规则与apache并不通用. 我查了一下, 要在apache2开启fastcgi_mod还是比较麻烦的, 然后上课的点到了先去上课了, 下回有空再折腾吧~ 那些用.htaccess的就先proxy_pass apache把~</p>
-<p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="ciksdhsm6001iahojpm45hp6j" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
@@ -157,7 +109,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="ciksdhslu0016ahojxj9tm2q4" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="ciksdppjm0013jzojtf48l96l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -205,10 +157,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="ciksdhsmk001oahojtqdi1xx6" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="ciksdppk7001ljzojte9bhal3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-let-apache2-to-create-files-using-different-owner" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" class="article-date">
+  <time datetime="2014-05-23T16:36:47.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/let-apache2-to-create-files-using-different-owner/">让Apache2使用不同的用户创建文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/server.png-cover" alt="cover-image"><br>在配置合租VPS的时候, 我们通常把每个用户的文件限制在<code>/home/$USERNAME/</code>目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的<code>file_put_contents</code>函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  </p>
+<p>大概是我语文表达不好.. 使用中文搜索引擎一直找不到答案, 在google搜索找到了一个提示: Apache的<code>MPM-ITK</code>模块.  </p>
+<p>由于我的Apache2是在Ubuntu环境下apt-get默认安装的, 在<code>/etc/apache2/mods-enabled/</code>目录下面看到的默认启用的是<code>mpm_prefork</code>模块. </p>
+<p>我们把 <code>mpm_prefork.conf</code>和 <code>mpm_prefork.load</code>的软链接删除, 对应换成<code>mpm_itk</code> </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2/mods-enabled/</span><br><span class="line">rm mpm_prefork<span class="class">.conf</span> mpm_prefork<span class="class">.load</span></span><br><span class="line">ln -s ../mods-available/mpm_itk<span class="class">.conf</span> mpm_itk<span class="class">.conf</span></span><br><span class="line">ln -s ../mods-available/mpm_prefork<span class="class">.load</span> mpm_prefork.load</span><br></pre></td></tr></table></figure>
+<p>然后我们需要修改一下每个用户的设置, 在<code>VirtualHost</code>标签闭合之前加上  </p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AssignUserId <span class="list">&#123;user&#125;</span> <span class="list">&#123;group&#125;</span></span><br></pre></td></tr></table></figure>
+<p>最后重启一下apache服务器就可以生效了</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">service</span> apache2 restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="ciksdppid0006jzojtpm2iuys" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
 
     </footer>
   </div>
@@ -232,7 +230,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -241,7 +239,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
+      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
     </div>
   </div>
 
@@ -250,7 +248,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -260,10 +258,6 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2016/02/18/备份迁移ghost博客到hexo/">备份迁移ghost博客到hexo</a>
-          </li>
         
           <li>
             <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
@@ -279,6 +273,10 @@
         
           <li>
             <a href="/2015/05/10/alimian-jing/">Ali面经</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/">字体, Web设计中一个最关键的元素</a>
           </li>
         
       </ul>
