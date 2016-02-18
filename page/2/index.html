@@ -61,130 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-solve-the-problem-that-parallels-cannot-run-ubuntu1404" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" class="article-date">
-  <time datetime="2014-05-25T08:21:41.000Z" itemprop="datePublished">2014-05-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/">解决在Parallels中无法使用Ubuntu 14.04的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/ubuntu.png" alt="cover-image"><br>上个月就听说Ubuntu 14.04 LTS版发布了, 从12, 13一直用ubuntu做我的主用Linux系统, 长支持版本想必是应该比较稳定了, 于是乎下了一个丢到Parallels去, 装完tools之后死活进不去桌面, 一直保持假死状态, 重装几遍都是一样的, 于是暂时退回13.10用着, 等Parallels的版本升级.</p>
-<p>然后也就是今天听说官方给出了暂时的解决办法. 我就给翻译翻译, 以下是方法.</p>
-<hr>
-<ol>
-<li>在Parallels里启动你的Ubuntu 14.04, 然后按下<code>Ctrl+Alt+F2</code>激活控制台</li>
-<li>输入你的用户名和密码</li>
-<li>找到 <code>xorg.conf.XXXXXXXX</code> (XXXXXXXX 指的是这个文件被创建的时间)</li>
-</ol>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ls</span> -<span class="keyword">l</span> /etc/X11/</span><br></pre></td></tr></table></figure>
-<p>检查这个文件是否包含<code>Parallels</code>字段</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/X11/xorg<span class="class">.conf</span><span class="class">.XXXXXXXX</span></span><br></pre></td></tr></table></figure>
-<p><img src="http://redrock.u.qiniudn.com/pics/parallels-problem.png" alt="check"></p>
-<p>然后输入命令(注意替换下面的XXXXXXXX)</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /etc/X11/xorg<span class="class">.conf</span><span class="class">.XXXXXXXX</span> /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/xorg<span class="class">.conf</span></span><br><span class="line"></span><br><span class="line">export DISPLAY=:<span class="number">0</span></span><br><span class="line"></span><br><span class="line">gsettings reset org<span class="class">.compiz</span><span class="class">.core</span>:/org/compiz/profiles/unity/plugins/core/ active-plugins</span><br></pre></td></tr></table></figure>
-<p>按<code>Ctrl+Alt+F7</code>退出控制台</p>
-<p>重启你的虚拟机就Ok了.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" data-id="cikscdtdb000do7oj0clyaldx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-how-a-webpage-be-displayed-2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/how-a-webpage-be-displayed-2/" class="article-date">
-  <time datetime="2014-05-24T04:38:56.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/how-a-webpage-be-displayed-2/">一个网页被显示的前生今世(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt="cover-image"></p>
-<h2 id="Go-to-一个网页被显示的前生今世-一"><a href="#Go-to-一个网页被显示的前生今世-一" class="headerlink" title="###Go to 一个网页被显示的前生今世(一)"></a>###Go to <a href="/how-a-webpage-be-displayed-1">一个网页被显示的前生今世(一)</a></h2><p>接上文  </p>
-<p>##服务器处理请求</p>
-<p>####前台处理<br>当一个请求发送至服务器的时候, 应该由一个前台程序来接收这个请求并选择直接响应静态资源(静态站)还是交给后台程序进一步处理(动态网站). 这里常用的软件有Apache(阿帕奇)/Nginx, 对于大并发的应用, nginx有天然的优势.   </p>
-<p>我们来举个栗子, Apache2的默认并发连接数是200, 而nginx是直接开到65535(linux文件系统的极限). 虽然在安全性上面阿帕奇优势明显, 不过业内各种大牛(taobao/tencent)基本上都是采用直接改造nginx来满足高并发需求的.  </p>
-<p>####后台处理<br>动态网站的后台程序通常能够接受刚才发送的header信息, 并对数据库(通常是SQL当然还有NoSQL)进行读取啦, 添加修改删除等等操作, 并返回适当的响应. </p>
-<p>##响应<br>OK, 那么我们的服务器顺利响应了正确的信息, 高兴地发出了一个HTTP/200的信号说明 Anything goes well. </p>
-<p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt=""></p>
-<p>报头中的<code>Content-Type</code>说明了返回的MIME类型, 这里是一个html文档, 这使得浏览器清楚将该响应内容以HTML的方式进行解析.Expires头表示存在时间，它允许浏览器在这个时间之前不去检查（发请求）而是放心地读取缓存, 正确的使用Expires这可以使得服务器的鸭梨大大减轻.还有一些头的信息没有列出, 大家可以参阅<i>高性能网站建设指南(O’REILLY)</i>.  </p>
-<p>##浏览器解析HTML<br>好吧, 绕了一圈又说回浏览器了. 做前端的同学都懂的, 浏览器兼容性可以说是最头疼的东西. </p>
-<p>####HTML逐步呈现<br>我们知道, 在IE中, MS提供了一个进度指示器来让用户知道我们的网页正在被打开. 这里的进度指示器有一个优势就是: 它让用户知道系统没有崩溃, 而是正在努力为他或她解决问题.它不仅指出了还需要等多久, 还给用户一些可以看的图形化的东西, 以使得等待不那么枯燥无味. 而通常情况下, 在这个指示器没有跑完的时候, 大部分网页就已经显示了. 所以, 我们说其实浏览器是逐步加载网页的.   </p>
-<p>当然也有特例, 我们称之为白屏, 将样式表(CSS)放在页面底部将会阻塞内容逐步呈现, 虽然实际加载页面的时间没有增加, 但是让<code>用户感觉缓慢</code>的页面通常会招致反感, 用户经常会不知道发生了什么而离开! </p>
-<p>所以无论如何前端开发者都应该遵循的一个原则就是: </p>
-<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用<span class="variable">LINK</span>标签将样式表放在<span class="variable">HTML</span>的<span class="function_or_atom">head</span>标签中<span class="exclamation_mark">!</span></span><br></pre></td></tr></table></figure>
-<p>####其它对象<br>在浏览器显示HTML时，它会注意到需要获取其他地址内容的标签(img, css, js, 甚至flash控件, etc)。这时，浏览器会额外的发送获取请求来重新获得这些文件。而这些地址都要经历一个和HTML读取类似的过程。所以浏览器会在DNS中查找这些域名，发送请求，重定向等等…</p>
-<p>####JavaScript<br>虽然我们的浏览器脚本不止Js一种, 但是它已经成为了各种浏览器的事实标准, 下文就用”js”来代替”浏览器脚本”这一表述. </p>
-<p>在浏览器解析HTML的时候, 经常会碰到一个script标签, 这个时候浏览器通常会被阻塞来运行js代码, 因为js代码中有可能带有对DOM的一些操作, 如果js代码的运行跟html的解析同时进行, 会导致各种错误, 所以不管是什么js代码, 这个过程是阻塞式的.  </p>
-<p>我经常看到一些刚学js的同学在头部的代码中这样写道: </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// code here</span></span><br></pre></td></tr></table></figure>
-<p>然后跑过来问为什么代码没反应.  DOM压根就没有加载完整!  </p>
-<p>随后这样写道: </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="comment">// code here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们创造js code的目的通常是执行客户端代码, 也就是说多是与用户的交互. 既然这样, 那为何不把js放在最后加载呢? </p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最佳情况: 将js代码放在文档的底部(<span class="keyword">body</span>标签闭合之前)</span><br></pre></td></tr></table></figure>
-<p>当然还有一种更好的方式, async, 我们在下面讲.</p>
-<p>##ASYNC Request(异步请求)<br>好了, 网页加载完成了, 是不是这个时候网页就”死了”呢? 答案是 NO!绝不!  </p>
-<p>前端的同学都听说过一个名词 AJAX. OK, 引用一句话, <i>在Web 2.0伟大精神的指引下，页面显示完成后客户端仍与服务器端保持着联系</i>.   </p>
-<p>继续举栗子, 当你在百度的搜索框中输入一个关键词的时候, 是不是会跳出一个实时变化的候选热门词表, 这些内容当然是从百度的服务器中实时获取的! </p>
-<p>我们可以简单的使用Chrome开发者工具的Network窗口来监视这些ajax请求, 如果在windows下还可以用fiddler这个工具(以前Ricter逗比介绍用的).  </p>
-<p>当然, 如果我们用异步模式来加载一些并不是立刻被需要的又很臃肿的js脚本, 整个世界将会变得很nice.  </p>
-<p>还有一点就是轮询, 它的工作方式注定了它的效率不会很高, 长连接好像是一个折衷的方法, 当被轮询时服务器没有新消息它就不理会客户端, 反之在没有超时的情况下, 新消息就会做为响应返回给客户端, 这很适合网络聊天室之类的应用, 虽然大家都用QQ了谁还会用网络聊天室呢, 也许网页游戏喜欢用这个。 </p>
-<p>最近研究Nodejs的时候发现了另外一种实时性很好的技术, websocket, 它的标准更迭貌似很快, 我用了一个叫做socket.io的库来实现它发现很好用, 不知道有没有懂的大牛来讲解一下ws的实现&gt;.o </p>
-<p>##Summury<br>本文从前端的角度简单的讲了讲自己对网络应用的模式理解, 不过我也算是个初学者, 这里难免有出错的地方欢迎客官指正哈. 也希望对那些不甚明白的同学有所帮助.</p>
-<p>EOF.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-2/" data-id="cikscdter001zo7oj25gpsw86" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-how-a-webpage-be-displayed-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/24/how-a-webpage-be-displayed-1/" class="article-date">
@@ -258,7 +134,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-1/" data-id="cikscdtet0020o7ojnztdk7it" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-1/" data-id="cikscjym2001suwojjmp1o5j3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -322,7 +198,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/nothing-with-winter-summury/" data-id="cikscdtdh000io7ojrnleyeiu" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/nothing-with-winter-summury/" data-id="cikscjykz000huwojmk0kq5mm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/寒假/">寒假</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li></ul>
@@ -367,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/xiaomi-2a-wireless-charge/" data-id="cikscdtdk000no7ojyz6jr9kp" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/xiaomi-2a-wireless-charge/" data-id="cikscjyl3000muwojyjvx2b74" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小米/">小米</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/手机/">手机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/改装/">改装</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/无线充电/">无线充电</a></li></ul>
@@ -424,7 +300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/cqupt-mac-os-x-get-online/" data-id="cikscdtcv0001o7oj5o6ebnpc" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/cqupt-mac-os-x-get-online/" data-id="cikscjykb0001uwojrrqa8liq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/重邮/">重邮</a></li></ul>
@@ -468,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/a-coverflow/" data-id="cikscdted001io7ojxl7hoasl" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/a-coverflow/" data-id="cikscjyln001auwojkwmelmvh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML5/">HTML5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
@@ -518,7 +394,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="cikscdtf00027o7ojy10kdlkc" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="cikscjyma0021uwojtge98bim" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -571,7 +447,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="cikscdtf8002go7oji79j646r" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="cikscjymn002auwojlzz32rrc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MD5/">MD5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crypto/">crypto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -619,10 +495,118 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="cikscdteg001no7oj8wz1cdcz" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="cikscjylp001fuwojojxd85k9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
+  <time datetime="2014-05-23T16:55:19.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/use-dropbox-to-backup-server/">利用Dropbox备份服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/Dropbox-clause.jpg-cover" alt="cover-image"><br>好叭.用了一段时间的VPS, 昨天想把一个文件改个名字, 手贱把mv写成了rm, 结果那个文件被删除了TvT. 这才算是意识到备份文件的重要性. 昨天用python写了一个备份的脚本, 大概长这样  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backup</span><span class="params">(dirs, backTo)</span>:</span></span><br><span class="line">	tar_today = backTo + time.strftime(<span class="string">'%Y%m%d'</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(tar_today):</span><br><span class="line">		os.mkdir(tar_today)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"Successfully create directory"</span>, tar_today</span><br><span class="line">	<span class="keyword">for</span> s <span class="keyword">in</span> dirs:</span><br><span class="line">		directory = tar_today + os.sep + s + <span class="string">'.tar.gz'</span></span><br><span class="line">		command = <span class="string">"tar -zcvf %s %s"</span> % (directory, <span class="string">'/home/'</span> + s)</span><br><span class="line">		<span class="keyword">if</span> os.system(command) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Successfully create backup for"</span>, s</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Backup Failed! For"</span>, s</span><br><span class="line">			</span><br><span class="line">source = [<span class="string">'zeroling'</span>] 	    <span class="comment">#balabala</span></span><br><span class="line">target_dir = <span class="string">'/backup/'</span></span><br><span class="line"></span><br><span class="line">backup(source, target_dir)</span><br></pre></td></tr></table></figure>
+<p>我的第一个python脚本好像命名有点乱啊0.0 不管了, 能用就好.<br>这样就能用crontab每晚半夜运行它来得到备份了</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">30 02 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>  /root/backup.py</span><br></pre></td></tr></table></figure>
+<p>然后我们需要安装一下dropbox, 官网<a href="https://www.dropbox.com/install" target="_blank" rel="external">https://www.dropbox.com/install</a>, 我们选择我们需要的linux32位命令行式安装(!注意, 以下操作我都用的root账户)</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~ &amp;&amp; wget -O - <span class="string">"https://www.dropbox.com/download?plat=lnx.x86"</span> <span class="string">| tar xzf -</span></span><br></pre></td></tr></table></figure>
+<p>接着，从新建的 .dropbox-dist 文件夹运行 Dropbox 守护程序。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="regexp">/.dropbox-dist/dropboxd</span></span><br></pre></td></tr></table></figure>
+<p>这个时候大概会出来一个提示, 大概意思是这台电脑还没有与dropbox账户连接, 我们用浏览器访问给出的那个网址按步骤连接即可, 注意这个时候不要按ctrl+c中止这个程序的运行, 等到出现<code>This computer is now linked to Dropbox.</code>字样的时候再按<code>Ctrl+C</code>中止这个程序.</p>
+<p>然后去官网下载一个python脚本, <a href="https://www.dropbox.com/download?dl=packages/dropbox.py" target="_blank" rel="external">https://www.dropbox.com/download?dl=packages/dropbox.py</a>放到自己的PATH里面, 例如我的是<code>/usr/local/bin</code> ,这里是为了方便直接执行. 记得给这个py赋予x(运行)权限</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">chmod</span> +<span class="tag">x</span> <span class="tag">dropbox</span><span class="class">.py</span></span><br></pre></td></tr></table></figure>
+<p>然后我们在自己的home目录也就是~下面创建一个Dropbox文件夹, 然后启动这个dropbox监听器</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> Dropbox</span><br><span class="line">dropbox.py <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+<p>接下来只要把东西往这里塞, dropbox就会自动的, 实时的把文件同步到网盘里面去.<br>我创建了一个软连接到/backup目录, 这样一旦备份完成, 也会自动同步备份到网盘里面.</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> ~<span class="regexp">/Dropbox/backup/</span></span><br></pre></td></tr></table></figure>
+<p>另外, 我们可以通过<code>dropbox.py status</code>命令来查看当前的同步情况, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Syncing (<span class="number">4</span> files remaining, <span class="number">18</span> mins left)</span><br><span class="line">Uploading <span class="number">4</span> files (<span class="number">181.4</span> KB/sec, <span class="number">18</span> mins left)</span><br></pre></td></tr></table></figure>
+<p>它会告诉你当前的dropbox运行情况. </p>
+<p>其他的高级功能可以参阅<code>dropbox.py help</code></p>
+<p>对了, 还遗忘了一点, 数据库的备份, 我的VPS上安装了mysql和mongod, 下回再说如何创建这两货的备份.  </p>
+<p><a href="https://db.tt/KZ5xUsKm" target="_blank" rel="external">需要注册Dropbox的同学点这里</a>, 这是一个我的邀请链接, 通过这个注册可以额外获得500M免费空间.  </p>
+<p>睡觉咯.晚安~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="cikscjylj0013uwojukmuvcru" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-backup-shell-for-mongodb-and-mysql" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" class="article-date">
+  <time datetime="2014-05-23T16:53:12.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/backup-shell-for-mongodb-and-mysql/">为Mongo和Mysql各写了一个备份的Shell</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/backup-database.jpg-cover" alt="cover-image"></p>
+<p>####查早读的同学越来越肆无忌惮了.<br>好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"> </span></span><br><span class="line"><span class="comment">#uncomment this for debug</span></span><br><span class="line"><span class="comment">#set -x</span></span><br><span class="line"> </span><br><span class="line">host=<span class="string">'localhost'</span></span><br><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line">pass=<span class="string">'PASSWORD'</span></span><br><span class="line">dbs=(<span class="string">'db_name_1'</span> <span class="string">'db_name_2'</span> <span class="string">'db_name_3'</span>)</span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +%Y%m%d`"</span></span><br><span class="line"> </span><br><span class="line">mkdir -p <span class="variable">$todaydir</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> db <span class="keyword">in</span> <span class="variable">$&#123;dbs[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    mysqldump --add-drop-database -u<span class="string">"<span class="variable">$user</span>"</span> -p<span class="string">"<span class="variable">$pass</span>"</span> -h<span class="string">"<span class="variable">$host</span>"</span> -B <span class="variable">$db</span> &gt; <span class="string">"<span class="variable">$todaydir</span>/<span class="variable">$db</span>.dump.sql"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#remove directories modified 15 days ago</span></span><br><span class="line">find <span class="string">"<span class="variable">$dir</span>"</span> -mindepth <span class="number">1</span> -maxdepth <span class="number">1</span> -type d -mtime +<span class="number">15</span> -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<p>再把这个sh放进crontab里面就搞定了  </p>
+<p>然后再根据这个YY出了mongodb的备份脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line"><span class="keyword">pass</span>=<span class="string">'PASSWORD'</span></span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"$dir/`date +%Y%m%d`/mongodb"</span></span><br><span class="line"></span><br><span class="line">mkdir -p $todaydir</span><br><span class="line">mongodump -<span class="string">u"$user"</span> -p<span class="string">"$pass"</span> -o<span class="string">"$todaydir"</span></span><br></pre></td></tr></table></figure>
+<p>对于没有启用auth的mongodb用户可以这样三句话搞定</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +<span class="variable">%Y</span><span class="variable">%m</span><span class="variable">%d</span>`/mongodb"</span></span><br><span class="line"><span class="keyword">mkdir</span> -p <span class="variable">$todaydir</span></span><br><span class="line">mongodump -o<span class="string">"<span class="variable">$todaydir</span>"</span></span><br></pre></td></tr></table></figure>
+<p>也放进crontab里面就搞定了.<br>dropboxd会把放在/root/Dropbox目录下面的文件夹自动上传到dropbox空间, 配置好dropbox的同学只要创建一个软链接就ok了.</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> <span class="regexp">/root/</span>Dropbox<span class="regexp">/backup/</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="cikscjyls001luwojm9mgbx5b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
 
     </footer>
   </div>
@@ -646,7 +630,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/">URL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -655,7 +639,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 12.5px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/VPS/" style="font-size: 17.5px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/javascript/" style="font-size: 12.5px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 15px;">前端</a> <a href="/tags/备份/" style="font-size: 12.5px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
+      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
     </div>
   </div>
 
@@ -664,7 +648,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -676,7 +660,7 @@
       <ul>
         
           <li>
-            <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
+            <a href="/2016/02/18/2015年的年终总结/">(no title)</a>
           </li>
         
           <li>
