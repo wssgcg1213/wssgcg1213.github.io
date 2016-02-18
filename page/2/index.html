@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zero&#39;s Corner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="an hexo blog in github.io">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zero's Corner">
+<meta property="og:url" content="https://blog.zeroling.com/page/2/index.html">
+<meta property="og:site_name" content="Zero's Corner">
+<meta property="og:description" content="an hexo blog in github.io">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zero's Corner">
+<meta name="twitter:description" content="an hexo blog in github.io">
+  
+    <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Zero&#39;s Corner</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.zeroling.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-the-usage-of-pjax" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/06/01/the-usage-of-pjax/" class="article-date">
+  <time datetime="2014-06-01T13:12:53.000Z" itemprop="datePublished">2014-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/06/01/the-usage-of-pjax/">Ajax真的只能用来局部刷新吗?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://dn-redrock.qbox.me/pics/pjax-cover.png" alt="cover-image"><br>端午六一休息三天宅了一天, 独自去市中心里转了一天, 就剩下一天了[惊恐]. 压根就没有马上要考试了的感觉嘛! 文章也是好久没更新了, 浑浑噩噩过下去曾的好嘛&gt;.O. 好嘛, 那就来写点干货好了, 也是最近在搞Ghost, 把这个主题的逻辑 (原先是 jQ ) 用原生 js 重写了一遍 (还顺便搞了个小项目 <a href="https://github.com/wssgcg1213/ghostbot" target="_blank" rel="external">GhostBot</a> 来处理站内搜索), 总结总结研究出了些什么好了, 废话讲得多, 直接进正题吧. </p>
+<p>##PJAX<br>关于题目抛出的这个问题, 我既然都这么问了, 正常人都知道答案肯定是<code>不是</code>咯. 其实AJAX这个东西一直以来都是被当做只能处理小范围的, 异步的页面更新, 它的优点就在于可以实现页面的无刷新操作. 但是这也会造成一些问题, 比如对搜索引擎兼容性不好啦 (抓不到 ajax 载入的信息), 还有无法后退神马的! </p>
+<p>对于无法前进后退, 邪恶的 W3C 就在 HTML5 中搞了一个叫<code>history对象</code>的东西, 使用 history 对象的<code>pushState</code>方法给浏览器的浏览历史中塞入一个地址, 返回的时候再借助<code>popstate事件</code>来还原到原先的模样, 这样一来 AJAX 和 pushState 就开始名正言顺地搞基了! 于是我们就把这俩基友称为<code>PJAX</code>.</p>
+<p>##(正常情况下) 它是如何工作的<br>这个东西其实不是什么新生事物, 国内在 2012 年就已经对它有一些提及, 只是没有流行开而已, 经常上 GitHub 和 Youtube 的人不知道有没有发现这俩其实早就使用<code>PJAX</code>了. </p>
+<p>HTML5 新增的方法在这里: </p>
+<ul>
+<li>history.pushState(state, title [, url]) : 向历史记录(把它看做一个栈)的顶端加入一条记录, <code>state</code> 是一个指明状态的对象, 如 <code>{url: &#39;xxxxx&#39;, title: &#39;yyyyy&#39;, myInfo: &#39;zzzzz&#39;}</code>;  </li>
+<li>history.replaceState(state, title [, url]) : 跟上面差不多, 功能就是替换历史记录顶上的记录; </li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当页面准备改变时</span></span><br><span class="line"><span class="tag">window</span><span class="class">.history</span><span class="class">.pushState</span>(&#123;</span><br><span class="line">	<span class="attribute">title</span>: <span class="string">'Home Page'</span>,</span><br><span class="line">	<span class="attribute">url</span>: <span class="string">'http://balabala.com'</span></span><br><span class="line">&#125;, document.title, location.href);</span><br></pre></td></tr></table></figure>
+<p>响应前进后退的事件: </p>
+<ul>
+<li>window.onpopstate : 上面传递的state对象会成为event的子对象，这样就可以拿到存储的title和URL了. 这个事件在我所测试的 Chrome 36dev 和 Safari 7 中表现有差异, 具体在页面首次载入时, Chrome 不会触发这一事件而 Safari 会触发.</li>
+</ul>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">window.onpopstate = function (ev) &#123;</span><br><span class="line">	var <span class="keyword">state</span> = ev.<span class="keyword">state</span>;</span><br><span class="line">	if (<span class="keyword">state</span>) &#123;</span><br><span class="line">		//do ajax here;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>国内也早就有很多开源的 PJAX 插件, 基于 jQuery, qwrap, kissy 什么的, 但是貌似我没有找到原生的啊, 反正到最后还是自己写了个渣渣的. </p>
+<p>###前端处理<br>首选我们需要一个容器 (container) 来做页面中需要改变的部分. 然后将不需要改变的部分, 比如 footer, header 放在容器的外面.</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line"><span class="id">#container</span><span class="rules">&#123;<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;&#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"container"</span>&gt;</span></span><span class="expression">&#123;&#123;<span class="begin-block">#content</span>&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"footer"</span>&gt;</span></span><span class="expression">&#123;&#123;<span class="begin-block">#footer</span>&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>对于页面上所有的超链接 (a标签), 我们都需要采取 hijack(劫持) 的方式来处理点击事件.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'a'</span>);</span><br><span class="line"><span class="built_in">Array</span>.prototype.slice.call(a).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">_a</span>) </span>&#123;</span><br><span class="line">	_a.onclick = hijackLinks; <span class="comment">//hijackLinks为链接处理函数</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hijackLinks</span> (<span class="params">ev</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="comment">/* 外域链接 */</span>) <span class="keyword">return</span>;</span><br><span class="line">	ev.preventDefault();</span><br><span class="line">	<span class="comment">// 处理PJAX</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>差异于一般的 AJAX 返回 JSON, PJAX 的后端返回的一般是 HTML 片段. 前台再直接使用 innerHTML 来完成页面无刷. 对于同一个 URL, 如何告诉后端这是一个 PJAX 请求呢? So easy! 直接在 HTTP 请求头上带上标记就好了. 在前端 Ajax 中带上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>RequestHeader(‘PJAX’, ‘<span class="literal">true</span>’);</span><br></pre></td></tr></table></figure>
+<p>###后端处理<br>接上面的话, 直接在后台判断 HTTP 头就行了 (以 PHP 为例):</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="preprocessor">&lt;?php</span> </span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">'HTTP_X_PJAX'</span>, <span class="variable">$_SERVER</span>) &amp;&amp; <span class="variable">$_SERVER</span>[<span class="string">'HTTP_X_PJAX'</span>] === <span class="string">'true'</span>)&#123;</span><br><span class="line">	<span class="comment">//在这里输出你的 HTML 片段</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//正常输出</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>##为什么要用它呢<br>简而言之, PJAX = AJAX + history.pushState. 这货不仅可以无刷新地改变页面内容, 还可以改变 URL 和浏览器历史记录, 使得前进后退的体验一体化.</p>
+<p>Wow, 不明觉厉的样子也.</p>
+<p>好吧, 那我们上个图来看看, 以 GitHub 为例.</p>
+<p>如下图, 我首先打开了一个 (我的0.0) GitHub 主页, 可以看到浏览器的历史记录是空的 (灰色);<br><img src="https://dn-redrock.qbox.me/pics/pjax-before.png" alt="pjax-before"></p>
+<p>然后我点击了 Contributions 按钮. 页面改变了, 但是<code>页面并没有刷新</code>, 看样子是 PJAX 基佬起作用了! 浏览器的历史记录里面出现了刚才访问的位置, 地址栏也变化了, 下面的调试窗口显示有三条 XHR (XMLHttpRequest) 请求成功.<br><img src="https://dn-redrock.qbox.me/pics/pjax-after.png" alt="pjax-after"></p>
+<p>还是不明白? 自己去 GitHub.com 看个究竟把!</p>
+<p>噢对了, 还没说为什么要用 PJAX 呢. </p>
+<ol>
+<li>无刷新, 速度快 (快就是王道)</li>
+<li>无刷新意味着可以在页面改变的时候施展各种绚丽的动画 (漂漂的, 暖暖的)</li>
+<li>对搜索引擎支持好, 有利于 SEO</li>
+<li>我™就是喜欢它怎么着, 打我呀</li>
+</ol>
+<p>顺便说说弊端.</p>
+<ol>
+<li>逻辑比较复杂. (跟正常方式不一样的都叫复杂)</li>
+<li>需要前后台配合. (这点后面再讲, 其实可以克服)</li>
+<li>跨域限制. (其实这是安全原则, 也可以不算弊端拉)</li>
+<li>兼容性什么就不提了, 不用优雅的 Chrome 的都别来我的 blog 就对了.</li>
+</ol>
+<p>##我的方案 (不正常情况)<br>本站就使用了全站内链的 PJAX 无刷, 并开启了 10 分钟的 localStorage, 以尽量减少 HTTP 请求. </p>
+<p>因为Ghost的主题只是提供了 hbs 模板文件和静态资源文件, 我并不能通过修改 Ghost 内核的方式来使得输出 HTML 片段. 所以只能通过解析 html 的方式来进行 (电脑牛逼, 不怕卡, 打我呀).</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ajax = <span class="keyword">new</span> Ajax(); <span class="comment">//我封装的一个Ajax类</span></span><br><span class="line">ajax.<span class="literal">get</span>(url, function (doc) &#123;</span><br><span class="line">	<span class="keyword">var</span> _html = <span class="built_in">document</span>.createElement(<span class="string">'html'</span>);</span><br><span class="line">	_html.innerHTML = doc;			<span class="comment">//不用append到文章中即可在内存中解析HTML</span></span><br><span class="line">	<span class="keyword">var</span> newContainer = _html.<span class="built_in">querySelector</span>(<span class="string">'#container'</span>);</span><br><span class="line">	<span class="built_in">document</span>.<span class="built_in">querySelector</span>(<span class="string">'#container'</span>).innerHTML = newContainer.innerHTML;</span><br><span class="line">	<span class="comment">//do others.</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样就减少了一个弊端, 就是可以不修改后台直接在前台做好所有的工作. </p>
+<p>##兼容性</p>
+<p>直接看图吧</p>
+<p><img src="https://dn-redrock.qbox.me/pics/pjax-jrx.png" alt="兼容性"></p>
+<ul>
+<li>IE10+</li>
+<li>Chrome 5+</li>
+<li>Safari 5+</li>
+<li>Opera 11.5+</li>
+<li>Firefox 4+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/06/01/the-usage-of-pjax/" data-id="ciksc9ajp001lchojyscnsmhk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PJAX-AJAX/">
+- PJAX
+- AJAX</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-the-protocol-relative-url" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/26/the-protocol-relative-url/" class="article-date">
+  <time datetime="2014-05-26T15:46:20.000Z" itemprop="datePublished">2014-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/26/the-protocol-relative-url/">协议性URL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://wydrops-wordpress.stor.sinaapp.com/uploads/2013/11/a.png" alt="cover-image"></p>
+<p>如果你的浏览器正在访问一个 HTTPS 协议的站点, 如果没有被特别指定, 那么它也会通过 HTTPS 协议来请求当前域下的静态文件. 这个策略会导致<del>该死的</del> IE 浏览器弹出<code>此页包含安全和不安全的项目</code>警告, 所以最佳的方案是尽量让你的所有静态资源保持在同一种协议下.</p>
+<p>当然, 如果你正在浏览本地的文件, 那么浏览器会试图使用<code>file:///</code>协议来请求文件.</p>
+<p><img src="http://redrock.u.qiniudn.com/pics/this-page-contains-both-secure-and-nonsecure-items.gif" alt=""></p>
+<p>我们通常会使用下面这样的代码来获取 Google CDN 提供的的 jQuery:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">!<span class="built_in">window</span>.jQuery &amp;&amp; <span class="built_in">document</span>.write(<span class="built_in">unescape</span>(<span class="string">'%3Cscript src="js/libs/jquery-1.4.2.js"%3E%3C/script%3E'</span>))</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到 <code>src</code> 并没有指定协议名称.</p>
+<p>从技术上而言, 这种方式在 RFC 的 3986 标准中被定义为<code>网络路径引用(network-path reference)</code>. 对了, 准确地讲, 我们在讨论URL的时候, 尽量使用术语<code>scheme</code>来代替<code>protocol(协议)</code>.</p>
+<p>这种技巧在也可以在 css 中使用:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.omgomg</span> <span class="rules">&#123; <span class="rule"><span class="attribute">background</span>:<span class="value"> <span class="function">url</span>(//websbestgifs.net/kittyonadolphin.gif)</span></span>; &#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>当然这基于你的网站能通过 HTTP 和 HTTPS 协议中的任何一种获取到网络资源.</p>
+<p><em>警告!</em>: 当你使用 <code>link</code> 标签或者 <code>@import</code> 语法获取样式表的时候, <del>该死的</del> <code>IE7</code> 和 <code>IE8</code> 会下载两次 css 文件, 除了这俩逗比其它浏览器还算正常.</p>
+<p>好了, 那么我们就可以理解百度统计的监视代码默认是这样的:<br><figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><br><span class="line"><span class="keyword">var</span> _bdhmProtocol = ((<span class="string">"https:"</span> == <span class="built_in">document</span>.location.protocol) ? <span class="string">" https://"</span> : <span class="string">" http://"</span>);</span><br><span class="line"><span class="built_in">document</span>.write(<span class="built_in">unescape</span>(<span class="string">"%3Cscript src='"</span> + _bdhmProtocol + <span class="string">"hm.baidu.com/h.js%3F</span></span></span><span class="expression">&#123;&#123;<span class="variable">My</span>_<span class="variable">Baidu</span>_<span class="variable">Tongji</span>_<span class="variable">Hash</span>&#125;&#125;</span><span class="xml"><span class="undefined">' type='text/javascript'%3E%3C/script%3E"));</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这里的私有变量<code>_bdhmProtocol</code>就是当前页面使用的协议的判断.</p>
+<p>这样我们就可以对这行代码进行优化了: 如果你的站点只支持 http 协议(当然这在国内应该是绝大部分), 不妨把上面的 js 代码改成这样: </p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><br><span class="line"><span class="built_in">document</span>.write(<span class="built_in">unescape</span>(<span class="string">"%3Cscript src='http%3A//hm.baidu.com/h.js%3F</span></span></span><span class="expression">&#123;&#123;<span class="variable">My</span>_<span class="variable">Baidu</span>_<span class="variable">Tongji</span>_<span class="variable">Hash</span>&#125;&#125;</span><span class="xml"><span class="undefined">' type='text/javascript'%3E%3C/script%3E"));</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>本文翻译自4年前的一篇博文, 偶尔逛站遇到的.</p>
+<p>原文是: <a href="http://www.paulirish.com/2010/the-protocol-relative-url/" target="_blank" rel="external">The Protocol-relative URL</a></p>
+<blockquote>
+<p>独立博客为我们在茫茫网海中占据一粒尘的位置, 不求访问量, 只求内心舒坦.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/26/the-protocol-relative-url/" data-id="ciksc9ai4000ichoj89vx8pmx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端-HTTP-URL/">
+- 前端
+- HTTP
+- URL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-solve-the-problem-that-parallels-cannot-run-ubuntu1404" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" class="article-date">
+  <time datetime="2014-05-25T08:21:41.000Z" itemprop="datePublished">2014-05-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/">解决在Parallels中无法使用Ubuntu 14.04的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/ubuntu.png" alt="cover-image"><br>上个月就听说Ubuntu 14.04 LTS版发布了, 从12, 13一直用ubuntu做我的主用Linux系统, 长支持版本想必是应该比较稳定了, 于是乎下了一个丢到Parallels去, 装完tools之后死活进不去桌面, 一直保持假死状态, 重装几遍都是一样的, 于是暂时退回13.10用着, 等Parallels的版本升级.</p>
+<p>然后也就是今天听说官方给出了暂时的解决办法. 我就给翻译翻译, 以下是方法.</p>
+<hr>
+<ol>
+<li>在Parallels里启动你的Ubuntu 14.04, 然后按下<code>Ctrl+Alt+F2</code>激活控制台</li>
+<li>输入你的用户名和密码</li>
+<li>找到 <code>xorg.conf.XXXXXXXX</code> (XXXXXXXX 指的是这个文件被创建的时间)</li>
+</ol>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ls</span> -<span class="keyword">l</span> /etc/X11/</span><br></pre></td></tr></table></figure>
+<p>检查这个文件是否包含<code>Parallels</code>字段</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/X11/xorg<span class="class">.conf</span><span class="class">.XXXXXXXX</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://redrock.u.qiniudn.com/pics/parallels-problem.png" alt="check"></p>
+<p>然后输入命令(注意替换下面的XXXXXXXX)</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /etc/X11/xorg<span class="class">.conf</span><span class="class">.XXXXXXXX</span> /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/xorg<span class="class">.conf</span></span><br><span class="line"></span><br><span class="line">export DISPLAY=:<span class="number">0</span></span><br><span class="line"></span><br><span class="line">gsettings reset org<span class="class">.compiz</span><span class="class">.core</span>:/org/compiz/profiles/unity/plugins/core/ active-plugins</span><br></pre></td></tr></table></figure>
+<p>按<code>Ctrl+Alt+F7</code>退出控制台</p>
+<p>重启你的虚拟机就Ok了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" data-id="ciksc9ahe0007chojr2xphiul" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux-Mac/">
+- Linux
+- Mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-a-webpage-be-displayed-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/how-a-webpage-be-displayed-2/" class="article-date">
+  <time datetime="2014-05-24T04:38:56.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/how-a-webpage-be-displayed-2/">一个网页被显示的前生今世(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt="cover-image"></p>
+<h2 id="Go-to-一个网页被显示的前生今世-一"><a href="#Go-to-一个网页被显示的前生今世-一" class="headerlink" title="###Go to 一个网页被显示的前生今世(一)"></a>###Go to <a href="/how-a-webpage-be-displayed-1">一个网页被显示的前生今世(一)</a></h2><p>接上文  </p>
+<p>##服务器处理请求</p>
+<p>####前台处理<br>当一个请求发送至服务器的时候, 应该由一个前台程序来接收这个请求并选择直接响应静态资源(静态站)还是交给后台程序进一步处理(动态网站). 这里常用的软件有Apache(阿帕奇)/Nginx, 对于大并发的应用, nginx有天然的优势.   </p>
+<p>我们来举个栗子, Apache2的默认并发连接数是200, 而nginx是直接开到65535(linux文件系统的极限). 虽然在安全性上面阿帕奇优势明显, 不过业内各种大牛(taobao/tencent)基本上都是采用直接改造nginx来满足高并发需求的.  </p>
+<p>####后台处理<br>动态网站的后台程序通常能够接受刚才发送的header信息, 并对数据库(通常是SQL当然还有NoSQL)进行读取啦, 添加修改删除等等操作, 并返回适当的响应. </p>
+<p>##响应<br>OK, 那么我们的服务器顺利响应了正确的信息, 高兴地发出了一个HTTP/200的信号说明 Anything goes well. </p>
+<p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt=""></p>
+<p>报头中的<code>Content-Type</code>说明了返回的MIME类型, 这里是一个html文档, 这使得浏览器清楚将该响应内容以HTML的方式进行解析.Expires头表示存在时间，它允许浏览器在这个时间之前不去检查（发请求）而是放心地读取缓存, 正确的使用Expires这可以使得服务器的鸭梨大大减轻.还有一些头的信息没有列出, 大家可以参阅<i>高性能网站建设指南(O’REILLY)</i>.  </p>
+<p>##浏览器解析HTML<br>好吧, 绕了一圈又说回浏览器了. 做前端的同学都懂的, 浏览器兼容性可以说是最头疼的东西. </p>
+<p>####HTML逐步呈现<br>我们知道, 在IE中, MS提供了一个进度指示器来让用户知道我们的网页正在被打开. 这里的进度指示器有一个优势就是: 它让用户知道系统没有崩溃, 而是正在努力为他或她解决问题.它不仅指出了还需要等多久, 还给用户一些可以看的图形化的东西, 以使得等待不那么枯燥无味. 而通常情况下, 在这个指示器没有跑完的时候, 大部分网页就已经显示了. 所以, 我们说其实浏览器是逐步加载网页的.   </p>
+<p>当然也有特例, 我们称之为白屏, 将样式表(CSS)放在页面底部将会阻塞内容逐步呈现, 虽然实际加载页面的时间没有增加, 但是让<code>用户感觉缓慢</code>的页面通常会招致反感, 用户经常会不知道发生了什么而离开! </p>
+<p>所以无论如何前端开发者都应该遵循的一个原则就是: </p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用<span class="variable">LINK</span>标签将样式表放在<span class="variable">HTML</span>的<span class="function_or_atom">head</span>标签中<span class="exclamation_mark">!</span></span><br></pre></td></tr></table></figure>
+<p>####其它对象<br>在浏览器显示HTML时，它会注意到需要获取其他地址内容的标签(img, css, js, 甚至flash控件, etc)。这时，浏览器会额外的发送获取请求来重新获得这些文件。而这些地址都要经历一个和HTML读取类似的过程。所以浏览器会在DNS中查找这些域名，发送请求，重定向等等…</p>
+<p>####JavaScript<br>虽然我们的浏览器脚本不止Js一种, 但是它已经成为了各种浏览器的事实标准, 下文就用”js”来代替”浏览器脚本”这一表述. </p>
+<p>在浏览器解析HTML的时候, 经常会碰到一个script标签, 这个时候浏览器通常会被阻塞来运行js代码, 因为js代码中有可能带有对DOM的一些操作, 如果js代码的运行跟html的解析同时进行, 会导致各种错误, 所以不管是什么js代码, 这个过程是阻塞式的.  </p>
+<p>我经常看到一些刚学js的同学在头部的代码中这样写道: </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// code here</span></span><br></pre></td></tr></table></figure>
+<p>然后跑过来问为什么代码没反应.  DOM压根就没有加载完整!  </p>
+<p>随后这样写道: </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="comment">// code here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们创造js code的目的通常是执行客户端代码, 也就是说多是与用户的交互. 既然这样, 那为何不把js放在最后加载呢? </p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最佳情况: 将js代码放在文档的底部(<span class="keyword">body</span>标签闭合之前)</span><br></pre></td></tr></table></figure>
+<p>当然还有一种更好的方式, async, 我们在下面讲.</p>
+<p>##ASYNC Request(异步请求)<br>好了, 网页加载完成了, 是不是这个时候网页就”死了”呢? 答案是 NO!绝不!  </p>
+<p>前端的同学都听说过一个名词 AJAX. OK, 引用一句话, <i>在Web 2.0伟大精神的指引下，页面显示完成后客户端仍与服务器端保持着联系</i>.   </p>
+<p>继续举栗子, 当你在百度的搜索框中输入一个关键词的时候, 是不是会跳出一个实时变化的候选热门词表, 这些内容当然是从百度的服务器中实时获取的! </p>
+<p>我们可以简单的使用Chrome开发者工具的Network窗口来监视这些ajax请求, 如果在windows下还可以用fiddler这个工具(以前Ricter逗比介绍用的).  </p>
+<p>当然, 如果我们用异步模式来加载一些并不是立刻被需要的又很臃肿的js脚本, 整个世界将会变得很nice.  </p>
+<p>还有一点就是轮询, 它的工作方式注定了它的效率不会很高, 长连接好像是一个折衷的方法, 当被轮询时服务器没有新消息它就不理会客户端, 反之在没有超时的情况下, 新消息就会做为响应返回给客户端, 这很适合网络聊天室之类的应用, 虽然大家都用QQ了谁还会用网络聊天室呢, 也许网页游戏喜欢用这个。 </p>
+<p>最近研究Nodejs的时候发现了另外一种实时性很好的技术, websocket, 它的标准更迭貌似很快, 我用了一个叫做socket.io的库来实现它发现很好用, 不知道有没有懂的大牛来讲解一下ws的实现&gt;.o </p>
+<p>##Summury<br>本文从前端的角度简单的讲了讲自己对网络应用的模式理解, 不过我也算是个初学者, 这里难免有出错的地方欢迎客官指正哈. 也希望对那些不甚明白的同学有所帮助.</p>
+<p>EOF.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-2/" data-id="ciksc9aiu0011chojlw2fh79m" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-a-webpage-be-displayed-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/how-a-webpage-be-displayed-1/" class="article-date">
+  <time datetime="2014-05-24T04:31:10.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/how-a-webpage-be-displayed-1/">一个网页被显示的前生今世(一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/QQ20140305-1.png" alt="cover-image"></p>
+<p>作为一个前端开发人员, 首先对于浏览器, 以及各种WEB服务的工作机理要有一个清楚的认识. 从你在地址栏输入网址的那一刻起到网页显示在你的显示器上, 这期中到底发生了什么, 本文将浅显地讨论这方面的机理.</p>
+<p>##先来讲点题外话.URI(URL)</p>
+<p>####什么是URI<br>就中文翻译<em>通用资源标识符(URI)</em>来讲, 或者我更喜欢叫它<em>统一资源定位器(URL)</em>, 似乎很难把它与网址挂上钩. 实际上, 网址就是一种基本的URL. 不知道有多少人思考过, 我们经常输入的网址格式一般都是www.xxxx.com, 或者再加上协议名 http https 端口以及路径什么的 或者再加上账号密码！如下图：<br><img src="http://wydrops-wordpress.stor.sinaapp.com/uploads/2013/11/a.png" alt="URL"></p>
+<blockquote>
+<p>第一部分：协议名(以单个冒号结束)<br>第二部分：用户信息 也就是账号密码！(登陆ftp时常用)<br>第三部分：主机名(也就是域名)<br>第四部分：端口<br>第五部分：查询，这里有个bug。。。  应该是?号后的内容才是查询！<br>第六部分：片段ID(是不会发送到服务器的！)  </p>
+</blockquote>
+<p>浏览器解析URL之后, 采用相应的协议和地址来向服务器发送信息.  </p>
+<p>当然浏览器对残缺的URL也具有一定的解析(矫正把..)能力, 比如 <em>http:www.baidu.com</em> 也是可以解析的..  </p>
+<p>我们发散一下思维, 对于一些协议, 比如mongodb:// ssh://也可以用user:password@domain的方式来发送认证.</p>
+<p>####PS:至于URI与URL的区别, 据说业内还在争论, 所以暂且就看做一样好了…</p>
+<p>##DNS查询<br>浏览器开始向对应的地址发送请求了, 第一步是通过访问的域名找出DNS地址.</p>
+<p>PS: 如202.202.43.125这样奇葩的IP网址就不用了…</p>
+<p>DNS查找过程如下：</p>
+<ul>
+<li><p><strong>浏览器缓存</strong> – 浏览器会缓存DNS记录一段时间。但是，操作系统没有告诉浏览器储存DNS记录的时间，这样不同浏览器会储存个自固定的一个时间（2分钟到30分钟不等）。  </p>
+</li>
+<li><p><strong>系统缓存</strong> – 如果在浏览器缓存里没有找到需要的记录，浏览器会操作系统发出一个调用, 系统从它的DNS缓存中取出对应的缓存, 例如Windows下可以通过 <strong>ipconfig /dnsflush</strong> 命令来清除这个缓存。如果系统缓存中也没有记录, 系统还会在hosts文件中查找这个记录。</p>
+</li>
+<li><p><strong>路由器缓存</strong> – 接着，前面的查询请求发向路由器，它一般会有自己的DNS缓存。<br>ISP DNS 缓存 – 接下来要check的就是ISP缓存DNS的服务器。在这一般都能找到相应的缓存记录。 </p>
+</li>
+<li><p><strong>递归搜索</strong> – 你的ISP的DNS服务器从跟域名服务器开始进行递归搜索，从.com顶级域名服务器到Facebook的域名服务器。一般DNS服务器的缓存中会有.com域名服务器中的域名，所以到顶级服务器的匹配过程不是那么必要了。递归的顶层是全球只有7台的DNS根服务器, 前几天的国内根服务器故障影响的余波可是还没消散呢→_→</p>
+</li>
+</ul>
+<p>##向web服务器发送HTTP请求<br>浏览器向我们的服务器发送了一个GET请求!<br>我们使用Chrome的开发者工具来看一下这个请求头(header) </p>
+<blockquote>
+<p><img src="http://redrock.u.qiniudn.com/QQ20140305-1.png" alt="HTTP HEADER">  </p>
+</blockquote>
+<p>我们可以看到<strong>Request Method</strong>暴露了它是一个GET方式的请求.而<strong>Request URL</strong>定义了要读取的URL  </p>
+<p>浏览器定义的<strong>User-Agent</strong>头表明了请求发起者的身份, 这使得服务器能够根据不同的系统环境,浏览器来响应不同的内容. <strong>Connection</strong>头要求服务器为了后边的请求不要关闭TCP连接。 另外<strong>Accept</strong>和<strong>Accept-Encoding</strong>头标明了浏览器希望接受的响应类型. </p>
+<p>请求中也包含了浏览器存储的该域的cookies。可能你已经知道，在不同页面请求当中，cookies是与跟踪一个网站状态相匹配的键值。这样cookies会存储登录用户名，服务器分配的密码和一些用户设置等。Cookies会以特殊文本的形式存储在本地，并且每次请求时发送给服务器。</p>
+<p>##301重定向<br>观察仔细的同学会发现, 如果我们在浏览器的地址栏输入baidu.com, 打开的网页总是www.baidu.com, 难道是浏览器的<strong>智能解析</strong>吗? 其实不然, 在这里服务器捣了一次鬼. 它发送了一个301重定向响应, 这样浏览器就会访问“<a href="http://www.baidu.com/”" target="_blank" rel="external">http://www.baidu.com/”</a> 而非“<a href="http://baidu.com/”。" target="_blank" rel="external">http://baidu.com/”。</a></p>
+<blockquote>
+<p>HTTP/1.1 301 Moved Permanently</p>
+</blockquote>
+<p>####为什么需要301重定向呢?</p>
+<blockquote>
+<p>为什么服务器一定要重定向而不是直接发会用户想看的网页内容呢？这个问题有好多有意思的答案。<br>其中一个原因跟搜索引擎排名<em>SEO</em>有关。你看, 如果一个页面有两个地址，就像 <a href="http://www.baidu.com/" target="_blank" rel="external">http://www.baidu.com/</a> 和 <a href="http://baidu.com/" target="_blank" rel="external">http://baidu.com/</a> ，搜索引擎会认为它们是两个网站，结果造成每一个的搜索链接都减少从而降低排名。而搜索引擎知道301永久重定向是什么意思，这样就会把访问带www的和不带www的地址归到同一个网站排名下。</p>
+</blockquote>
+<p>####前端的童鞋需要注意什么<br>让我们回忆一下如何写一个超级链接? 超简单 是不是! 其实这里有一个隐含的301重定向. 我们在写a标签(锚)的时候经常会这样写<code>&lt;a href=&quot;http://www.baidu.com&quot;&gt;Baidu.&lt;/a&gt;</code> </p>
+<p>服务器会自动地将 <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a> 跳转到 <a href="http://www.baidu.com/" target="_blank" rel="external">http://www.baidu.com/</a> , <em>不要说看不出区别</em>而跳转总是需要时间的, 在这些无关紧要的地方浪费时间实在是太可耻了是不是→_→ </p>
+<blockquote>
+<p>多次301的坏处总是大于好处的. 它不仅会导致打开网站的性能变差, 而且它的滥用会导致搜索引擎对网站的降权.  因为当一个页面有好几个名字时，它可能会在缓存里出现好几次。</p>
+</blockquote>
+<p>##服务器处理请求<br>Web服务器端由apache/nginx…将各种请求交给响应的后台程序来处理….</p>
+<p>##<strong><del>未完待续</del></strong>  </p>
+<p>###> Go to <a href="/how-a-webpage-be-displayed-2">一个网页被显示的前生今世(二)</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-1/" data-id="ciksc9aix0012chojf98cxdnh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端-服务器-HTTP/">
+- 前端
+- 服务器
+- HTTP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nothing-with-winter-summury" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/nothing-with-winter-summury/" class="article-date">
+  <time datetime="2014-05-24T04:25:55.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/nothing-with-winter-summury/">没什么好总结的寒假的寒假总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>好吧, 那我还是来装作总结一下把.  </p>
+<p>##看的书  </p>
+<ul>
+<li><p>犀牛 看样子ECMA核心要经常翻才行  </p>
+</li>
+<li><p>正则 (进度10%, 还无法实战…)  </p>
+</li>
+<li><p>Nodejs/Npm(这里指各种module的)/MongoDB的文档 (这也算?算吧)…  </p>
+</li>
+<li><p>好像没了0.0 够少了把… </p>
+</li>
+</ul>
+<p>##写的东西  </p>
+<p>ok, 那没看什么大概都去写什么了把, 看看<a href="https://github.com/wssgcg1213" target="_blank" rel="external">github</a>的contributions还算有点  </p>
+<ul>
+<li><p><a href="https://github.com/wssgcg1213/NB" target="_blank" rel="external">NB-Git</a>: 这是一个用nodejs写的blog, 还不是特别完善  </p>
+</li>
+<li><p><a href="http://gp.zeroling.com" target="_blank" rel="external">The Good Parts</a>: 这个是用PHP写的老套路博客系统, 没后台, 但是对这个style风格还算满意  </p>
+</li>
+<li><p><a href="http://www.zeroling.com/galleries" target="_blank" rel="external">CoverFlow</a>: 模仿Apple的CoverFlow效果的图库页面  </p>
+</li>
+</ul>
+<p>还有什么..去我的<a href="https://github.com/wssgcg1213" target="_blank" rel="external">git主页</a>上找找把…  </p>
+<p>##Others  </p>
+<p>另外还折腾了个VPS, 学了半个月的Linux, 大概大半个暑假是花在ssh上面了, 真是悲剧- -  </p>
+<p>大概就是这样把… </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/nothing-with-winter-summury/" data-id="ciksc9ahr000bchojyx0enfsp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/寒假-总结/">
+- 寒假
+- 总结</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-xiaomi-2a-wireless-charge" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/xiaomi-2a-wireless-charge/" class="article-date">
+  <time datetime="2014-05-24T04:23:47.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/xiaomi-2a-wireless-charge/">小米2A实现无线充电</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://wssgcg1213.qiniudn.com/2014-02-27.jpeg-800" alt="cover-image"></p>
+<p>Palm的点金石在高二就买了, 只可惜原来的HTC G10是金属后盖, 没法装在那个上面, 现在用的小米2A因为没过保修期一直不想动它  </p>
+<p>直到今天在淘宝看到有卖保修标识的易碎贴, 这样保修的问题也不怕了(2A已经修过充电口了, 而且6月才过保), 噶正好晚上没课, 一时兴起就把装备搬出来弄了.  </p>
+<p>###看看效果先<br><img src="http://wssgcg1213.qiniudn.com/2014-02-27.jpeg-800" alt="小米2A改装无线充电"></p>
+<p>因为忘记拍照了, 所以就只能晒一张成品图了  </p>
+<p>过程很简单, 用万用表找出正负极的引脚既可, 因为USB的结构是+5V和GND, 手机的接地线很好找, 直接用Micro-USB的固定脚既可, +5V的引脚在USB接口上方的电路区内, 在一个贴片电阻下方测得电压约+4.58V, 所以很快断定就是这个了.  </p>
+<p>点金石输出的电压是5.5V左右, 电流不大, 不过对于充手机已经够了. 一切装完之后还碰到一个小插曲, 充电灯死活不亮- -.. 后来发现因为2A是支持NFC的, 而NFC的基础也是电磁感应, 导致NFC的线圈吸收了点金石的电磁波, 导致贴在NFC后面的充电线圈一直没法充电, 没办法只好把充电线圈往下挪动一段距离, 重新装回去之后贴上Stone, 充电指示灯终于挺萌的的亮了…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/xiaomi-2a-wireless-charge/" data-id="ciksc9ahy000echojqnvt1ep6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小米-手机-改装-无线充电/">
+- 小米
+- 手机
+- 改装
+- 无线充电</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cqupt-mac-os-x-get-online" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/cqupt-mac-os-x-get-online/" class="article-date">
+  <time datetime="2014-05-24T04:18:12.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/cqupt-mac-os-x-get-online/">重邮Mac OS X, 寝室内外网联网教程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://wssgcg1213.qiniudn.com/netkeeper.png" alt="cover-image"><br><img src="http://wssgcg1213.qiniudn.com/netkeeper.png" alt="screenhot">  </p>
+<p>先来看看叠加之后的效果.172网段的是内网,重邮的内网是100Mbps不限速(入楼应该是千兆,但是入户只有百兆),可以通过内网上一些比如教务在线,红岩网校的系列网站,PT啦,速度还是不错的  </p>
+<p>###You Need:  </p>
+<ol>
+<li>a Mac  </li>
+<li>你的统一认证码和密码(用于内网)  </li>
+<li>一个用于NetKeeper上网的账号(用于外网连接)   </li>
+<li>如果你是<em>Air或者RMBP没有RJ45网线接口</em>,你还需要去买一个usb/雷电 转 网线接口的转换器一只   </li>
+<li>如果你的室友也有上网需求,就需要<em>交换机</em>一台以及连接交换机的网线若干  </li>
+</ol>
+<p><code>内网</code>:  <a href="http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2374946882" target="_blank" rel="external">http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2374946882</a>   </p>
+<p><code>外网</code>:  <a href="http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2417216665" target="_blank" rel="external">http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2417216665</a>    </p>
+<p>下载上面的内网文件,扩展名是mobileconfig,这种文件原先是从iPhone同步助手导出给iPhone的运营商设置文件,但是你要知道iOS是基于Mac OS X的,所以经过修改便可以导入OS X使用.  </p>
+<p>重邮使用的内网网关认证是基于MD5方式的802.1x认证,通过修改mobileconfig的字段既可破解支持.(听不懂可以忽略哈)  </p>
+<p>我们用一个文本编辑器打开这个文件,修改其中标注的统一认证码和密码,保存打开,会出现一个设置的导入界面,一路下一步并鉴权既可.  </p>
+<p>以后只要在网络设置中就可以看到802.1x的选项,在插网线的情况下可以认证了.  </p>
+<p>###关于外网  </p>
+<p>电信已经提供了Mac版本的netkeeper,在<a href="http://cq.189.cn" target="_blank" rel="external">cq电信官网</a>校园专区就可以找到,我这里另存了一份到百度网盘需要的自取</p>
+<p> PS:这个netkeeper for Mac程序也可以在WLAN-CQUPT环境下使用.<br> PPS:这个程序没加密,反汇编一下就全出来了,想破解NetKeeper的可以看看  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/cqupt-mac-os-x-get-online/" data-id="ciksc9agw0001chojmv8bsyms" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac-重邮/">
+- Mac
+- 重邮</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-a-coverflow" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/a-coverflow/" class="article-date">
+  <time datetime="2014-05-24T04:14:55.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/a-coverflow/">写了一个 CoverFlow 的效果</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://wssgcg1213.qiniudn.com/QQ20140204-1.png" alt="cover-image"><br><a href="https://github.com/wssgcg1213/Coverflow/" target="_blank" rel="external">Fork Me At GitHub</a><br><a href="http://test.treeforests.com/coverflow/" target="_blank" rel="external">DEMO</a>  </p>
+<blockquote>
+<p>A beautiful gallery modelled after Apple’s CoverFlow.<br>Built on Flat-UI based on Bootstraps<br>Built on slimbox2 based on jQuery (1.8.3)<br>Using js(jQ)/HTML5/CSS3  </p>
+</blockquote>
+<p><img src="http://wssgcg1213.qiniudn.com/QQ20140204-1.png" alt="wrap"></p>
+<p>##Display 5 Images<br>width: 730px; height: 480px;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/a-coverflow/" data-id="ciksc9aig000rchoj7ppjjswr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript-HTML5/">
+- javascript
+- HTML5</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vps-simple-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/vps-simple-config/" class="article-date">
+  <time datetime="2014-05-24T04:12:19.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/vps-simple-config/">VPS的简单配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p> 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  </p>
+<p>不过这VPS的配置对新手来讲太痛苦了 </p>
+<p>###step1<br>装的是ubuntu server 12.04 32bit,然后ape-get各种runtime,花了有一个多小时  </p>
+<p>###step2<br>configure,nginx和apache2的设置花了一天的时候弄明白了,关键是在设置各个用户的访问权限<br>目前还在混乱中,nginx暂以root权限运行 apache2,php-fcgi以www-data权限运行<br>还是先理一下整体架构,nginx做前端,监听80端口,在<em>/etc/nginx/nginx.conf</em>中设置<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    user root</span><br><span class="line">    include <span class="regexp">/etc/nginx/sites-enabled/</span>*</span><br><span class="line">`<span class="javascript"></span>``<span class="javascript">   </span><br><span class="line"></span><br><span class="line">再在</span>`sites-enabled`<span class="javascript">目录下面给每个人写对应的配置文件,php的sock修改到</span>`/tmp/zeroadmin.sock`<span class="javascript">,对应端口反代监听写法:</span></span><br></pre></td></tr></table></figure></p>
+<p>   location ~{  proxy-pass 127.0.0.1:xxxx;  }<br>```  </p>
+<p>apache2在8000端口监听,配置文件在<code>/etc/apache2/httpd.conf</code> 和<code>/etc/apache2/sites-enabled/*</code><br>php5的<code>php.ini</code>文件在<code>/etc/php5/xxx</code>下面,这里好几个文件夹都包含php.ini,每次改配置都是几个全改好郁闷T.T  </p>
+<p>###Now<br>PHP能欢快的跑起来了,除了phpmyadmin的配置有点小问题<br>由于是合租VPS,所以每个人都分配了管理员权限,接下来要考虑怎样让每个人的操作尽量不影响其他人  </p>
+<blockquote>
+<p>TASKINFO: <a href="http://vps.zeroling.com/taskinfo.php" target="_blank" rel="external">http://vps.zeroling.com/taskinfo.php</a></p>
+</blockquote>
+<p>###todo<br> 把php-fcgi的解析权归还给apache(目前是nginx)….我好像说漏了什么<br> 配置好phpmyadmin,然后需要再搞一个主机管理程序  </p>
+<p> 暂时先这样把,明天开始把这个博客先写写完 拖了好久没动了已经 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="ciksc9aj60019choj1g712yrf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器/">
+- VPS
+- 服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux-Mac/">
+- Linux
+- Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac-重邮/">
+- Mac
+- 重邮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX-AJAX/">
+- PJAX
+- AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-Apache-服务器/">
+- VPS
+- Apache
+- 服务器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器/">
+- VPS
+- 服务器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-PHP/">
+- VPS
+- 服务器
+- PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-备份-Dropbox/">
+- VPS
+- 服务器
+- 备份
+- Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-备份-脚本/">
+- VPS
+- 服务器
+- 备份
+- 脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">
+- XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript-HTML5/">
+- javascript
+- HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js-chrome-googleapis/">
+- js
+- chrome
+- googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs-MD5-crypto/">
+- nodejs
+- MD5
+- crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-HTTP-URL/">
+- 前端
+- HTTP
+- URL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-underscore-javascript/">
+- 前端
+- underscore
+- javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-服务器-HTTP/">
+- 前端
+- 服务器
+- HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假-总结/">
+- 寒假
+- 总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米-手机-改装-无线充电/">
+- 小米
+- 手机
+- 改装
+- 无线充电</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux-Mac/" style="font-size: 10px;">
+- Linux
+- Mac</a> <a href="/tags/Mac-重邮/" style="font-size: 10px;">
+- Mac
+- 重邮</a> <a href="/tags/PJAX-AJAX/" style="font-size: 10px;">
+- PJAX
+- AJAX</a> <a href="/tags/VPS-Apache-服务器/" style="font-size: 10px;">
+- VPS
+- Apache
+- 服务器</a> <a href="/tags/VPS-服务器/" style="font-size: 10px;">
+- VPS
+- 服务器</a> <a href="/tags/VPS-服务器-PHP/" style="font-size: 10px;">
+- VPS
+- 服务器
+- PHP</a> <a href="/tags/VPS-服务器-备份-Dropbox/" style="font-size: 10px;">
+- VPS
+- 服务器
+- 备份
+- Dropbox</a> <a href="/tags/VPS-服务器-备份-脚本/" style="font-size: 10px;">
+- VPS
+- 服务器
+- 备份
+- 脚本</a> <a href="/tags/XSS/" style="font-size: 10px;">
+- XSS</a> <a href="/tags/javascript-HTML5/" style="font-size: 10px;">
+- javascript
+- HTML5</a> <a href="/tags/js-chrome-googleapis/" style="font-size: 10px;">
+- js
+- chrome
+- googleapis</a> <a href="/tags/nodejs-MD5-crypto/" style="font-size: 10px;">
+- nodejs
+- MD5
+- crypto</a> <a href="/tags/前端-HTTP-URL/" style="font-size: 10px;">
+- 前端
+- HTTP
+- URL</a> <a href="/tags/前端-underscore-javascript/" style="font-size: 10px;">
+- 前端
+- underscore
+- javascript</a> <a href="/tags/前端-服务器-HTTP/" style="font-size: 10px;">
+- 前端
+- 服务器
+- HTTP</a> <a href="/tags/寒假-总结/" style="font-size: 10px;">
+- 寒假
+- 总结</a> <a href="/tags/小米-手机-改装-无线充电/" style="font-size: 10px;">
+- 小米
+- 手机
+- 改装
+- 无线充电</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/">使用C++模块为Nodejs添彩助力</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/">UBUNTU升级GCC到4.8</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Ling.<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

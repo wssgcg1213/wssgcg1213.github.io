@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>让Apache2使用不同的用户创建文件 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="在配置合租VPS的时候, 我们通常把每个用户的文件限制在/home/$USERNAME/目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的file_put_contents函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  
+大概是我语文表达不好.. 使用中文搜索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让Apache2使用不同的用户创建文件">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="在配置合租VPS的时候, 我们通常把每个用户的文件限制在/home/$USERNAME/目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的file_put_contents函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  
+大概是我语文表达不好.. 使用中文搜索">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/server.png-cover">
+<meta property="og:updated_time" content="2014-05-23T18:03:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="让Apache2使用不同的用户创建文件">
+<meta name="twitter:description" content="在配置合租VPS的时候, 我们通常把每个用户的文件限制在/home/$USERNAME/目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的file_put_contents函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  
+大概是我语文表达不好.. 使用中文搜索">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +64,74 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-let-apache2-to-create-files-using-different-owner" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" class="article-date">
+  <time datetime="2014-05-23T16:36:47.000Z" itemprop="datePublished">2014-05-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      让Apache2使用不同的用户创建文件
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p><img src="http://redrock.u.qiniudn.com/pics/server.png-cover" alt="cover-image"><br>在配置合租VPS的时候, 我们通常把每个用户的文件限制在<code>/home/$USERNAME/</code>目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的<code>file_put_contents</code>函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  </p>
+<p>大概是我语文表达不好.. 使用中文搜索引擎一直找不到答案, 在google搜索找到了一个提示: Apache的<code>MPM-ITK</code>模块.  </p>
+<p>由于我的Apache2是在Ubuntu环境下apt-get默认安装的, 在<code>/etc/apache2/mods-enabled/</code>目录下面看到的默认启用的是<code>mpm_prefork</code>模块. </p>
+<p>我们把 <code>mpm_prefork.conf</code>和 <code>mpm_prefork.load</code>的软链接删除, 对应换成<code>mpm_itk</code> </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2/mods-enabled/</span><br><span class="line">rm mpm_prefork<span class="class">.conf</span> mpm_prefork<span class="class">.load</span></span><br><span class="line">ln -s ../mods-available/mpm_itk<span class="class">.conf</span> mpm_itk<span class="class">.conf</span></span><br><span class="line">ln -s ../mods-available/mpm_prefork<span class="class">.load</span> mpm_prefork.load</span><br></pre></td></tr></table></figure>
+<p>然后我们需要修改一下每个用户的设置, 在<code>VirtualHost</code>标签闭合之前加上  </p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AssignUserId <span class="list">&#123;user&#125;</span> <span class="list">&#123;group&#125;</span></span><br></pre></td></tr></table></figure>
+<p>最后重启一下apache服务器就可以生效了</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">service</span> apache2 restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="ciksc9ah90004choj602ty91t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-Apache-服务器/">
+- VPS
+- Apache
+- 服务器</a></li></ul>
 
-    </header>
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          为Mongo和Mysql各写了一个备份的Shell
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/23/strange-code-by-underscore/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Underscore之奇葩写法.</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

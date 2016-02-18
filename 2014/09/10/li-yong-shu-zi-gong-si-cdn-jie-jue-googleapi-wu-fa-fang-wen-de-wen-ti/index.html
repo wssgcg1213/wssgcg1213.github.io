@@ -3,17 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>利用数字公司 CDN 解决 GoogleApi 无法访问的问题 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="因为 google 被 GXW 屏蔽，所以很多运用了 fonts.googleapis 的网站都打开很慢，会直到加载 fonts.googleapis 超时才能打开网页。
+根本的解决方法是在天朝下载谷歌的字体文件到本地，而不使用它的云服务，然而这显然是不现实的方法。
+数字公司这回还是挺厚道的提供了常用前端公共库和谷歌公共库的代理服务，地址在下面
+http://libs.useso.com/
+我的方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用数字公司 CDN 解决 GoogleApi 无法访问的问题">
+<meta property="og:url" content="https://blog.zeroling.com/2014/09/10/li-yong-shu-zi-gong-si-cdn-jie-jue-googleapi-wu-fa-fang-wen-de-wen-ti/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="因为 google 被 GXW 屏蔽，所以很多运用了 fonts.googleapis 的网站都打开很慢，会直到加载 fonts.googleapis 超时才能打开网页。
+根本的解决方法是在天朝下载谷歌的字体文件到本地，而不使用它的云服务，然而这显然是不现实的方法。
+数字公司这回还是挺厚道的提供了常用前端公共库和谷歌公共库的代理服务，地址在下面
+http://libs.useso.com/
+我的方">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/googleapisbefore.png-cover">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/googleapisbefore.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/googleapisafter.png">
+<meta property="og:updated_time" content="2015-10-21T16:59:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="利用数字公司 CDN 解决 GoogleApi 无法访问的问题">
+<meta name="twitter:description" content="因为 google 被 GXW 屏蔽，所以很多运用了 fonts.googleapis 的网站都打开很慢，会直到加载 fonts.googleapis 超时才能打开网页。
+根本的解决方法是在天朝下载谷歌的字体文件到本地，而不使用它的云服务，然而这显然是不现实的方法。
+数字公司这回还是挺厚道的提供了常用前端公共库和谷歌公共库的代理服务，地址在下面
+http://libs.useso.com/
+我的方">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +75,79 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-li-yong-shu-zi-gong-si-cdn-jie-jue-googleapi-wu-fa-fang-wen-de-wen-ti" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/09/10/li-yong-shu-zi-gong-si-cdn-jie-jue-googleapi-wu-fa-fang-wen-de-wen-ti/" class="article-date">
+  <time datetime="2014-09-10T09:55:51.000Z" itemprop="datePublished">2014-09-10</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      利用数字公司 CDN 解决 GoogleApi 无法访问的问题
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p><img src="https://dn-redrock.qbox.me/pics/googleapisbefore.png-cover" alt="cover-image"><br>因为 google 被 GXW 屏蔽，所以很多运用了 fonts.googleapis 的网站都打开很慢，会直到加载 fonts.googleapis 超时才能打开网页。</p>
+<p>根本的解决方法是在天朝下载谷歌的字体文件到本地，而不使用它的云服务，然而这显然是不现实的方法。</p>
+<p>数字公司这回还是挺厚道的提供了常用前端公共库和谷歌公共库的代理服务，地址在下面</p>
+<p><a href="http://libs.useso.com/" target="_blank" rel="external">http://libs.useso.com/</a></p>
+<p>我的方法是通过 Chrome 插件，将谷歌字体等链接替换成 360 的国内 CDN 链接, 解决 google 在中国访问时常抽风影响到了 google api 和一些公共服务.</p>
+<p>之前尝试用搜索引擎寻找这样的插件，找到的却是一个半成品插件 googleapi2useso。为什么说是半成品呢，它用的方案是通过在文档加载完成的时候注入<code>content_script</code>来实现的。在谷娘的文档里提到，这样做 js 运行的时刻相当于<code>window.onload</code>事件发生的时刻。显然这个时候浏览器到 googleapi 的请求已经超时，也就是文档已经持续加载几十秒了，除非在这个加载过程中按下 <code>ESC</code> 键强制停止加载，不然这个脚本不会执行。</p>
+<p>想起好多 chrome 插件的实现应该是可以实现在请求发出前拦截并修改 HTTP 头的，便到 Google 的开发者平台   <a href="https://developer.chrome.com/extensions/" target="_blank" rel="external">https://developer.chrome.com/extensions/</a> 寻找 API （英文，需要Fan墙），也是花了挺久（英语捉鸡 TvT）找到了这个叫<code>webRequest</code>的东西，实现在下面，代码臭勿喷…</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">chrome.webRequest.onBeforeRequest.addListener(callback,</span><br><span class="line">  &#123;urls: [<span class="string">"&lt;all_urls&gt;"</span>]&#125;,</span><br><span class="line">  [<span class="string">"blocking"</span>]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params">details</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> url = details.url;</span><br><span class="line">	<span class="keyword">var</span> domain = url.match(<span class="regexp">/^(http|https)\:\/\/([a-zA-Z0-9\.\-])+/g</span>);</span><br><span class="line">	<span class="keyword">var</span> judge = domain &amp;&amp; domain[<span class="number">0</span>].match(<span class="regexp">/googleapis/g</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(judge)&#123;</span><br><span class="line"> 		<span class="comment">//for useso do not support https...</span></span><br><span class="line"> 		url = url.replace(<span class="regexp">/^https/</span>, <span class="string">'http'</span>).replace(<span class="string">'googleapis'</span>, <span class="string">'useso'</span>)</span><br><span class="line">		<span class="keyword">return</span> &#123;redirectUrl: url&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://dn-redrock.qbox.me/pics/googleapisbefore.png" alt="before"><br>上面是使用之前的，下面是使用之后的效果<br><img src="https://dn-redrock.qbox.me/pics/googleapisafter.png" alt="after"></p>
+<p>因为是第三方插件，所以安装方式是先下载 crx 文件，再打开 chrome 浏览器的扩展插件页面，把 crx 文件拖进去，最后点确定就行了。</p>
+<blockquote>
+<p><a href="http://api.zeroling.com/GoogleApis2UseSo.crx" target="_blank" rel="external">crx插件下载</a></p>
+</blockquote>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/09/10/li-yong-shu-zi-gong-si-cdn-jie-jue-googleapi-wu-fa-fang-wen-de-wen-ti/" data-id="ciksc9ai8000lchojsk57tcy4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js-chrome-googleapis/">
+- js
+- chrome
+- googleapis</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/02/24/gei-ioszi-dai-ri-li-tian-jia-ke-cheng-biao/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          给iOS自带日历📅添加课程表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/02/an-example-of-xss/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hey 接好了, 小王同学的XSS栗子</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

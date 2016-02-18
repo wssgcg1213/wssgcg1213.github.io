@@ -3,17 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>为Mongo和Mysql各写了一个备份的Shell | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="####查早读的同学越来越肆无忌惮了.好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…
+1234567891011121314151617181920#!/bin/bash #uncomment this for debug#set -x host=&apos;localhost&apos;use">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为Mongo和Mysql各写了一个备份的Shell">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="####查早读的同学越来越肆无忌惮了.好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…
+1234567891011121314151617181920#!/bin/bash #uncomment this for debug#set -x host=&apos;localhost&apos;use">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/backup-database.jpg-cover">
+<meta property="og:updated_time" content="2014-05-23T18:16:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="为Mongo和Mysql各写了一个备份的Shell">
+<meta name="twitter:description" content="####查早读的同学越来越肆无忌惮了.好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…
+1234567891011121314151617181920#!/bin/bash #uncomment this for debug#set -x host=&apos;localhost&apos;use">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +64,77 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-backup-shell-for-mongodb-and-mysql" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" class="article-date">
+  <time datetime="2014-05-23T16:53:12.000Z" itemprop="datePublished">2014-05-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      为Mongo和Mysql各写了一个备份的Shell
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p><img src="http://redrock.u.qiniudn.com/pics/backup-database.jpg-cover" alt="cover-image"></p>
+<p>####查早读的同学越来越肆无忌惮了.<br>好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"> </span></span><br><span class="line"><span class="comment">#uncomment this for debug</span></span><br><span class="line"><span class="comment">#set -x</span></span><br><span class="line"> </span><br><span class="line">host=<span class="string">'localhost'</span></span><br><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line">pass=<span class="string">'PASSWORD'</span></span><br><span class="line">dbs=(<span class="string">'db_name_1'</span> <span class="string">'db_name_2'</span> <span class="string">'db_name_3'</span>)</span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +%Y%m%d`"</span></span><br><span class="line"> </span><br><span class="line">mkdir -p <span class="variable">$todaydir</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> db <span class="keyword">in</span> <span class="variable">$&#123;dbs[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    mysqldump --add-drop-database -u<span class="string">"<span class="variable">$user</span>"</span> -p<span class="string">"<span class="variable">$pass</span>"</span> -h<span class="string">"<span class="variable">$host</span>"</span> -B <span class="variable">$db</span> &gt; <span class="string">"<span class="variable">$todaydir</span>/<span class="variable">$db</span>.dump.sql"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#remove directories modified 15 days ago</span></span><br><span class="line">find <span class="string">"<span class="variable">$dir</span>"</span> -mindepth <span class="number">1</span> -maxdepth <span class="number">1</span> -type d -mtime +<span class="number">15</span> -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<p>再把这个sh放进crontab里面就搞定了  </p>
+<p>然后再根据这个YY出了mongodb的备份脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line"><span class="keyword">pass</span>=<span class="string">'PASSWORD'</span></span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"$dir/`date +%Y%m%d`/mongodb"</span></span><br><span class="line"></span><br><span class="line">mkdir -p $todaydir</span><br><span class="line">mongodump -<span class="string">u"$user"</span> -p<span class="string">"$pass"</span> -o<span class="string">"$todaydir"</span></span><br></pre></td></tr></table></figure>
+<p>对于没有启用auth的mongodb用户可以这样三句话搞定</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +<span class="variable">%Y</span><span class="variable">%m</span><span class="variable">%d</span>`/mongodb"</span></span><br><span class="line"><span class="keyword">mkdir</span> -p <span class="variable">$todaydir</span></span><br><span class="line">mongodump -o<span class="string">"<span class="variable">$todaydir</span>"</span></span><br></pre></td></tr></table></figure>
+<p>也放进crontab里面就搞定了.<br>dropboxd会把放在/root/Dropbox目录下面的文件夹自动上传到dropbox空间, 配置好dropbox的同学只要创建一个软链接就ok了.</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> <span class="regexp">/root/</span>Dropbox<span class="regexp">/backup/</span></span><br></pre></td></tr></table></figure>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="ciksc9air000ychoj49w93h3h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器-备份-脚本/">
+- VPS
+- 服务器
+- 备份
+- 脚本</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/24/use-dropbox-to-backup-server/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          利用Dropbox备份服务器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">让Apache2使用不同的用户创建文件</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>UBUNTU升级GCC到4.8 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="因为node4.0+升级了v8的版本, 所以需要C++11 以上的compiler支持, 也就是gcc4.8以上.
+可能装二进制包的nodejs没有问题, 但是在遇到编译c++模块的时候, node-gyp就会报错了.
+cent6自带的gcc版本是4.4.7, 不过可以使用red hat出的devtoolset-3(其实这是一套, 有1,2 现在版本是3, 参照官方教程即可)升级gcc到4.8+,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UBUNTU升级GCC到4.8">
+<meta property="og:url" content="https://blog.zeroling.com/2015/12/03/ubuntusheng-ji-gccdao-4-8/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="因为node4.0+升级了v8的版本, 所以需要C++11 以上的compiler支持, 也就是gcc4.8以上.
+可能装二进制包的nodejs没有问题, 但是在遇到编译c++模块的时候, node-gyp就会报错了.
+cent6自带的gcc版本是4.4.7, 不过可以使用red hat出的devtoolset-3(其实这是一套, 有1,2 现在版本是3, 参照官方教程即可)升级gcc到4.8+,">
+<meta property="og:updated_time" content="2015-12-03T06:10:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="UBUNTU升级GCC到4.8">
+<meta name="twitter:description" content="因为node4.0+升级了v8的版本, 所以需要C++11 以上的compiler支持, 也就是gcc4.8以上.
+可能装二进制包的nodejs没有问题, 但是在遇到编译c++模块的时候, node-gyp就会报错了.
+cent6自带的gcc版本是4.4.7, 不过可以使用red hat出的devtoolset-3(其实这是一套, 有1,2 现在版本是3, 参照官方教程即可)升级gcc到4.8+,">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +66,66 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-ubuntusheng-ji-gccdao-4-8" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/" class="article-date">
+  <time datetime="2015-12-03T06:10:16.000Z" itemprop="datePublished">2015-12-03</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      UBUNTU升级GCC到4.8
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p>因为node4.0+升级了v8的版本, 所以需要C++11 以上的compiler支持, 也就是gcc4.8以上.</p>
+<p>可能装二进制包的nodejs没有问题, 但是在遇到编译c++模块的时候, node-gyp就会报错了.</p>
+<p>cent6自带的gcc版本是4.4.7, 不过可以使用red hat出的devtoolset-3(其实这是一套, 有1,2 现在版本是3, 参照官方教程即可)升级gcc到4.8+, 使用yum可以直接搞定.</p>
+<p>ubuntu的话, 我自己使用的12.04.4LTS, 自带gcc4.6, 升级方法如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>添加PPA源</span><br><span class="line">- add-apt-repository ppa:ubuntu-toolchain-r/test </span><br><span class="line"><span class="number">2.u</span>pdate</span><br><span class="line">- apt-get update</span><br><span class="line"><span class="number">3.</span>装</span><br><span class="line">- apt-get install g++-<span class="number">4.8</span></span><br><span class="line">- <span class="keyword">export</span> CXX=<span class="string">"g++-4.8"</span></span><br><span class="line"><span class="number">4.</span> 查看gcc版本</span><br><span class="line">- gcc -v</span><br><span class="line"><span class="number">5.</span> 如果是<span class="number">4.8</span>+那就ok了, 如果不是, 应该是符号链接没有替换</span><br><span class="line">ll /usr/bin/gcc*</span><br><span class="line">如果看到gcc -&gt; gcc-<span class="number">4.6</span>是符号链接没有替换</span><br><span class="line">rm gcc</span><br><span class="line">ln -s gcc-<span class="number">4.8</span> gcc</span><br><span class="line">rm g++</span><br><span class="line">ln -s g++-<span class="number">4.8</span> g++</span><br><span class="line">搞定</span><br></pre></td></tr></table></figure>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2015/12/03/ubuntusheng-ji-gccdao-4-8/" data-id="ciksc9ajc001fchojxxg0kect" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用C++模块为Nodejs添彩助力
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/10/alimian-jing/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ali面经</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

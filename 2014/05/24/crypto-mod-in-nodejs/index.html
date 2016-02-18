@@ -3,17 +3,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>Nodejs之Crypto模块的使用 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&amp;gt; &amp;lt;。  
+其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： 
+
+Welcome to game spaceYour ip: 172.16.37.125Ther">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs之Crypto模块的使用">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&amp;gt; &amp;lt;。  
+其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： 
+
+Welcome to game spaceYour ip: 172.16.37.125Ther">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/nodejs.png-cover">
+<meta property="og:image" content="http://wssgcg1213.qiniudn.com/Screen%20Shot%202014-03-31%20at%2018.47.52.png">
+<meta property="og:image" content="http://wssgcg1213.qiniudn.com/QQ20140331-1.png">
+<meta property="og:updated_time" content="2014-05-23T18:21:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="Nodejs之Crypto模块的使用">
+<meta name="twitter:description" content="好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&amp;gt; &amp;lt;。  
+其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： 
+
+Welcome to game spaceYour ip: 172.16.37.125Ther">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +72,81 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-crypto-mod-in-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/crypto-mod-in-nodejs/" class="article-date">
+  <time datetime="2014-05-23T17:06:01.000Z" itemprop="datePublished">2014-05-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      Nodejs之Crypto模块的使用
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p><img src="http://redrock.u.qiniudn.com/pics/nodejs.png-cover" alt="cover-image"><br>好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&gt; &lt;。  </p>
+<p>其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： </p>
+<blockquote>
+<p>Welcome to game space<br>Your ip: 172.16.37.125<br>There have a question for you<br>If you pass it, i’ll give you the key. #$*!@#$!@<br>Question: the “S” is? (Hint “S” is string of alphanumeric)<br>(“K0M1OHNHn2WX” + “S”) -&gt; md5(fb61d14280636c25547a2482dacb5817)<br>Input “S”:</p>
+</blockquote>
+<p>大概意思就是把”K0M1OHNHn2WX”这个字符串和S这个字符串拼接之后md5然后得到后面那个MD5密码。  </p>
+<p>我们用js写一段代码来匹配这个东西。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载MD5.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">q = <span class="string">"K0M1OHNHn2WX"</span>;</span><br><span class="line">s = <span class="string">"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"</span>.split(<span class="string">''</span>);</span><br><span class="line">s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a1)</span></span>&#123;</span><br><span class="line">	s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a2)</span></span>&#123;</span><br><span class="line">		s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a3)</span></span>&#123;</span><br><span class="line">			s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a4)</span></span>&#123;</span><br><span class="line">				<span class="keyword">if</span>(hex_md5(q+a1+a2+a3+a4)==<span class="string">'fb61d14280636c25547a2482dacb5817'</span>)</span><br><span class="line">					<span class="keyword">return</span> a1+a2+a3+a4;</span><br><span class="line">&#125;);&#125;);&#125;);&#125;);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>至于怎么知道是四位的，多试就知道了。还有一个细节是这个字符串每次都是会改变的。3位的话在我的Air上跑完大概只要十秒，可以忽略不计，四位的时候大概花了两分钟多，但是这个Telnet在60s的时候会断开连接，出题者限制了时间，如果按照这个程序，大概就要分组跑了，我猜是那个用于MD5加密的函数库比较慢的关系。  </p>
+<p>于是乎，回来拿node的crypto库写了个一样的程序，我们可以看到node是单线程的，四核心的处理器只能用一个线程，CPU100%。  </p>
+<p><img src="http://wssgcg1213.qiniudn.com/Screen%20Shot%202014-03-31%20at%2018.47.52.png" alt="node CPU">  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hex_md5 = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">	str = str.toString();</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'crypto'</span>).createHash(<span class="string">'md5'</span>).update(str, <span class="string">'utf-8'</span>).digest(<span class="string">'hex'</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="http://wssgcg1213.qiniudn.com/QQ20140331-1.png" alt="Node MD5">      </p>
+<p>我们可以看到尼玛这个坑爹啊 只要30多s就可以了啊=-=   </p>
+<p>好吧。下次CTF继续加油把~是时候撸高数去了。。。 </p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="ciksc9ajf001gchojeym37psz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs-MD5-crypto/">
+- nodejs
+- MD5
+- crypto</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/24/vps-simple-config/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          VPS的简单配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">修改PHP-FMP的运行用户</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

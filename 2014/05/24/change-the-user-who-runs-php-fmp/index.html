@@ -3,17 +3,32 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>修改PHP-FMP的运行用户 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="今天又折腾了一下VPS. 
+把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  
+####流程如下…
+进入php5-fpm的配置目录/etc/php5/fpm/pool.d/为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)
+1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修改PHP-FMP的运行用户">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="今天又折腾了一下VPS. 
+把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  
+####流程如下…
+进入php5-fpm的配置目录/etc/php5/fpm/pool.d/为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)
+1">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/php-code.jpg">
+<meta property="og:updated_time" content="2014-05-23T18:19:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="修改PHP-FMP的运行用户">
+<meta name="twitter:description" content="今天又折腾了一下VPS. 
+把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  
+####流程如下…
+进入php5-fpm的配置目录/etc/php5/fpm/pool.d/为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)
+1">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +74,76 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-change-the-user-who-runs-php-fmp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" class="article-date">
+  <time datetime="2014-05-23T17:00:58.000Z" itemprop="datePublished">2014-05-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      修改PHP-FMP的运行用户
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover" alt="cover-image"><br>今天又折腾了一下VPS. </p>
+<p>把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  </p>
+<p>####流程如下…</p>
+<p>进入php5-fpm的配置目录<code>/etc/php5/fpm/pool.d/</code>为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[username]</span><br><span class="line"></span><br><span class="line">user = <span class="variable">$USERNAME</span></span><br><span class="line"><span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">listen = /tmp/<span class="variable">$USERNAME-fpm</span>.sock</span><br><span class="line">listen.owner = <span class="variable">$USERNAME</span></span><br><span class="line">listen.<span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line">listen.mode = <span class="number">0660</span></span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line">pm.max_children = <span class="number">10</span></span><br><span class="line">pm.start_servers = <span class="number">3</span></span><br><span class="line">pm.min_spare_servers = <span class="number">1</span></span><br><span class="line">pm.max_spare_servers = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>进入nginx的配置目录<code>/etc/nginx/sites-enabled/</code>把用户的php套接字路径改为(也要替换$USERNAME)<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass unix:/tmp/<span class="variable">$USERNAME-fpm</span>.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    include fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">重启php5-fpm和装载nginx配置生效.</span><br></pre></td></tr></table></figure></p>
+<p>service php5-fpm restart<br>nginx -s reload<br>```</p>
+<p>###后话.</p>
+<p>其实还有一个问题仍然存在, 用nginx直接反代的配置并没有通过apache, 这在一些使用.htaccess文件来设置rewrite规则的程序来讲(比如wordpress等)是不可接受的, 因为nginx的rewrite规则与apache并不通用. 我查了一下, 要在apache2开启fastcgi_mod还是比较麻烦的, 然后上课的点到了先去上课了, 下回有空再折腾吧~ 那些用.htaccess的就先proxy_pass apache把~</p>
+<p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg" alt=""></p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="ciksc9ail000uchojsulycg5n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器-PHP/">
+- VPS
+- 服务器
+- PHP</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/24/crypto-mod-in-nodejs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nodejs之Crypto模块的使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/24/use-dropbox-to-backup-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">利用Dropbox备份服务器</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

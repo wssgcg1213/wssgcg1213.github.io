@@ -3,21 +3,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Zero&#39;s Corner</title>
+  <title>Underscore之奇葩写法. | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+  <meta name="description" content="最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:
+1obj.length === +obj.length
+看了半天愣是没懂…
+###0x00 分析.结论先: 这条语句可以用来判断obj是数组还是对象.  
+别急啦~我先来抄一段underscore的each函数实现.
+12345678910111213141516var each = _.each = _.forE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://blog.zeroling.com/2016/02/18/hello-world/index.html">
+<meta property="og:title" content="Underscore之奇葩写法.">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-02-18T13:13:12.000Z">
+<meta property="og:description" content="最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:
+1obj.length === +obj.length
+看了半天愣是没懂…
+###0x00 分析.结论先: 这条语句可以用来判断obj是数组还是对象.  
+别急啦~我先来抄一段underscore的each函数实现.
+12345678910111213141516var each = _.each = _.forE">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/pics/underscore.png-cover">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/typeoffaster.png">
+<meta property="og:image" content="http://redrock.u.qiniudn.com/plusfaster.png">
+<meta property="og:updated_time" content="2014-05-28T05:59:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Underscore之奇葩写法.">
+<meta name="twitter:description" content="最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:
+1obj.length === +obj.length
+看了半天愣是没懂…
+###0x00 分析.结论先: 这条语句可以用来判断obj是数组还是对象.  
+别急啦~我先来抄一段underscore的each函数实现.
+12345678910111213141516var each = _.each = _.forE">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -63,10 +78,10 @@ Quick">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-strange-code-by-underscore" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/18/hello-world/" class="article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">2016-02-18</time>
+    <a href="/2014/05/23/strange-code-by-underscore/" class="article-date">
+  <time datetime="2014-05-23T14:16:25.000Z" itemprop="datePublished">2014-05-23</time>
 </a>
     
   </div>
@@ -77,7 +92,7 @@ Quick">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Underscore之奇葩写法.
     </h1>
   
 
@@ -85,42 +100,73 @@ Quick">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p><img src="http://redrock.u.qiniudn.com/pics/underscore.png-cover" alt="cover-image"><br>最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">length</span> === +obj.<span class="property">length</span></span><br></pre></td></tr></table></figure>
+<p>看了半天愣是没懂…</p>
+<p>###0x00 分析.<br>结论先: 这条语句可以用来判断obj是数组还是对象.  </p>
+<p>别急啦~我先来抄一段underscore的each函数实现.</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> each = _.each = _.forEach = function(obj, <span class="keyword">iterator</span>, context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (obj == null) <span class="keyword">return</span> obj;</span><br><span class="line">  <span class="keyword">if</span> (nativeForEach &amp;&amp; obj.forEach === nativeForEach) &#123;   //这边判断原生forEach若存在则使用它</span><br><span class="line">    obj.forEach(<span class="keyword">iterator</span>, context);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.length === +obj.length) &#123;          //<span class="type">HERE</span>!我们关注一下这里</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[i], i, obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> keys = _.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[keys[i]], keys[i], obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我也是第一次看到这种写法, 甚至刚开始让我怀疑我的js语法学的是不是有问题了.</p>
+<p>我们先看两个地方: </p>
+<ol>
+<li><p>=== 全等符</p>
+</li>
+<li><p>+ 号</p>
+</li>
+</ol>
+<hr>
+<ol>
+<li><p>-&gt; 我们知道全等符是用来判断其左右两个变量在值与类型上是不是”完全相等的”. 出于性能以及各种奇葩的问题, 在捣鼓拉斯的js语言精粹里他就强烈推荐尽量使用===来代替==.</p>
+</li>
+<li><p>-&gt; 再来看看+号, 这个操作符能自动转换它右边的操作值为number类型. 不知道同学们在做js的数学运算的有没有碰到过这个数: NaN, 它的意思是Not A Number. 一般在对undefined进行数学操作的时候会返回NaN这个值, 比如 a = undefined + 1; //-&gt; a == NaN. 其实就是这个意思, 如果obj是array/ string/ function, 那么它就拥有length这个number类型的属性, 左边和右边是全等的. 如果obj是对象, 那么obj.length就是undefined, 那么+undefined就是NaN ,undefined === NaN自然就是false了.<br>(关于NaN, Js还有一个奇葩的遗留问题, NaN === NaN的结果是False, 这也是判断一个数是不是NaN的方法)</p>
+</li>
+</ol>
+<p>###0x01 为什么这样写<br>我们来实现一下好理解一些的版本:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof obj.<span class="property">length</span> === <span class="string">"number"</span> &amp;&amp; !isNaN(obj.<span class="property">length</span>)</span><br></pre></td></tr></table></figure></p>
+<p>其实用typeof来判断array和对象也是可行的, 我们用jsperf来测试一下这两个语句的性能;</p>
+<p>这里存在两种情况, 判断obj是Array或者obj是对象:</p>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是对象</a> : <a href="http://jsperf.com/typeof-or-plus" target="_blank" rel="external">http://jsperf.com/typeof-or-plus</a><br><img src="http://redrock.u.qiniudn.com/typeoffaster.png" alt="obj是对象"></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是Array</a> : <a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">http://jsperf.com/plus-or-typeof</a><br><img src="http://redrock.u.qiniudn.com/plusfaster.png" alt="obj是Array"></li>
+</ul>
+<p>我的测试环境是 Safari 7.0.2 @ OS X 10.9.2, Chrome @ OSX 也大同小异.</p>
+<p>OK, <em>结论</em>是在判断obj是对象的时候, 使用typeof性能占优势.  </p>
+<p>###0x03 结论<br>我们大概可以猜测到作者在写underscore的时候考虑到each方法大部分时候面对的是array, 所以选择了一种对array来说性能占优的方式.  </p>
+<hr>
+<p>参考:</p>
+<ul>
+<li><a href="http://www.css88.com/doc/underscore/" target="_blank" rel="external">underscore中文文档</a>  </li>
+<li><a href="http://www.css88.com/doc/underscore/docs/underscore.html" target="_blank" rel="external">underscore源码</a></li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2016/02/18/hello-world/" data-id="ciksc9aj40018chojptmz6psl" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="ciksc9aj9001cchoj24hi1kux" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端-underscore-javascript/">
+- 前端
+- underscore
+- javascript</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/02/18/Hello-Hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Hello Hexo
+          让Apache2使用不同的用户创建文件
         
       </div>
     </a>
   
-  
-    <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">2015年的年终总结</div>
-    </a>
   
 </nav>
 

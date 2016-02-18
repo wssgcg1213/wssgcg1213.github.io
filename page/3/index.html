@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zero&#39;s Corner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="an hexo blog in github.io">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zero's Corner">
+<meta property="og:url" content="https://blog.zeroling.com/page/3/index.html">
+<meta property="og:site_name" content="Zero's Corner">
+<meta property="og:description" content="an hexo blog in github.io">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zero's Corner">
+<meta name="twitter:description" content="an hexo blog in github.io">
+  
+    <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Zero&#39;s Corner</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.zeroling.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-crypto-mod-in-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/crypto-mod-in-nodejs/" class="article-date">
+  <time datetime="2014-05-23T17:06:01.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/crypto-mod-in-nodejs/">Nodejs之Crypto模块的使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/nodejs.png-cover" alt="cover-image"><br>好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&gt; &lt;。  </p>
+<p>其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： </p>
+<blockquote>
+<p>Welcome to game space<br>Your ip: 172.16.37.125<br>There have a question for you<br>If you pass it, i’ll give you the key. #$*!@#$!@<br>Question: the “S” is? (Hint “S” is string of alphanumeric)<br>(“K0M1OHNHn2WX” + “S”) -&gt; md5(fb61d14280636c25547a2482dacb5817)<br>Input “S”:</p>
+</blockquote>
+<p>大概意思就是把”K0M1OHNHn2WX”这个字符串和S这个字符串拼接之后md5然后得到后面那个MD5密码。  </p>
+<p>我们用js写一段代码来匹配这个东西。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载MD5.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">q = <span class="string">"K0M1OHNHn2WX"</span>;</span><br><span class="line">s = <span class="string">"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"</span>.split(<span class="string">''</span>);</span><br><span class="line">s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a1)</span></span>&#123;</span><br><span class="line">	s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a2)</span></span>&#123;</span><br><span class="line">		s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a3)</span></span>&#123;</span><br><span class="line">			s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a4)</span></span>&#123;</span><br><span class="line">				<span class="keyword">if</span>(hex_md5(q+a1+a2+a3+a4)==<span class="string">'fb61d14280636c25547a2482dacb5817'</span>)</span><br><span class="line">					<span class="keyword">return</span> a1+a2+a3+a4;</span><br><span class="line">&#125;);&#125;);&#125;);&#125;);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>至于怎么知道是四位的，多试就知道了。还有一个细节是这个字符串每次都是会改变的。3位的话在我的Air上跑完大概只要十秒，可以忽略不计，四位的时候大概花了两分钟多，但是这个Telnet在60s的时候会断开连接，出题者限制了时间，如果按照这个程序，大概就要分组跑了，我猜是那个用于MD5加密的函数库比较慢的关系。  </p>
+<p>于是乎，回来拿node的crypto库写了个一样的程序，我们可以看到node是单线程的，四核心的处理器只能用一个线程，CPU100%。  </p>
+<p><img src="http://wssgcg1213.qiniudn.com/Screen%20Shot%202014-03-31%20at%2018.47.52.png" alt="node CPU">  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hex_md5 = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">	str = str.toString();</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'crypto'</span>).createHash(<span class="string">'md5'</span>).update(str, <span class="string">'utf-8'</span>).digest(<span class="string">'hex'</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="http://wssgcg1213.qiniudn.com/QQ20140331-1.png" alt="Node MD5">      </p>
+<p>我们可以看到尼玛这个坑爹啊 只要30多s就可以了啊=-=   </p>
+<p>好吧。下次CTF继续加油把~是时候撸高数去了。。。 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="ciksc9ajf001gchojeym37psz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs-MD5-crypto/">
+- nodejs
+- MD5
+- crypto</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-change-the-user-who-runs-php-fmp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" class="article-date">
+  <time datetime="2014-05-23T17:00:58.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/change-the-user-who-runs-php-fmp/">修改PHP-FMP的运行用户</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover" alt="cover-image"><br>今天又折腾了一下VPS. </p>
+<p>把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  </p>
+<p>####流程如下…</p>
+<p>进入php5-fpm的配置目录<code>/etc/php5/fpm/pool.d/</code>为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[username]</span><br><span class="line"></span><br><span class="line">user = <span class="variable">$USERNAME</span></span><br><span class="line"><span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">listen = /tmp/<span class="variable">$USERNAME-fpm</span>.sock</span><br><span class="line">listen.owner = <span class="variable">$USERNAME</span></span><br><span class="line">listen.<span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line">listen.mode = <span class="number">0660</span></span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line">pm.max_children = <span class="number">10</span></span><br><span class="line">pm.start_servers = <span class="number">3</span></span><br><span class="line">pm.min_spare_servers = <span class="number">1</span></span><br><span class="line">pm.max_spare_servers = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>进入nginx的配置目录<code>/etc/nginx/sites-enabled/</code>把用户的php套接字路径改为(也要替换$USERNAME)<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass unix:/tmp/<span class="variable">$USERNAME-fpm</span>.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    include fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">重启php5-fpm和装载nginx配置生效.</span><br></pre></td></tr></table></figure></p>
+<p>service php5-fpm restart<br>nginx -s reload<br>```</p>
+<p>###后话.</p>
+<p>其实还有一个问题仍然存在, 用nginx直接反代的配置并没有通过apache, 这在一些使用.htaccess文件来设置rewrite规则的程序来讲(比如wordpress等)是不可接受的, 因为nginx的rewrite规则与apache并不通用. 我查了一下, 要在apache2开启fastcgi_mod还是比较麻烦的, 然后上课的点到了先去上课了, 下回有空再折腾吧~ 那些用.htaccess的就先proxy_pass apache把~</p>
+<p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="ciksc9ail000uchojsulycg5n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器-PHP/">
+- VPS
+- 服务器
+- PHP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
+  <time datetime="2014-05-23T16:55:19.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/use-dropbox-to-backup-server/">利用Dropbox备份服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/Dropbox-clause.jpg-cover" alt="cover-image"><br>好叭.用了一段时间的VPS, 昨天想把一个文件改个名字, 手贱把mv写成了rm, 结果那个文件被删除了TvT. 这才算是意识到备份文件的重要性. 昨天用python写了一个备份的脚本, 大概长这样  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backup</span><span class="params">(dirs, backTo)</span>:</span></span><br><span class="line">	tar_today = backTo + time.strftime(<span class="string">'%Y%m%d'</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(tar_today):</span><br><span class="line">		os.mkdir(tar_today)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"Successfully create directory"</span>, tar_today</span><br><span class="line">	<span class="keyword">for</span> s <span class="keyword">in</span> dirs:</span><br><span class="line">		directory = tar_today + os.sep + s + <span class="string">'.tar.gz'</span></span><br><span class="line">		command = <span class="string">"tar -zcvf %s %s"</span> % (directory, <span class="string">'/home/'</span> + s)</span><br><span class="line">		<span class="keyword">if</span> os.system(command) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Successfully create backup for"</span>, s</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Backup Failed! For"</span>, s</span><br><span class="line">			</span><br><span class="line">source = [<span class="string">'zeroling'</span>] 	    <span class="comment">#balabala</span></span><br><span class="line">target_dir = <span class="string">'/backup/'</span></span><br><span class="line"></span><br><span class="line">backup(source, target_dir)</span><br></pre></td></tr></table></figure>
+<p>我的第一个python脚本好像命名有点乱啊0.0 不管了, 能用就好.<br>这样就能用crontab每晚半夜运行它来得到备份了</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">30 02 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>  /root/backup.py</span><br></pre></td></tr></table></figure>
+<p>然后我们需要安装一下dropbox, 官网<a href="https://www.dropbox.com/install" target="_blank" rel="external">https://www.dropbox.com/install</a>, 我们选择我们需要的linux32位命令行式安装(!注意, 以下操作我都用的root账户)</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~ &amp;&amp; wget -O - <span class="string">"https://www.dropbox.com/download?plat=lnx.x86"</span> <span class="string">| tar xzf -</span></span><br></pre></td></tr></table></figure>
+<p>接着，从新建的 .dropbox-dist 文件夹运行 Dropbox 守护程序。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="regexp">/.dropbox-dist/dropboxd</span></span><br></pre></td></tr></table></figure>
+<p>这个时候大概会出来一个提示, 大概意思是这台电脑还没有与dropbox账户连接, 我们用浏览器访问给出的那个网址按步骤连接即可, 注意这个时候不要按ctrl+c中止这个程序的运行, 等到出现<code>This computer is now linked to Dropbox.</code>字样的时候再按<code>Ctrl+C</code>中止这个程序.</p>
+<p>然后去官网下载一个python脚本, <a href="https://www.dropbox.com/download?dl=packages/dropbox.py" target="_blank" rel="external">https://www.dropbox.com/download?dl=packages/dropbox.py</a>放到自己的PATH里面, 例如我的是<code>/usr/local/bin</code> ,这里是为了方便直接执行. 记得给这个py赋予x(运行)权限</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">chmod</span> +<span class="tag">x</span> <span class="tag">dropbox</span><span class="class">.py</span></span><br></pre></td></tr></table></figure>
+<p>然后我们在自己的home目录也就是~下面创建一个Dropbox文件夹, 然后启动这个dropbox监听器</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> Dropbox</span><br><span class="line">dropbox.py <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+<p>接下来只要把东西往这里塞, dropbox就会自动的, 实时的把文件同步到网盘里面去.<br>我创建了一个软连接到/backup目录, 这样一旦备份完成, 也会自动同步备份到网盘里面.</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> ~<span class="regexp">/Dropbox/backup/</span></span><br></pre></td></tr></table></figure>
+<p>另外, 我们可以通过<code>dropbox.py status</code>命令来查看当前的同步情况, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Syncing (<span class="number">4</span> files remaining, <span class="number">18</span> mins left)</span><br><span class="line">Uploading <span class="number">4</span> files (<span class="number">181.4</span> KB/sec, <span class="number">18</span> mins left)</span><br></pre></td></tr></table></figure>
+<p>它会告诉你当前的dropbox运行情况. </p>
+<p>其他的高级功能可以参阅<code>dropbox.py help</code></p>
+<p>对了, 还遗忘了一点, 数据库的备份, 我的VPS上安装了mysql和mongod, 下回再说如何创建这两货的备份.  </p>
+<p><a href="https://db.tt/KZ5xUsKm" target="_blank" rel="external">需要注册Dropbox的同学点这里</a>, 这是一个我的邀请链接, 通过这个注册可以额外获得500M免费空间.  </p>
+<p>睡觉咯.晚安~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="ciksc9aib000ochojfkd4rlh0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器-备份-Dropbox/">
+- VPS
+- 服务器
+- 备份
+- Dropbox</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-backup-shell-for-mongodb-and-mysql" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" class="article-date">
+  <time datetime="2014-05-23T16:53:12.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/backup-shell-for-mongodb-and-mysql/">为Mongo和Mysql各写了一个备份的Shell</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/backup-database.jpg-cover" alt="cover-image"></p>
+<p>####查早读的同学越来越肆无忌惮了.<br>好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"> </span></span><br><span class="line"><span class="comment">#uncomment this for debug</span></span><br><span class="line"><span class="comment">#set -x</span></span><br><span class="line"> </span><br><span class="line">host=<span class="string">'localhost'</span></span><br><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line">pass=<span class="string">'PASSWORD'</span></span><br><span class="line">dbs=(<span class="string">'db_name_1'</span> <span class="string">'db_name_2'</span> <span class="string">'db_name_3'</span>)</span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +%Y%m%d`"</span></span><br><span class="line"> </span><br><span class="line">mkdir -p <span class="variable">$todaydir</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> db <span class="keyword">in</span> <span class="variable">$&#123;dbs[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    mysqldump --add-drop-database -u<span class="string">"<span class="variable">$user</span>"</span> -p<span class="string">"<span class="variable">$pass</span>"</span> -h<span class="string">"<span class="variable">$host</span>"</span> -B <span class="variable">$db</span> &gt; <span class="string">"<span class="variable">$todaydir</span>/<span class="variable">$db</span>.dump.sql"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#remove directories modified 15 days ago</span></span><br><span class="line">find <span class="string">"<span class="variable">$dir</span>"</span> -mindepth <span class="number">1</span> -maxdepth <span class="number">1</span> -type d -mtime +<span class="number">15</span> -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<p>再把这个sh放进crontab里面就搞定了  </p>
+<p>然后再根据这个YY出了mongodb的备份脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line"><span class="keyword">pass</span>=<span class="string">'PASSWORD'</span></span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"$dir/`date +%Y%m%d`/mongodb"</span></span><br><span class="line"></span><br><span class="line">mkdir -p $todaydir</span><br><span class="line">mongodump -<span class="string">u"$user"</span> -p<span class="string">"$pass"</span> -o<span class="string">"$todaydir"</span></span><br></pre></td></tr></table></figure>
+<p>对于没有启用auth的mongodb用户可以这样三句话搞定</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +<span class="variable">%Y</span><span class="variable">%m</span><span class="variable">%d</span>`/mongodb"</span></span><br><span class="line"><span class="keyword">mkdir</span> -p <span class="variable">$todaydir</span></span><br><span class="line">mongodump -o<span class="string">"<span class="variable">$todaydir</span>"</span></span><br></pre></td></tr></table></figure>
+<p>也放进crontab里面就搞定了.<br>dropboxd会把放在/root/Dropbox目录下面的文件夹自动上传到dropbox空间, 配置好dropbox的同学只要创建一个软链接就ok了.</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> <span class="regexp">/root/</span>Dropbox<span class="regexp">/backup/</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="ciksc9air000ychoj49w93h3h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-服务器-备份-脚本/">
+- VPS
+- 服务器
+- 备份
+- 脚本</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-let-apache2-to-create-files-using-different-owner" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" class="article-date">
+  <time datetime="2014-05-23T16:36:47.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/let-apache2-to-create-files-using-different-owner/">让Apache2使用不同的用户创建文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/server.png-cover" alt="cover-image"><br>在配置合租VPS的时候, 我们通常把每个用户的文件限制在<code>/home/$USERNAME/</code>目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的<code>file_put_contents</code>函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  </p>
+<p>大概是我语文表达不好.. 使用中文搜索引擎一直找不到答案, 在google搜索找到了一个提示: Apache的<code>MPM-ITK</code>模块.  </p>
+<p>由于我的Apache2是在Ubuntu环境下apt-get默认安装的, 在<code>/etc/apache2/mods-enabled/</code>目录下面看到的默认启用的是<code>mpm_prefork</code>模块. </p>
+<p>我们把 <code>mpm_prefork.conf</code>和 <code>mpm_prefork.load</code>的软链接删除, 对应换成<code>mpm_itk</code> </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2/mods-enabled/</span><br><span class="line">rm mpm_prefork<span class="class">.conf</span> mpm_prefork<span class="class">.load</span></span><br><span class="line">ln -s ../mods-available/mpm_itk<span class="class">.conf</span> mpm_itk<span class="class">.conf</span></span><br><span class="line">ln -s ../mods-available/mpm_prefork<span class="class">.load</span> mpm_prefork.load</span><br></pre></td></tr></table></figure>
+<p>然后我们需要修改一下每个用户的设置, 在<code>VirtualHost</code>标签闭合之前加上  </p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AssignUserId <span class="list">&#123;user&#125;</span> <span class="list">&#123;group&#125;</span></span><br></pre></td></tr></table></figure>
+<p>最后重启一下apache服务器就可以生效了</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">service</span> apache2 restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="ciksc9ah90004choj602ty91t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS-Apache-服务器/">
+- VPS
+- Apache
+- 服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-strange-code-by-underscore" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/23/strange-code-by-underscore/" class="article-date">
+  <time datetime="2014-05-23T14:16:25.000Z" itemprop="datePublished">2014-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/23/strange-code-by-underscore/">Underscore之奇葩写法.</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/underscore.png-cover" alt="cover-image"><br>最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">length</span> === +obj.<span class="property">length</span></span><br></pre></td></tr></table></figure>
+<p>看了半天愣是没懂…</p>
+<p>###0x00 分析.<br>结论先: 这条语句可以用来判断obj是数组还是对象.  </p>
+<p>别急啦~我先来抄一段underscore的each函数实现.</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> each = _.each = _.forEach = function(obj, <span class="keyword">iterator</span>, context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (obj == null) <span class="keyword">return</span> obj;</span><br><span class="line">  <span class="keyword">if</span> (nativeForEach &amp;&amp; obj.forEach === nativeForEach) &#123;   //这边判断原生forEach若存在则使用它</span><br><span class="line">    obj.forEach(<span class="keyword">iterator</span>, context);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.length === +obj.length) &#123;          //<span class="type">HERE</span>!我们关注一下这里</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[i], i, obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> keys = _.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[keys[i]], keys[i], obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我也是第一次看到这种写法, 甚至刚开始让我怀疑我的js语法学的是不是有问题了.</p>
+<p>我们先看两个地方: </p>
+<ol>
+<li><p>=== 全等符</p>
+</li>
+<li><p>+ 号</p>
+</li>
+</ol>
+<hr>
+<ol>
+<li><p>-&gt; 我们知道全等符是用来判断其左右两个变量在值与类型上是不是”完全相等的”. 出于性能以及各种奇葩的问题, 在捣鼓拉斯的js语言精粹里他就强烈推荐尽量使用===来代替==.</p>
+</li>
+<li><p>-&gt; 再来看看+号, 这个操作符能自动转换它右边的操作值为number类型. 不知道同学们在做js的数学运算的有没有碰到过这个数: NaN, 它的意思是Not A Number. 一般在对undefined进行数学操作的时候会返回NaN这个值, 比如 a = undefined + 1; //-&gt; a == NaN. 其实就是这个意思, 如果obj是array/ string/ function, 那么它就拥有length这个number类型的属性, 左边和右边是全等的. 如果obj是对象, 那么obj.length就是undefined, 那么+undefined就是NaN ,undefined === NaN自然就是false了.<br>(关于NaN, Js还有一个奇葩的遗留问题, NaN === NaN的结果是False, 这也是判断一个数是不是NaN的方法)</p>
+</li>
+</ol>
+<p>###0x01 为什么这样写<br>我们来实现一下好理解一些的版本:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof obj.<span class="property">length</span> === <span class="string">"number"</span> &amp;&amp; !isNaN(obj.<span class="property">length</span>)</span><br></pre></td></tr></table></figure></p>
+<p>其实用typeof来判断array和对象也是可行的, 我们用jsperf来测试一下这两个语句的性能;</p>
+<p>这里存在两种情况, 判断obj是Array或者obj是对象:</p>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是对象</a> : <a href="http://jsperf.com/typeof-or-plus" target="_blank" rel="external">http://jsperf.com/typeof-or-plus</a><br><img src="http://redrock.u.qiniudn.com/typeoffaster.png" alt="obj是对象"></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是Array</a> : <a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">http://jsperf.com/plus-or-typeof</a><br><img src="http://redrock.u.qiniudn.com/plusfaster.png" alt="obj是Array"></li>
+</ul>
+<p>我的测试环境是 Safari 7.0.2 @ OS X 10.9.2, Chrome @ OSX 也大同小异.</p>
+<p>OK, <em>结论</em>是在判断obj是对象的时候, 使用typeof性能占优势.  </p>
+<p>###0x03 结论<br>我们大概可以猜测到作者在写underscore的时候考虑到each方法大部分时候面对的是array, 所以选择了一种对array来说性能占优的方式.  </p>
+<hr>
+<p>参考:</p>
+<ul>
+<li><a href="http://www.css88.com/doc/underscore/" target="_blank" rel="external">underscore中文文档</a>  </li>
+<li><a href="http://www.css88.com/doc/underscore/docs/underscore.html" target="_blank" rel="external">underscore源码</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="ciksc9aj9001cchoj24hi1kux" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端-underscore-javascript/">
+- 前端
+- underscore
+- javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux-Mac/">
+- Linux
+- Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac-重邮/">
+- Mac
+- 重邮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX-AJAX/">
+- PJAX
+- AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-Apache-服务器/">
+- VPS
+- Apache
+- 服务器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器/">
+- VPS
+- 服务器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-PHP/">
+- VPS
+- 服务器
+- PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-备份-Dropbox/">
+- VPS
+- 服务器
+- 备份
+- Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS-服务器-备份-脚本/">
+- VPS
+- 服务器
+- 备份
+- 脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">
+- XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript-HTML5/">
+- javascript
+- HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js-chrome-googleapis/">
+- js
+- chrome
+- googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs-MD5-crypto/">
+- nodejs
+- MD5
+- crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-HTTP-URL/">
+- 前端
+- HTTP
+- URL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-underscore-javascript/">
+- 前端
+- underscore
+- javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端-服务器-HTTP/">
+- 前端
+- 服务器
+- HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假-总结/">
+- 寒假
+- 总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米-手机-改装-无线充电/">
+- 小米
+- 手机
+- 改装
+- 无线充电</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux-Mac/" style="font-size: 10px;">
+- Linux
+- Mac</a> <a href="/tags/Mac-重邮/" style="font-size: 10px;">
+- Mac
+- 重邮</a> <a href="/tags/PJAX-AJAX/" style="font-size: 10px;">
+- PJAX
+- AJAX</a> <a href="/tags/VPS-Apache-服务器/" style="font-size: 10px;">
+- VPS
+- Apache
+- 服务器</a> <a href="/tags/VPS-服务器/" style="font-size: 10px;">
+- VPS
+- 服务器</a> <a href="/tags/VPS-服务器-PHP/" style="font-size: 10px;">
+- VPS
+- 服务器
+- PHP</a> <a href="/tags/VPS-服务器-备份-Dropbox/" style="font-size: 10px;">
+- VPS
+- 服务器
+- 备份
+- Dropbox</a> <a href="/tags/VPS-服务器-备份-脚本/" style="font-size: 10px;">
+- VPS
+- 服务器
+- 备份
+- 脚本</a> <a href="/tags/XSS/" style="font-size: 10px;">
+- XSS</a> <a href="/tags/javascript-HTML5/" style="font-size: 10px;">
+- javascript
+- HTML5</a> <a href="/tags/js-chrome-googleapis/" style="font-size: 10px;">
+- js
+- chrome
+- googleapis</a> <a href="/tags/nodejs-MD5-crypto/" style="font-size: 10px;">
+- nodejs
+- MD5
+- crypto</a> <a href="/tags/前端-HTTP-URL/" style="font-size: 10px;">
+- 前端
+- HTTP
+- URL</a> <a href="/tags/前端-underscore-javascript/" style="font-size: 10px;">
+- 前端
+- underscore
+- javascript</a> <a href="/tags/前端-服务器-HTTP/" style="font-size: 10px;">
+- 前端
+- 服务器
+- HTTP</a> <a href="/tags/寒假-总结/" style="font-size: 10px;">
+- 寒假
+- 总结</a> <a href="/tags/小米-手机-改装-无线充电/" style="font-size: 10px;">
+- 小米
+- 手机
+- 改装
+- 无线充电</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/">使用C++模块为Nodejs添彩助力</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/">UBUNTU升级GCC到4.8</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Ling.<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
