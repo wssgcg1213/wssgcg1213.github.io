@@ -61,6 +61,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vps-simple-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/vps-simple-config/" class="article-date">
+  <time datetime="2014-05-24T04:12:19.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/vps-simple-config/">VPS的简单配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p> 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  </p>
+<p>不过这VPS的配置对新手来讲太痛苦了 </p>
+<p>###step1<br>装的是ubuntu server 12.04 32bit,然后ape-get各种runtime,花了有一个多小时  </p>
+<p>###step2<br>configure,nginx和apache2的设置花了一天的时候弄明白了,关键是在设置各个用户的访问权限<br>目前还在混乱中,nginx暂以root权限运行 apache2,php-fcgi以www-data权限运行<br>还是先理一下整体架构,nginx做前端,监听80端口,在<em>/etc/nginx/nginx.conf</em>中设置<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    user root</span><br><span class="line">    include <span class="regexp">/etc/nginx/sites-enabled/</span>*</span><br><span class="line">`<span class="javascript"></span>``<span class="javascript">   </span><br><span class="line"></span><br><span class="line">再在</span>`sites-enabled`<span class="javascript">目录下面给每个人写对应的配置文件,php的sock修改到</span>`/tmp/zeroadmin.sock`<span class="javascript">,对应端口反代监听写法:</span></span><br></pre></td></tr></table></figure></p>
+<p>   location ~{  proxy-pass 127.0.0.1:xxxx;  }<br>```  </p>
+<p>apache2在8000端口监听,配置文件在<code>/etc/apache2/httpd.conf</code> 和<code>/etc/apache2/sites-enabled/*</code><br>php5的<code>php.ini</code>文件在<code>/etc/php5/xxx</code>下面,这里好几个文件夹都包含php.ini,每次改配置都是几个全改好郁闷T.T  </p>
+<p>###Now<br>PHP能欢快的跑起来了,除了phpmyadmin的配置有点小问题<br>由于是合租VPS,所以每个人都分配了管理员权限,接下来要考虑怎样让每个人的操作尽量不影响其他人  </p>
+<blockquote>
+<p>TASKINFO: <a href="http://vps.zeroling.com/taskinfo.php" target="_blank" rel="external">http://vps.zeroling.com/taskinfo.php</a></p>
+</blockquote>
+<p>###todo<br> 把php-fcgi的解析权归还给apache(目前是nginx)….我好像说漏了什么<br> 配置好phpmyadmin,然后需要再搞一个主机管理程序  </p>
+<p> 暂时先这样把,明天开始把这个博客先写写完 拖了好久没动了已经 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="cikseejaf002aazojw72r881m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-crypto-mod-in-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/24/crypto-mod-in-nodejs/" class="article-date">
@@ -102,7 +152,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="ciksedv8w002i96ojf7fwu4cz" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="cikseejax002jazojyghaokr0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MD5/">MD5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crypto/">crypto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
@@ -150,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="ciksedv7l001p96oj8oj0vic1" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="cikseej9f001qazojulwbkv8p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -162,69 +212,9 @@
 
 
   
-    <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
-  <time datetime="2014-05-23T16:55:19.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/use-dropbox-to-backup-server/">利用Dropbox备份服务器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/Dropbox-clause.jpg-cover" alt="cover-image"><br>好叭.用了一段时间的VPS, 昨天想把一个文件改个名字, 手贱把mv写成了rm, 结果那个文件被删除了TvT. 这才算是意识到备份文件的重要性. 昨天用python写了一个备份的脚本, 大概长这样  </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backup</span><span class="params">(dirs, backTo)</span>:</span></span><br><span class="line">	tar_today = backTo + time.strftime(<span class="string">'%Y%m%d'</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(tar_today):</span><br><span class="line">		os.mkdir(tar_today)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"Successfully create directory"</span>, tar_today</span><br><span class="line">	<span class="keyword">for</span> s <span class="keyword">in</span> dirs:</span><br><span class="line">		directory = tar_today + os.sep + s + <span class="string">'.tar.gz'</span></span><br><span class="line">		command = <span class="string">"tar -zcvf %s %s"</span> % (directory, <span class="string">'/home/'</span> + s)</span><br><span class="line">		<span class="keyword">if</span> os.system(command) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Successfully create backup for"</span>, s</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Backup Failed! For"</span>, s</span><br><span class="line">			</span><br><span class="line">source = [<span class="string">'zeroling'</span>] 	    <span class="comment">#balabala</span></span><br><span class="line">target_dir = <span class="string">'/backup/'</span></span><br><span class="line"></span><br><span class="line">backup(source, target_dir)</span><br></pre></td></tr></table></figure>
-<p>我的第一个python脚本好像命名有点乱啊0.0 不管了, 能用就好.<br>这样就能用crontab每晚半夜运行它来得到备份了</p>
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">30 02 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>  /root/backup.py</span><br></pre></td></tr></table></figure>
-<p>然后我们需要安装一下dropbox, 官网<a href="https://www.dropbox.com/install" target="_blank" rel="external">https://www.dropbox.com/install</a>, 我们选择我们需要的linux32位命令行式安装(!注意, 以下操作我都用的root账户)</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~ &amp;&amp; wget -O - <span class="string">"https://www.dropbox.com/download?plat=lnx.x86"</span> <span class="string">| tar xzf -</span></span><br></pre></td></tr></table></figure>
-<p>接着，从新建的 .dropbox-dist 文件夹运行 Dropbox 守护程序。</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="regexp">/.dropbox-dist/dropboxd</span></span><br></pre></td></tr></table></figure>
-<p>这个时候大概会出来一个提示, 大概意思是这台电脑还没有与dropbox账户连接, 我们用浏览器访问给出的那个网址按步骤连接即可, 注意这个时候不要按ctrl+c中止这个程序的运行, 等到出现<code>This computer is now linked to Dropbox.</code>字样的时候再按<code>Ctrl+C</code>中止这个程序.</p>
-<p>然后去官网下载一个python脚本, <a href="https://www.dropbox.com/download?dl=packages/dropbox.py" target="_blank" rel="external">https://www.dropbox.com/download?dl=packages/dropbox.py</a>放到自己的PATH里面, 例如我的是<code>/usr/local/bin</code> ,这里是为了方便直接执行. 记得给这个py赋予x(运行)权限</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">chmod</span> +<span class="tag">x</span> <span class="tag">dropbox</span><span class="class">.py</span></span><br></pre></td></tr></table></figure>
-<p>然后我们在自己的home目录也就是~下面创建一个Dropbox文件夹, 然后启动这个dropbox监听器</p>
-<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> Dropbox</span><br><span class="line">dropbox.py <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
-<p>接下来只要把东西往这里塞, dropbox就会自动的, 实时的把文件同步到网盘里面去.<br>我创建了一个软连接到/backup目录, 这样一旦备份完成, 也会自动同步备份到网盘里面.</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> ~<span class="regexp">/Dropbox/backup/</span></span><br></pre></td></tr></table></figure>
-<p>另外, 我们可以通过<code>dropbox.py status</code>命令来查看当前的同步情况, </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Syncing (<span class="number">4</span> files remaining, <span class="number">18</span> mins left)</span><br><span class="line">Uploading <span class="number">4</span> files (<span class="number">181.4</span> KB/sec, <span class="number">18</span> mins left)</span><br></pre></td></tr></table></figure>
-<p>它会告诉你当前的dropbox运行情况. </p>
-<p>其他的高级功能可以参阅<code>dropbox.py help</code></p>
-<p>对了, 还遗忘了一点, 数据库的备份, 我的VPS上安装了mysql和mongod, 下回再说如何创建这两货的备份.  </p>
-<p><a href="https://db.tt/KZ5xUsKm" target="_blank" rel="external">需要注册Dropbox的同学点这里</a>, 这是一个我的邀请链接, 通过这个注册可以额外获得500M免费空间.  </p>
-<p>睡觉咯.晚安~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="ciksedv7b001d96ojmdaqiesg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -255,7 +245,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
     </div>
   </div>
 

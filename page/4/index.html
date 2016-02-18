@@ -61,6 +61,102 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-the-usage-of-pjax" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/06/01/the-usage-of-pjax/" class="article-date">
+  <time datetime="2014-06-01T13:12:53.000Z" itemprop="datePublished">2014-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/06/01/the-usage-of-pjax/">Ajax真的只能用来局部刷新吗?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://dn-redrock.qbox.me/pics/pjax-cover.png" alt="cover-image"><br>端午六一休息三天宅了一天, 独自去市中心里转了一天, 就剩下一天了[惊恐]. 压根就没有马上要考试了的感觉嘛! 文章也是好久没更新了, 浑浑噩噩过下去曾的好嘛&gt;.O. 好嘛, 那就来写点干货好了, 也是最近在搞Ghost, 把这个主题的逻辑 (原先是 jQ ) 用原生 js 重写了一遍 (还顺便搞了个小项目 <a href="https://github.com/wssgcg1213/ghostbot" target="_blank" rel="external">GhostBot</a> 来处理站内搜索), 总结总结研究出了些什么好了, 废话讲得多, 直接进正题吧. </p>
+<p>##PJAX<br>关于题目抛出的这个问题, 我既然都这么问了, 正常人都知道答案肯定是<code>不是</code>咯. 其实AJAX这个东西一直以来都是被当做只能处理小范围的, 异步的页面更新, 它的优点就在于可以实现页面的无刷新操作. 但是这也会造成一些问题, 比如对搜索引擎兼容性不好啦 (抓不到 ajax 载入的信息), 还有无法后退神马的! </p>
+<p>对于无法前进后退, 邪恶的 W3C 就在 HTML5 中搞了一个叫<code>history对象</code>的东西, 使用 history 对象的<code>pushState</code>方法给浏览器的浏览历史中塞入一个地址, 返回的时候再借助<code>popstate事件</code>来还原到原先的模样, 这样一来 AJAX 和 pushState 就开始名正言顺地搞基了! 于是我们就把这俩基友称为<code>PJAX</code>.</p>
+<p>##(正常情况下) 它是如何工作的<br>这个东西其实不是什么新生事物, 国内在 2012 年就已经对它有一些提及, 只是没有流行开而已, 经常上 GitHub 和 Youtube 的人不知道有没有发现这俩其实早就使用<code>PJAX</code>了. </p>
+<p>HTML5 新增的方法在这里: </p>
+<ul>
+<li>history.pushState(state, title [, url]) : 向历史记录(把它看做一个栈)的顶端加入一条记录, <code>state</code> 是一个指明状态的对象, 如 <code>{url: &#39;xxxxx&#39;, title: &#39;yyyyy&#39;, myInfo: &#39;zzzzz&#39;}</code>;  </li>
+<li>history.replaceState(state, title [, url]) : 跟上面差不多, 功能就是替换历史记录顶上的记录; </li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当页面准备改变时</span></span><br><span class="line"><span class="tag">window</span><span class="class">.history</span><span class="class">.pushState</span>(&#123;</span><br><span class="line">	<span class="attribute">title</span>: <span class="string">'Home Page'</span>,</span><br><span class="line">	<span class="attribute">url</span>: <span class="string">'http://balabala.com'</span></span><br><span class="line">&#125;, document.title, location.href);</span><br></pre></td></tr></table></figure>
+<p>响应前进后退的事件: </p>
+<ul>
+<li>window.onpopstate : 上面传递的state对象会成为event的子对象，这样就可以拿到存储的title和URL了. 这个事件在我所测试的 Chrome 36dev 和 Safari 7 中表现有差异, 具体在页面首次载入时, Chrome 不会触发这一事件而 Safari 会触发.</li>
+</ul>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">window.onpopstate = function (ev) &#123;</span><br><span class="line">	var <span class="keyword">state</span> = ev.<span class="keyword">state</span>;</span><br><span class="line">	if (<span class="keyword">state</span>) &#123;</span><br><span class="line">		//do ajax here;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>国内也早就有很多开源的 PJAX 插件, 基于 jQuery, qwrap, kissy 什么的, 但是貌似我没有找到原生的啊, 反正到最后还是自己写了个渣渣的. </p>
+<p>###前端处理<br>首选我们需要一个容器 (container) 来做页面中需要改变的部分. 然后将不需要改变的部分, 比如 footer, header 放在容器的外面.</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line"><span class="id">#container</span><span class="rules">&#123;<span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100%</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100%</span></span></span>;&#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"container"</span>&gt;</span></span><span class="expression">&#123;&#123;<span class="begin-block">#content</span>&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"footer"</span>&gt;</span></span><span class="expression">&#123;&#123;<span class="begin-block">#footer</span>&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>对于页面上所有的超链接 (a标签), 我们都需要采取 hijack(劫持) 的方式来处理点击事件.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'a'</span>);</span><br><span class="line"><span class="built_in">Array</span>.prototype.slice.call(a).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">_a</span>) </span>&#123;</span><br><span class="line">	_a.onclick = hijackLinks; <span class="comment">//hijackLinks为链接处理函数</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hijackLinks</span> (<span class="params">ev</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="comment">/* 外域链接 */</span>) <span class="keyword">return</span>;</span><br><span class="line">	ev.preventDefault();</span><br><span class="line">	<span class="comment">// 处理PJAX</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>差异于一般的 AJAX 返回 JSON, PJAX 的后端返回的一般是 HTML 片段. 前台再直接使用 innerHTML 来完成页面无刷. 对于同一个 URL, 如何告诉后端这是一个 PJAX 请求呢? So easy! 直接在 HTTP 请求头上带上标记就好了. 在前端 Ajax 中带上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>RequestHeader(‘PJAX’, ‘<span class="literal">true</span>’);</span><br></pre></td></tr></table></figure>
+<p>###后端处理<br>接上面的话, 直接在后台判断 HTTP 头就行了 (以 PHP 为例):</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="preprocessor">&lt;?php</span> </span><br><span class="line"><span class="keyword">if</span>(array_key_exists(<span class="string">'HTTP_X_PJAX'</span>, <span class="variable">$_SERVER</span>) &amp;&amp; <span class="variable">$_SERVER</span>[<span class="string">'HTTP_X_PJAX'</span>] === <span class="string">'true'</span>)&#123;</span><br><span class="line">	<span class="comment">//在这里输出你的 HTML 片段</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="comment">//正常输出</span></span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>##为什么要用它呢<br>简而言之, PJAX = AJAX + history.pushState. 这货不仅可以无刷新地改变页面内容, 还可以改变 URL 和浏览器历史记录, 使得前进后退的体验一体化.</p>
+<p>Wow, 不明觉厉的样子也.</p>
+<p>好吧, 那我们上个图来看看, 以 GitHub 为例.</p>
+<p>如下图, 我首先打开了一个 (我的0.0) GitHub 主页, 可以看到浏览器的历史记录是空的 (灰色);<br><img src="https://dn-redrock.qbox.me/pics/pjax-before.png" alt="pjax-before"></p>
+<p>然后我点击了 Contributions 按钮. 页面改变了, 但是<code>页面并没有刷新</code>, 看样子是 PJAX 基佬起作用了! 浏览器的历史记录里面出现了刚才访问的位置, 地址栏也变化了, 下面的调试窗口显示有三条 XHR (XMLHttpRequest) 请求成功.<br><img src="https://dn-redrock.qbox.me/pics/pjax-after.png" alt="pjax-after"></p>
+<p>还是不明白? 自己去 GitHub.com 看个究竟把!</p>
+<p>噢对了, 还没说为什么要用 PJAX 呢. </p>
+<ol>
+<li>无刷新, 速度快 (快就是王道)</li>
+<li>无刷新意味着可以在页面改变的时候施展各种绚丽的动画 (漂漂的, 暖暖的)</li>
+<li>对搜索引擎支持好, 有利于 SEO</li>
+<li>我™就是喜欢它怎么着, 打我呀</li>
+</ol>
+<p>顺便说说弊端.</p>
+<ol>
+<li>逻辑比较复杂. (跟正常方式不一样的都叫复杂)</li>
+<li>需要前后台配合. (这点后面再讲, 其实可以克服)</li>
+<li>跨域限制. (其实这是安全原则, 也可以不算弊端拉)</li>
+<li>兼容性什么就不提了, 不用优雅的 Chrome 的都别来我的 blog 就对了.</li>
+</ol>
+<p>##我的方案 (不正常情况)<br>本站就使用了全站内链的 PJAX 无刷, 并开启了 10 分钟的 localStorage, 以尽量减少 HTTP 请求. </p>
+<p>因为Ghost的主题只是提供了 hbs 模板文件和静态资源文件, 我并不能通过修改 Ghost 内核的方式来使得输出 HTML 片段. 所以只能通过解析 html 的方式来进行 (电脑牛逼, 不怕卡, 打我呀).</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ajax = <span class="keyword">new</span> Ajax(); <span class="comment">//我封装的一个Ajax类</span></span><br><span class="line">ajax.<span class="literal">get</span>(url, function (doc) &#123;</span><br><span class="line">	<span class="keyword">var</span> _html = <span class="built_in">document</span>.createElement(<span class="string">'html'</span>);</span><br><span class="line">	_html.innerHTML = doc;			<span class="comment">//不用append到文章中即可在内存中解析HTML</span></span><br><span class="line">	<span class="keyword">var</span> newContainer = _html.<span class="built_in">querySelector</span>(<span class="string">'#container'</span>);</span><br><span class="line">	<span class="built_in">document</span>.<span class="built_in">querySelector</span>(<span class="string">'#container'</span>).innerHTML = newContainer.innerHTML;</span><br><span class="line">	<span class="comment">//do others.</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样就减少了一个弊端, 就是可以不修改后台直接在前台做好所有的工作. </p>
+<p>##兼容性</p>
+<p>直接看图吧</p>
+<p><img src="https://dn-redrock.qbox.me/pics/pjax-jrx.png" alt="兼容性"></p>
+<ul>
+<li>IE10+</li>
+<li>Chrome 5+</li>
+<li>Safari 5+</li>
+<li>Opera 11.5+</li>
+<li>Firefox 4+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/06/01/the-usage-of-pjax/" data-id="cikseejb8002razoj9tmruizd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AJAX/">AJAX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PJAX/">PJAX</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-the-protocol-relative-url" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/26/the-protocol-relative-url/" class="article-date">
@@ -109,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/26/the-protocol-relative-url/" data-id="ciksedv6x000z96ojfj98armh" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/26/the-protocol-relative-url/" data-id="cikseej8q0010azojca4q1aj4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/URL/">URL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -163,7 +259,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" data-id="ciksedv60000d96ojpadi533c" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/25/solve-the-problem-that-parallels-cannot-run-ubuntu1404/" data-id="cikseej7x000dazoj3dfxiyt2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
@@ -175,79 +271,9 @@
 
 
   
-    <article id="post-how-a-webpage-be-displayed-2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/how-a-webpage-be-displayed-2/" class="article-date">
-  <time datetime="2014-05-24T04:38:56.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/how-a-webpage-be-displayed-2/">一个网页被显示的前生今世(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt="cover-image"></p>
-<h2 id="Go-to-一个网页被显示的前生今世-一"><a href="#Go-to-一个网页被显示的前生今世-一" class="headerlink" title="###Go to 一个网页被显示的前生今世(一)"></a>###Go to <a href="/how-a-webpage-be-displayed-1">一个网页被显示的前生今世(一)</a></h2><p>接上文  </p>
-<p>##服务器处理请求</p>
-<p>####前台处理<br>当一个请求发送至服务器的时候, 应该由一个前台程序来接收这个请求并选择直接响应静态资源(静态站)还是交给后台程序进一步处理(动态网站). 这里常用的软件有Apache(阿帕奇)/Nginx, 对于大并发的应用, nginx有天然的优势.   </p>
-<p>我们来举个栗子, Apache2的默认并发连接数是200, 而nginx是直接开到65535(linux文件系统的极限). 虽然在安全性上面阿帕奇优势明显, 不过业内各种大牛(taobao/tencent)基本上都是采用直接改造nginx来满足高并发需求的.  </p>
-<p>####后台处理<br>动态网站的后台程序通常能够接受刚才发送的header信息, 并对数据库(通常是SQL当然还有NoSQL)进行读取啦, 添加修改删除等等操作, 并返回适当的响应. </p>
-<p>##响应<br>OK, 那么我们的服务器顺利响应了正确的信息, 高兴地发出了一个HTTP/200的信号说明 Anything goes well. </p>
-<p><img src="http://redrock.u.qiniudn.com/QQ20140305-3.png" alt=""></p>
-<p>报头中的<code>Content-Type</code>说明了返回的MIME类型, 这里是一个html文档, 这使得浏览器清楚将该响应内容以HTML的方式进行解析.Expires头表示存在时间，它允许浏览器在这个时间之前不去检查（发请求）而是放心地读取缓存, 正确的使用Expires这可以使得服务器的鸭梨大大减轻.还有一些头的信息没有列出, 大家可以参阅<i>高性能网站建设指南(O’REILLY)</i>.  </p>
-<p>##浏览器解析HTML<br>好吧, 绕了一圈又说回浏览器了. 做前端的同学都懂的, 浏览器兼容性可以说是最头疼的东西. </p>
-<p>####HTML逐步呈现<br>我们知道, 在IE中, MS提供了一个进度指示器来让用户知道我们的网页正在被打开. 这里的进度指示器有一个优势就是: 它让用户知道系统没有崩溃, 而是正在努力为他或她解决问题.它不仅指出了还需要等多久, 还给用户一些可以看的图形化的东西, 以使得等待不那么枯燥无味. 而通常情况下, 在这个指示器没有跑完的时候, 大部分网页就已经显示了. 所以, 我们说其实浏览器是逐步加载网页的.   </p>
-<p>当然也有特例, 我们称之为白屏, 将样式表(CSS)放在页面底部将会阻塞内容逐步呈现, 虽然实际加载页面的时间没有增加, 但是让<code>用户感觉缓慢</code>的页面通常会招致反感, 用户经常会不知道发生了什么而离开! </p>
-<p>所以无论如何前端开发者都应该遵循的一个原则就是: </p>
-<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用<span class="variable">LINK</span>标签将样式表放在<span class="variable">HTML</span>的<span class="function_or_atom">head</span>标签中<span class="exclamation_mark">!</span></span><br></pre></td></tr></table></figure>
-<p>####其它对象<br>在浏览器显示HTML时，它会注意到需要获取其他地址内容的标签(img, css, js, 甚至flash控件, etc)。这时，浏览器会额外的发送获取请求来重新获得这些文件。而这些地址都要经历一个和HTML读取类似的过程。所以浏览器会在DNS中查找这些域名，发送请求，重定向等等…</p>
-<p>####JavaScript<br>虽然我们的浏览器脚本不止Js一种, 但是它已经成为了各种浏览器的事实标准, 下文就用”js”来代替”浏览器脚本”这一表述. </p>
-<p>在浏览器解析HTML的时候, 经常会碰到一个script标签, 这个时候浏览器通常会被阻塞来运行js代码, 因为js代码中有可能带有对DOM的一些操作, 如果js代码的运行跟html的解析同时进行, 会导致各种错误, 所以不管是什么js代码, 这个过程是阻塞式的.  </p>
-<p>我经常看到一些刚学js的同学在头部的代码中这样写道: </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// code here</span></span><br></pre></td></tr></table></figure>
-<p>然后跑过来问为什么代码没反应.  DOM压根就没有加载完整!  </p>
-<p>随后这样写道: </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">"ele"</span>);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="comment">// code here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们创造js code的目的通常是执行客户端代码, 也就是说多是与用户的交互. 既然这样, 那为何不把js放在最后加载呢? </p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最佳情况: 将js代码放在文档的底部(<span class="keyword">body</span>标签闭合之前)</span><br></pre></td></tr></table></figure>
-<p>当然还有一种更好的方式, async, 我们在下面讲.</p>
-<p>##ASYNC Request(异步请求)<br>好了, 网页加载完成了, 是不是这个时候网页就”死了”呢? 答案是 NO!绝不!  </p>
-<p>前端的同学都听说过一个名词 AJAX. OK, 引用一句话, <i>在Web 2.0伟大精神的指引下，页面显示完成后客户端仍与服务器端保持着联系</i>.   </p>
-<p>继续举栗子, 当你在百度的搜索框中输入一个关键词的时候, 是不是会跳出一个实时变化的候选热门词表, 这些内容当然是从百度的服务器中实时获取的! </p>
-<p>我们可以简单的使用Chrome开发者工具的Network窗口来监视这些ajax请求, 如果在windows下还可以用fiddler这个工具(以前Ricter逗比介绍用的).  </p>
-<p>当然, 如果我们用异步模式来加载一些并不是立刻被需要的又很臃肿的js脚本, 整个世界将会变得很nice.  </p>
-<p>还有一点就是轮询, 它的工作方式注定了它的效率不会很高, 长连接好像是一个折衷的方法, 当被轮询时服务器没有新消息它就不理会客户端, 反之在没有超时的情况下, 新消息就会做为响应返回给客户端, 这很适合网络聊天室之类的应用, 虽然大家都用QQ了谁还会用网络聊天室呢, 也许网页游戏喜欢用这个。 </p>
-<p>最近研究Nodejs的时候发现了另外一种实时性很好的技术, websocket, 它的标准更迭貌似很快, 我用了一个叫做socket.io的库来实现它发现很好用, 不知道有没有懂的大牛来讲解一下ws的实现&gt;.o </p>
-<p>##Summury<br>本文从前端的角度简单的讲了讲自己对网络应用的模式理解, 不过我也算是个初学者, 这里难免有出错的地方欢迎客官指正哈. 也希望对那些不甚明白的同学有所帮助.</p>
-<p>EOF.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-2/" data-id="ciksedv83002196oj2in5v5n2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -278,7 +304,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
     </div>
   </div>
 

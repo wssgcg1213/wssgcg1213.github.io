@@ -61,6 +61,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
+  <time datetime="2014-05-23T16:55:19.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/use-dropbox-to-backup-server/">利用Dropbox备份服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/Dropbox-clause.jpg-cover" alt="cover-image"><br>好叭.用了一段时间的VPS, 昨天想把一个文件改个名字, 手贱把mv写成了rm, 结果那个文件被删除了TvT. 这才算是意识到备份文件的重要性. 昨天用python写了一个备份的脚本, 大概长这样  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backup</span><span class="params">(dirs, backTo)</span>:</span></span><br><span class="line">	tar_today = backTo + time.strftime(<span class="string">'%Y%m%d'</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(tar_today):</span><br><span class="line">		os.mkdir(tar_today)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"Successfully create directory"</span>, tar_today</span><br><span class="line">	<span class="keyword">for</span> s <span class="keyword">in</span> dirs:</span><br><span class="line">		directory = tar_today + os.sep + s + <span class="string">'.tar.gz'</span></span><br><span class="line">		command = <span class="string">"tar -zcvf %s %s"</span> % (directory, <span class="string">'/home/'</span> + s)</span><br><span class="line">		<span class="keyword">if</span> os.system(command) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Successfully create backup for"</span>, s</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Backup Failed! For"</span>, s</span><br><span class="line">			</span><br><span class="line">source = [<span class="string">'zeroling'</span>] 	    <span class="comment">#balabala</span></span><br><span class="line">target_dir = <span class="string">'/backup/'</span></span><br><span class="line"></span><br><span class="line">backup(source, target_dir)</span><br></pre></td></tr></table></figure>
+<p>我的第一个python脚本好像命名有点乱啊0.0 不管了, 能用就好.<br>这样就能用crontab每晚半夜运行它来得到备份了</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">30 02 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>  /root/backup.py</span><br></pre></td></tr></table></figure>
+<p>然后我们需要安装一下dropbox, 官网<a href="https://www.dropbox.com/install" target="_blank" rel="external">https://www.dropbox.com/install</a>, 我们选择我们需要的linux32位命令行式安装(!注意, 以下操作我都用的root账户)</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~ &amp;&amp; wget -O - <span class="string">"https://www.dropbox.com/download?plat=lnx.x86"</span> <span class="string">| tar xzf -</span></span><br></pre></td></tr></table></figure>
+<p>接着，从新建的 .dropbox-dist 文件夹运行 Dropbox 守护程序。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="regexp">/.dropbox-dist/dropboxd</span></span><br></pre></td></tr></table></figure>
+<p>这个时候大概会出来一个提示, 大概意思是这台电脑还没有与dropbox账户连接, 我们用浏览器访问给出的那个网址按步骤连接即可, 注意这个时候不要按ctrl+c中止这个程序的运行, 等到出现<code>This computer is now linked to Dropbox.</code>字样的时候再按<code>Ctrl+C</code>中止这个程序.</p>
+<p>然后去官网下载一个python脚本, <a href="https://www.dropbox.com/download?dl=packages/dropbox.py" target="_blank" rel="external">https://www.dropbox.com/download?dl=packages/dropbox.py</a>放到自己的PATH里面, 例如我的是<code>/usr/local/bin</code> ,这里是为了方便直接执行. 记得给这个py赋予x(运行)权限</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">chmod</span> +<span class="tag">x</span> <span class="tag">dropbox</span><span class="class">.py</span></span><br></pre></td></tr></table></figure>
+<p>然后我们在自己的home目录也就是~下面创建一个Dropbox文件夹, 然后启动这个dropbox监听器</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> Dropbox</span><br><span class="line">dropbox.py <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+<p>接下来只要把东西往这里塞, dropbox就会自动的, 实时的把文件同步到网盘里面去.<br>我创建了一个软连接到/backup目录, 这样一旦备份完成, 也会自动同步备份到网盘里面.</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> ~<span class="regexp">/Dropbox/backup/</span></span><br></pre></td></tr></table></figure>
+<p>另外, 我们可以通过<code>dropbox.py status</code>命令来查看当前的同步情况, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Syncing (<span class="number">4</span> files remaining, <span class="number">18</span> mins left)</span><br><span class="line">Uploading <span class="number">4</span> files (<span class="number">181.4</span> KB/sec, <span class="number">18</span> mins left)</span><br></pre></td></tr></table></figure>
+<p>它会告诉你当前的dropbox运行情况. </p>
+<p>其他的高级功能可以参阅<code>dropbox.py help</code></p>
+<p>对了, 还遗忘了一点, 数据库的备份, 我的VPS上安装了mysql和mongod, 下回再说如何创建这两货的备份.  </p>
+<p><a href="https://db.tt/KZ5xUsKm" target="_blank" rel="external">需要注册Dropbox的同学点这里</a>, 这是一个我的邀请链接, 通过这个注册可以额外获得500M免费空间.  </p>
+<p>睡觉咯.晚安~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="cikseej96001eazojo64u4ank" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-backup-shell-for-mongodb-and-mysql" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" class="article-date">
@@ -97,7 +157,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="ciksedv7u001v96ojda39am13" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="cikseej9t001wazojq8dzasa5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
@@ -143,7 +203,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="ciksedv5t000696ojsbyusn62" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="cikseej7o0006azojid6aa7kr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -155,87 +215,9 @@
 
 
   
-    <article id="post-strange-code-by-underscore" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/23/strange-code-by-underscore/" class="article-date">
-  <time datetime="2014-05-23T14:16:25.000Z" itemprop="datePublished">2014-05-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/23/strange-code-by-underscore/">Underscore之奇葩写法.</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/underscore.png-cover" alt="cover-image"><br>最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">length</span> === +obj.<span class="property">length</span></span><br></pre></td></tr></table></figure>
-<p>看了半天愣是没懂…</p>
-<p>###0x00 分析.<br>结论先: 这条语句可以用来判断obj是数组还是对象.  </p>
-<p>别急啦~我先来抄一段underscore的each函数实现.</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> each = _.each = _.forEach = function(obj, <span class="keyword">iterator</span>, context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (obj == null) <span class="keyword">return</span> obj;</span><br><span class="line">  <span class="keyword">if</span> (nativeForEach &amp;&amp; obj.forEach === nativeForEach) &#123;   //这边判断原生forEach若存在则使用它</span><br><span class="line">    obj.forEach(<span class="keyword">iterator</span>, context);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.length === +obj.length) &#123;          //<span class="type">HERE</span>!我们关注一下这里</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[i], i, obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> keys = _.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[keys[i]], keys[i], obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我也是第一次看到这种写法, 甚至刚开始让我怀疑我的js语法学的是不是有问题了.</p>
-<p>我们先看两个地方: </p>
-<ol>
-<li><p>=== 全等符</p>
-</li>
-<li><p>+ 号</p>
-</li>
-</ol>
-<hr>
-<ol>
-<li><p>-&gt; 我们知道全等符是用来判断其左右两个变量在值与类型上是不是”完全相等的”. 出于性能以及各种奇葩的问题, 在捣鼓拉斯的js语言精粹里他就强烈推荐尽量使用===来代替==.</p>
-</li>
-<li><p>-&gt; 再来看看+号, 这个操作符能自动转换它右边的操作值为number类型. 不知道同学们在做js的数学运算的有没有碰到过这个数: NaN, 它的意思是Not A Number. 一般在对undefined进行数学操作的时候会返回NaN这个值, 比如 a = undefined + 1; //-&gt; a == NaN. 其实就是这个意思, 如果obj是array/ string/ function, 那么它就拥有length这个number类型的属性, 左边和右边是全等的. 如果obj是对象, 那么obj.length就是undefined, 那么+undefined就是NaN ,undefined === NaN自然就是false了.<br>(关于NaN, Js还有一个奇葩的遗留问题, NaN === NaN的结果是False, 这也是判断一个数是不是NaN的方法)</p>
-</li>
-</ol>
-<p>###0x01 为什么这样写<br>我们来实现一下好理解一些的版本:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof obj.<span class="property">length</span> === <span class="string">"number"</span> &amp;&amp; !isNaN(obj.<span class="property">length</span>)</span><br></pre></td></tr></table></figure></p>
-<p>其实用typeof来判断array和对象也是可行的, 我们用jsperf来测试一下这两个语句的性能;</p>
-<p>这里存在两种情况, 判断obj是Array或者obj是对象:</p>
-<ul>
-<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是对象</a> : <a href="http://jsperf.com/typeof-or-plus" target="_blank" rel="external">http://jsperf.com/typeof-or-plus</a><br><img src="http://redrock.u.qiniudn.com/typeoffaster.png" alt="obj是对象"></li>
-</ul>
-<hr>
-<ul>
-<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是Array</a> : <a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">http://jsperf.com/plus-or-typeof</a><br><img src="http://redrock.u.qiniudn.com/plusfaster.png" alt="obj是Array"></li>
-</ul>
-<p>我的测试环境是 Safari 7.0.2 @ OS X 10.9.2, Chrome @ OSX 也大同小异.</p>
-<p>OK, <em>结论</em>是在判断obj是对象的时候, 使用typeof性能占优势.  </p>
-<p>###0x03 结论<br>我们大概可以猜测到作者在写underscore的时候考虑到each方法大部分时候面对的是array, 所以选择了一种对array来说性能占优的方式.  </p>
-<hr>
-<p>参考:</p>
-<ul>
-<li><a href="http://www.css88.com/doc/underscore/" target="_blank" rel="external">underscore中文文档</a>  </li>
-<li><a href="http://www.css88.com/doc/underscore/docs/underscore.html" target="_blank" rel="external">underscore源码</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="ciksedv8q002c96ojjv9ts5u2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/underscore/">underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -266,7 +248,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
     </div>
   </div>
 
