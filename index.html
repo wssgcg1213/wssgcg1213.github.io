@@ -92,10 +92,10 @@
 <p>generate and 发布:</p>
 <figure class="highlight"><figcaption><span>g && hexo deploy```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#35775;&#38382;[http://wssgcg1213.github.io](http://wssgcg1213.github.io)&#10;&#10;### &#36801;&#31227;ghost&#10;&#10;&#35775;&#38382;ghost&#21518;&#21488;&#37324;&#30340;lab: export.&#10;&#10;&#24471;&#21040;&#19968;&#20010;json&#25991;&#20214;&#10;&#10;&#23433;&#35013;&#10;&#10;```npm i hexo-migrator-ghost --save</span><br></pre></td></tr></table></figure>
 <p>导入</p>
-<p>导入之前需要修改<code>./scaffolds/post.md</code>的模板内容为</p>
+<p>导入之前需要修改 ./scaffolds/post.md 的模板内容为</p>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">title:</span> <span class="expansion">&#123;&#123; title &#125;&#125;</span></span><br><span class="line"><span class="symbol">date:</span> <span class="expansion">&#123;&#123; date &#125;&#125;</span></span><br><span class="line"><span class="symbol">tags:</span> <span class="expansion">&#123;&#123; tags &#125;&#125;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 <p>否则会报错</p>
-<figure class="highlight"><figcaption><span>migrate ghost source.json```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;```hexo clean &#38;&#38; hexo g &#38;&#38; hexo deploy</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo migrate ghost source<span class="class">.json</span></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
 <h3 id="绑定域名-https"><a href="#绑定域名-https" class="headerlink" title="绑定域名+https"></a>绑定域名+https</h3><p>github.io可以绑定cname记录, 但是这样无法使用https, 于是选择使用自己的VPS进行反代.</p>
 <p>nginx配置如下, 反代</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">server</span> &#123;</span><br><span class="line">  <span class="title">listen</span> <span class="number">443</span> ssl;</span><br><span class="line">  <span class="title">server_name</span> blog.zeroling.com;</span><br><span class="line"></span><br><span class="line">  <span class="title">ssl</span> <span class="built_in">on</span>;</span><br><span class="line">  <span class="title">ssl_certificate</span> ssl/all.zeroling.com.crt;</span><br><span class="line">  <span class="title">ssl_certificate_key</span> ssl/all.zeroling.com.key;</span><br><span class="line">  <span class="title">ssl_session_timeout</span> <span class="number">5m</span>;</span><br><span class="line">  <span class="title">ssl_protocols</span> TLSv1 TLSv1.<span class="number">1</span> TLSv1.<span class="number">2</span>;</span><br><span class="line">  <span class="title">ssl_ciphers</span> CHACHA20:GCM:ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!DH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS;</span><br><span class="line">  <span class="title">ssl_prefer_server_ciphers</span> <span class="built_in">on</span>;</span><br><span class="line">  <span class="title">location</span> <span class="regexp">~ </span>&#123;</span><br><span class="line">       <span class="title">proxy_pass</span> <span class="url">http://wssgcg1213.github.io</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -107,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2016/02/18/备份迁移ghost博客到hexo/" data-id="cikseej8m000xazojbljptnsb" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2016/02/18/备份迁移ghost博客到hexo/" data-id="cikseord7000xoioj19aw75rx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -164,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2015/12/28/2015nian-de-nian-zhong-zong-jie/" data-id="cikseejbb002wazojlfzhxh7v" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2015/12/28/2015nian-de-nian-zhong-zong-jie/" data-id="cikseorgo002woiojz8k1bg3j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/" data-id="cikseej9o001vazojnjzshvik" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/" data-id="cikseorea001voioj3lfmrcno" class="article-share-link">Share</a>
       
       
     </footer>
@@ -328,7 +328,7 @@
 </nav>
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
 
 
   <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
