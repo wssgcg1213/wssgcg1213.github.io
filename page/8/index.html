@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zero&#39;s Corner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="an hexo blog in github.io">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zero's Corner">
+<meta property="og:url" content="https://blog.zeroling.com/page/8/index.html">
+<meta property="og:site_name" content="Zero's Corner">
+<meta property="og:description" content="an hexo blog in github.io">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zero's Corner">
+<meta name="twitter:description" content="an hexo blog in github.io">
+  
+    <link rel="alternative" href="/atom.xml" title="Zero&#39;s Corner" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Zero&#39;s Corner</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.zeroling.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-let-apache2-to-create-files-using-different-owner" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/24/let-apache2-to-create-files-using-different-owner/" class="article-date">
+  <time datetime="2014-05-23T16:36:47.000Z" itemprop="datePublished">2014-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/24/let-apache2-to-create-files-using-different-owner/">让Apache2使用不同的用户创建文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/server.png-cover" alt="cover-image"><br>在配置合租VPS的时候, 我们通常把每个用户的文件限制在<code>/home/$USERNAME/</code>目录下面, 这个目录下面的文件都拥有各自的用户和组, 如果这个时候我们的Apache2使用www-data用户来运行, 那么对于类似php的<code>file_put_contents</code>函数创建的文件, 它们的属主是www-data, 这样一来使用ftp来管理的时候是无法操作的.  </p>
+<p>大概是我语文表达不好.. 使用中文搜索引擎一直找不到答案, 在google搜索找到了一个提示: Apache的<code>MPM-ITK</code>模块.  </p>
+<p>由于我的Apache2是在Ubuntu环境下apt-get默认安装的, 在<code>/etc/apache2/mods-enabled/</code>目录下面看到的默认启用的是<code>mpm_prefork</code>模块. </p>
+<p>我们把 <code>mpm_prefork.conf</code>和 <code>mpm_prefork.load</code>的软链接删除, 对应换成<code>mpm_itk</code> </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2/mods-enabled/</span><br><span class="line">rm mpm_prefork<span class="class">.conf</span> mpm_prefork<span class="class">.load</span></span><br><span class="line">ln -s ../mods-available/mpm_itk<span class="class">.conf</span> mpm_itk<span class="class">.conf</span></span><br><span class="line">ln -s ../mods-available/mpm_prefork<span class="class">.load</span> mpm_prefork.load</span><br></pre></td></tr></table></figure>
+<p>然后我们需要修改一下每个用户的设置, 在<code>VirtualHost</code>标签闭合之前加上  </p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AssignUserId <span class="list">&#123;user&#125;</span> <span class="list">&#123;group&#125;</span></span><br></pre></td></tr></table></figure>
+<p>最后重启一下apache服务器就可以生效了</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">service</span> apache2 restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="ciksdhskc0006ahojz1zhkrcv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-strange-code-by-underscore" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/23/strange-code-by-underscore/" class="article-date">
+  <time datetime="2014-05-23T14:16:25.000Z" itemprop="datePublished">2014-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/23/strange-code-by-underscore/">Underscore之奇葩写法.</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://redrock.u.qiniudn.com/pics/underscore.png-cover" alt="cover-image"><br>最近看一下underscore, 顺便也看了下源码, 不过第一个函数就碰到了奇葩:</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">length</span> === +obj.<span class="property">length</span></span><br></pre></td></tr></table></figure>
+<p>看了半天愣是没懂…</p>
+<p>###0x00 分析.<br>结论先: 这条语句可以用来判断obj是数组还是对象.  </p>
+<p>别急啦~我先来抄一段underscore的each函数实现.</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> each = _.each = _.forEach = function(obj, <span class="keyword">iterator</span>, context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (obj == null) <span class="keyword">return</span> obj;</span><br><span class="line">  <span class="keyword">if</span> (nativeForEach &amp;&amp; obj.forEach === nativeForEach) &#123;   //这边判断原生forEach若存在则使用它</span><br><span class="line">    obj.forEach(<span class="keyword">iterator</span>, context);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.length === +obj.length) &#123;          //<span class="type">HERE</span>!我们关注一下这里</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = obj.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[i], i, obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> keys = _.keys(obj);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, length = keys.length; i &lt; length; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">iterator</span>.call(context, obj[keys[i]], keys[i], obj) === breaker) <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我也是第一次看到这种写法, 甚至刚开始让我怀疑我的js语法学的是不是有问题了.</p>
+<p>我们先看两个地方: </p>
+<ol>
+<li><p>=== 全等符</p>
+</li>
+<li><p>+ 号</p>
+</li>
+</ol>
+<hr>
+<ol>
+<li><p>-&gt; 我们知道全等符是用来判断其左右两个变量在值与类型上是不是”完全相等的”. 出于性能以及各种奇葩的问题, 在捣鼓拉斯的js语言精粹里他就强烈推荐尽量使用===来代替==.</p>
+</li>
+<li><p>-&gt; 再来看看+号, 这个操作符能自动转换它右边的操作值为number类型. 不知道同学们在做js的数学运算的有没有碰到过这个数: NaN, 它的意思是Not A Number. 一般在对undefined进行数学操作的时候会返回NaN这个值, 比如 a = undefined + 1; //-&gt; a == NaN. 其实就是这个意思, 如果obj是array/ string/ function, 那么它就拥有length这个number类型的属性, 左边和右边是全等的. 如果obj是对象, 那么obj.length就是undefined, 那么+undefined就是NaN ,undefined === NaN自然就是false了.<br>(关于NaN, Js还有一个奇葩的遗留问题, NaN === NaN的结果是False, 这也是判断一个数是不是NaN的方法)</p>
+</li>
+</ol>
+<p>###0x01 为什么这样写<br>我们来实现一下好理解一些的版本:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof obj.<span class="property">length</span> === <span class="string">"number"</span> &amp;&amp; !isNaN(obj.<span class="property">length</span>)</span><br></pre></td></tr></table></figure></p>
+<p>其实用typeof来判断array和对象也是可行的, 我们用jsperf来测试一下这两个语句的性能;</p>
+<p>这里存在两种情况, 判断obj是Array或者obj是对象:</p>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是对象</a> : <a href="http://jsperf.com/typeof-or-plus" target="_blank" rel="external">http://jsperf.com/typeof-or-plus</a><br><img src="http://redrock.u.qiniudn.com/typeoffaster.png" alt="obj是对象"></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">obj是Array</a> : <a href="http://jsperf.com/plus-or-typeof" target="_blank" rel="external">http://jsperf.com/plus-or-typeof</a><br><img src="http://redrock.u.qiniudn.com/plusfaster.png" alt="obj是Array"></li>
+</ul>
+<p>我的测试环境是 Safari 7.0.2 @ OS X 10.9.2, Chrome @ OSX 也大同小异.</p>
+<p>OK, <em>结论</em>是在判断obj是对象的时候, 使用typeof性能占优势.  </p>
+<p>###0x03 结论<br>我们大概可以猜测到作者在写underscore的时候考虑到each方法大部分时候面对的是array, 所以选择了一种对array来说性能占优的方式.  </p>
+<hr>
+<p>参考:</p>
+<ul>
+<li><a href="http://www.css88.com/doc/underscore/" target="_blank" rel="external">underscore中文文档</a>  </li>
+<li><a href="http://www.css88.com/doc/underscore/docs/underscore.html" target="_blank" rel="external">underscore源码</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="ciksdhsno0027ahojo7j3t4kb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/underscore/">underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/02/18/备份迁移ghost博客到hexo/">备份迁移ghost博客到hexo</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/07/shi-yong-cmo-kuai-wei-nodejstian-cai-zhu-li/">使用C++模块为Nodejs添彩助力</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/">UBUNTU升级GCC到4.8</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/10/alimian-jing/">Ali面经</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Ling.<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

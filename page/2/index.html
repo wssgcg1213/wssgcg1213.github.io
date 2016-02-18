@@ -61,10 +61,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-how-a-webpage-be-displayed-1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-ubuntusheng-ji-gccdao-4-8" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/24/how-a-webpage-be-displayed-1/" class="article-date">
-  <time datetime="2014-05-24T04:31:10.000Z" itemprop="datePublished">2014-05-24</time>
+    <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/" class="article-date">
+  <time datetime="2015-12-03T06:10:16.000Z" itemprop="datePublished">2015-12-03</time>
 </a>
     
   </div>
@@ -75,7 +75,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/how-a-webpage-be-displayed-1/">一个网页被显示的前生今世(一)</a>
+      <a class="article-title" href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/">UBUNTU升级GCC到4.8</a>
     </h1>
   
 
@@ -83,531 +83,196 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="http://redrock.u.qiniudn.com/QQ20140305-1.png" alt="cover-image"></p>
-<p>作为一个前端开发人员, 首先对于浏览器, 以及各种WEB服务的工作机理要有一个清楚的认识. 从你在地址栏输入网址的那一刻起到网页显示在你的显示器上, 这期中到底发生了什么, 本文将浅显地讨论这方面的机理.</p>
-<p>##先来讲点题外话.URI(URL)</p>
-<p>####什么是URI<br>就中文翻译<em>通用资源标识符(URI)</em>来讲, 或者我更喜欢叫它<em>统一资源定位器(URL)</em>, 似乎很难把它与网址挂上钩. 实际上, 网址就是一种基本的URL. 不知道有多少人思考过, 我们经常输入的网址格式一般都是www.xxxx.com, 或者再加上协议名 http https 端口以及路径什么的 或者再加上账号密码！如下图：<br><img src="http://wydrops-wordpress.stor.sinaapp.com/uploads/2013/11/a.png" alt="URL"></p>
-<blockquote>
-<p>第一部分：协议名(以单个冒号结束)<br>第二部分：用户信息 也就是账号密码！(登陆ftp时常用)<br>第三部分：主机名(也就是域名)<br>第四部分：端口<br>第五部分：查询，这里有个bug。。。  应该是?号后的内容才是查询！<br>第六部分：片段ID(是不会发送到服务器的！)  </p>
-</blockquote>
-<p>浏览器解析URL之后, 采用相应的协议和地址来向服务器发送信息.  </p>
-<p>当然浏览器对残缺的URL也具有一定的解析(矫正把..)能力, 比如 <em>http:www.baidu.com</em> 也是可以解析的..  </p>
-<p>我们发散一下思维, 对于一些协议, 比如mongodb:// ssh://也可以用user:password@domain的方式来发送认证.</p>
-<p>####PS:至于URI与URL的区别, 据说业内还在争论, 所以暂且就看做一样好了…</p>
-<p>##DNS查询<br>浏览器开始向对应的地址发送请求了, 第一步是通过访问的域名找出DNS地址.</p>
-<p>PS: 如202.202.43.125这样奇葩的IP网址就不用了…</p>
-<p>DNS查找过程如下：</p>
+        <p>因为node4.0+升级了v8的版本, 所以需要C++11 以上的compiler支持, 也就是gcc4.8以上.</p>
+<p>可能装二进制包的nodejs没有问题, 但是在遇到编译c++模块的时候, node-gyp就会报错了.</p>
+<p>cent6自带的gcc版本是4.4.7, 不过可以使用red hat出的devtoolset-3(其实这是一套, 有1,2 现在版本是3, 参照官方教程即可)升级gcc到4.8+, 使用yum可以直接搞定.</p>
+<p>ubuntu的话, 我自己使用的12.04.4LTS, 自带gcc4.6, 升级方法如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>添加PPA源</span><br><span class="line">- add-apt-repository ppa:ubuntu-toolchain-r/test </span><br><span class="line"><span class="number">2.u</span>pdate</span><br><span class="line">- apt-get update</span><br><span class="line"><span class="number">3.</span>装</span><br><span class="line">- apt-get install g++-<span class="number">4.8</span></span><br><span class="line">- <span class="keyword">export</span> CXX=<span class="string">"g++-4.8"</span></span><br><span class="line"><span class="number">4.</span> 查看gcc版本</span><br><span class="line">- gcc -v</span><br><span class="line"><span class="number">5.</span> 如果是<span class="number">4.8</span>+那就ok了, 如果不是, 应该是符号链接没有替换</span><br><span class="line">ll /usr/bin/gcc*</span><br><span class="line">如果看到gcc -&gt; gcc-<span class="number">4.6</span>是符号链接没有替换</span><br><span class="line">rm gcc</span><br><span class="line">ln -s gcc-<span class="number">4.8</span> gcc</span><br><span class="line">rm g++</span><br><span class="line">ln -s g++-<span class="number">4.8</span> g++</span><br><span class="line">搞定</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2015/12/03/ubuntusheng-ji-gccdao-4-8/" data-id="ciksdhsnx002cahoja79fcc00" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-alimian-jing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/10/alimian-jing/" class="article-date">
+  <time datetime="2015-05-10T15:17:00.000Z" itemprop="datePublished">2015-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/10/alimian-jing/">Ali面经</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://dn-redrock.qbox.me/pics/IMG_1106_1.jpg-cover" alt="cover"><br>其实作为大二学生是本不急着找实习的, 是刚从寒假回学校就感受到了周围春招的氛围. 于是三月初就先在阿里校招的网站上投了简历, 也没学过怎么写简历, 常规的博客, github, 项目, 会用的时髦技术尽量往上写, 内容上也并没有什么亮点. 而后也投了一些小公司, 积累了一些面试经验, 中间也拿到了去豆瓣实习的机会, 不过这都不是重点, 转回正题.</p>
+<p>阿里的整个面试流程相对于BT要规范的多, 通过在线笔试后(后来得知全国做完前端笔试题的一共有2K多个人), 系统会把你的状态变成待安排面试, 并给你发短信让你进校招系统预约面试时间, 我选择的是成都站的面试, 支持5月5日一整天和5月6日的早上, 一天内又分好几个时间段, 考虑到从学校到成都需要三个多小时, 我选了5号的下午16:40, 然后顺便也会从后台获得一张通关卡, 将条码打印出来这个会在面试当天用到, 这个条码也是确认你身份的方式.</p>
+<p>请了假, 定了当天来回的动车票, 一大早上完一二节的计算机网络, 就直接去面试地点. 到成都的时间差不多是下午两点左右, 早上来的几个学长因为是预约的下午的时间, 被告知下午按时到ali下榻的酒店签到, 我因为没地方可以去就直接进了酒店, 在签到处把通关卡和最新的简历交给工作人员, 就被通知进了候场区等候, 候场区有一个很大的滚动大屏幕(感觉是个全屏的网页), 上面有显示被叫到去面试的人和对应的面试官. 放下包去上个厕所的功夫, 在🚾就收到了一面的通知, 感慨效率之快的同时, 也径直到面试官们所在的大厅去(会有工作人员陪同到对应的面试官面前, 所有面试官面前都是一桌, 一MacBook😢).</p>
+<p>一面的面试官看起来挺年轻, 先是比较常规的问题: </p>
 <ul>
-<li><p><strong>浏览器缓存</strong> – 浏览器会缓存DNS记录一段时间。但是，操作系统没有告诉浏览器储存DNS记录的时间，这样不同浏览器会储存个自固定的一个时间（2分钟到30分钟不等）。  </p>
+<li><p>自我介绍 – 我也就扯了些大学之前接触互联网, 以及大学之后怎样学习前端的经历, 做了哪些项目, 主要负责什么工作…</p>
 </li>
-<li><p><strong>系统缓存</strong> – 如果在浏览器缓存里没有找到需要的记录，浏览器会操作系统发出一个调用, 系统从它的DNS缓存中取出对应的缓存, 例如Windows下可以通过 <strong>ipconfig /dnsflush</strong> 命令来清除这个缓存。如果系统缓存中也没有记录, 系统还会在hosts文件中查找这个记录。</p>
+<li><p>CSS 和 JS 哪方面强一些 – 直接回答的JS, 因为自己也比较多接触node后台方面的东西, 对逻辑性的东西比较感兴趣, 大概平时学习前端过程中70%是接触的js方面, 至于css也是正在提高中.</p>
 </li>
-<li><p><strong>路由器缓存</strong> – 接着，前面的查询请求发向路由器，它一般会有自己的DNS缓存。<br>ISP DNS 缓存 – 接下来要check的就是ISP缓存DNS的服务器。在这一般都能找到相应的缓存记录。 </p>
-</li>
-<li><p><strong>递归搜索</strong> – 你的ISP的DNS服务器从跟域名服务器开始进行递归搜索，从.com顶级域名服务器到Facebook的域名服务器。一般DNS服务器的缓存中会有.com域名服务器中的域名，所以到顶级服务器的匹配过程不是那么必要了。递归的顶层是全球只有7台的DNS根服务器, 前几天的国内根服务器故障影响的余波可是还没消散呢→_→</p>
+<li><p>给了一道js题, 将”alibaba”字符串去重 – 这个比较简单, 直接转化成数组去重的题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> merge = <span class="function"><span class="keyword">function</span>(<span class="params">str</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">typeof</span> str !== <span class="string">'string'</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>();</span><br><span class="line">    <span class="keyword">var</span> _ret = [];</span><br><span class="line">    str.split(<span class="string">''</span>).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">_s</span>)</span>&#123;</span><br><span class="line">    	<span class="keyword">if</span>(_ret.indexOf(_s) !== -<span class="number">1</span>) _ret.push(_s);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> _ret.join(<span class="string">''</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>##向web服务器发送HTTP请求<br>浏览器向我们的服务器发送了一个GET请求!<br>我们使用Chrome的开发者工具来看一下这个请求头(header) </p>
-<blockquote>
-<p><img src="http://redrock.u.qiniudn.com/QQ20140305-1.png" alt="HTTP HEADER">  </p>
-</blockquote>
-<p>我们可以看到<strong>Request Method</strong>暴露了它是一个GET方式的请求.而<strong>Request URL</strong>定义了要读取的URL  </p>
-<p>浏览器定义的<strong>User-Agent</strong>头表明了请求发起者的身份, 这使得服务器能够根据不同的系统环境,浏览器来响应不同的内容. <strong>Connection</strong>头要求服务器为了后边的请求不要关闭TCP连接。 另外<strong>Accept</strong>和<strong>Accept-Encoding</strong>头标明了浏览器希望接受的响应类型. </p>
-<p>请求中也包含了浏览器存储的该域的cookies。可能你已经知道，在不同页面请求当中，cookies是与跟踪一个网站状态相匹配的键值。这样cookies会存储登录用户名，服务器分配的密码和一些用户设置等。Cookies会以特殊文本的形式存储在本地，并且每次请求时发送给服务器。</p>
-<p>##301重定向<br>观察仔细的同学会发现, 如果我们在浏览器的地址栏输入baidu.com, 打开的网页总是www.baidu.com, 难道是浏览器的<strong>智能解析</strong>吗? 其实不然, 在这里服务器捣了一次鬼. 它发送了一个301重定向响应, 这样浏览器就会访问“<a href="http://www.baidu.com/”" target="_blank" rel="external">http://www.baidu.com/”</a> 而非“<a href="http://baidu.com/”。" target="_blank" rel="external">http://baidu.com/”。</a></p>
-<blockquote>
-<p>HTTP/1.1 301 Moved Permanently</p>
-</blockquote>
-<p>####为什么需要301重定向呢?</p>
-<blockquote>
-<p>为什么服务器一定要重定向而不是直接发会用户想看的网页内容呢？这个问题有好多有意思的答案。<br>其中一个原因跟搜索引擎排名<em>SEO</em>有关。你看, 如果一个页面有两个地址，就像 <a href="http://www.baidu.com/" target="_blank" rel="external">http://www.baidu.com/</a> 和 <a href="http://baidu.com/" target="_blank" rel="external">http://baidu.com/</a> ，搜索引擎会认为它们是两个网站，结果造成每一个的搜索链接都减少从而降低排名。而搜索引擎知道301永久重定向是什么意思，这样就会把访问带www的和不带www的地址归到同一个网站排名下。</p>
-</blockquote>
-<p>####前端的童鞋需要注意什么<br>让我们回忆一下如何写一个超级链接? 超简单 是不是! 其实这里有一个隐含的301重定向. 我们在写a标签(锚)的时候经常会这样写<code>&lt;a href=&quot;http://www.baidu.com&quot;&gt;Baidu.&lt;/a&gt;</code> </p>
-<p>服务器会自动地将 <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a> 跳转到 <a href="http://www.baidu.com/" target="_blank" rel="external">http://www.baidu.com/</a> , <em>不要说看不出区别</em>而跳转总是需要时间的, 在这些无关紧要的地方浪费时间实在是太可耻了是不是→_→ </p>
-<blockquote>
-<p>多次301的坏处总是大于好处的. 它不仅会导致打开网站的性能变差, 而且它的滥用会导致搜索引擎对网站的降权.  因为当一个页面有好几个名字时，它可能会在缓存里出现好几次。</p>
-</blockquote>
-<p>##服务器处理请求<br>Web服务器端由apache/nginx…将各种请求交给响应的后台程序来处理….</p>
-<p>##<strong><del>未完待续</del></strong>  </p>
-<p>###> Go to <a href="/how-a-webpage-be-displayed-2">一个网页被显示的前生今世(二)</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/how-a-webpage-be-displayed-1/" data-id="cikscpb0d001s4jojhm787hh5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nothing-with-winter-summury" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/nothing-with-winter-summury/" class="article-date">
-  <time datetime="2014-05-24T04:25:55.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/nothing-with-winter-summury/">没什么好总结的寒假的寒假总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>好吧, 那我还是来装作总结一下把.  </p>
-<p>##看的书  </p>
+<p>然后他问我这个函数的时间复杂度是多少, 我回答的是O(n), 他提示道indexOf在调用内部会排序, 才意识到复杂度是O(logn), 他让我改进一下, 我直接写了<code>var _obj = {}, _ret = &#39;&#39;;</code>就被示意ok了. 这题开始写的时候确实是不够严谨, 在object和array两种方式之间随便挑了个, 没有注意到indexOf的坑, 平时也该多注意.</p>
 <ul>
-<li><p>犀牛 看样子ECMA核心要经常翻才行  </p>
+<li><p>然后是一道css布局题, 左右100px固定, 中间内容区自适应 – 拿到这题应该很熟悉, sidebar布局很常见, 不幸的是我当时脑袋有点昏, 想了半天… 第一个说的是flex比较方便(确实方便), 主轴定为横向, 用3个div, 左右两个固定宽, 再设定flex居中就可以中间自适应宽度. 然后普通方法就比较多, 我先讲思路, 左右两个固定宽度的容器应该脱离文档流, float, 绝对定位, fixed都可以, 中间一个容器应该是100%宽度, 左右留出100px的空间来, 用margin, 当时脑抽说了padding, 面试官还提醒我是哪一种盒模型. 如果是border-box(IE6怪异模式)确实可以用padding了…</p>
 </li>
-<li><p>正则 (进度10%, 还无法实战…)  </p>
+<li><p>然后问了我的项目, 有什么比较难的点, 是怎样解决的 – 貌似所有的面试官都会问这个, 我拿前几天给团市委写的实时投票说, <a href="https://github.com/wssgcg1213/WsVoter" target="_blank" rel="external">https://github.com/wssgcg1213/WsVoter</a><br>这个东西类似于央视星光大道投票, 用户端访问用户端页面投票, 大屏幕端与服务器通过socket.io双工实时将票数信息显示在大屏幕上. 扯了一些技术细节以及我在测试并发的时候遇到的问题, 估计他不是很懂后端这方面也没多问. 然后又问了我一个开源项目<a href="https://github.com/wssgcg1213/GhostBot" target="_blank" rel="external">https://github.com/wssgcg1213/GhostBot</a> 这是一个基于RSS的前端搜索引擎, 他就优化方面提了很多问题, 比如如何进行的关键字匹配, 我是直接用的正则, 他提出如果用户输入两个关键字, 怎样进行筛选, 我想了想说用类似于sizzle引擎的方法, 先把关键字分组, 按第一个关键词选出一个种子集, 再在种子集里选择第二个关键词的内容. 面试官说这样可能时间复杂度比较高, 有没有更好的. 我想了一会说还是直接用正则, 他让我手写正则因为忘得比较多当时写的比较龊也不献丑了…</p>
 </li>
-<li><p>Nodejs/Npm(这里指各种module的)/MongoDB的文档 (这也算?算吧)…  </p>
-</li>
-<li><p>好像没了0.0 够少了把… </p>
+<li><p>然后还问了有没有读过jq的源码, 我说了解过一些jq原型链的实现, 将jQuery.fn = jQuery.prototype等等, 问链式调用如何实现-&gt;return this, jQ的选择器原理 -&gt; 从右到左, 选择器分组, 种子集.巴拉巴拉…, zepto怎么实现? -&gt; querySelectorAll.</p>
 </li>
 </ul>
-<p>##写的东西  </p>
-<p>ok, 那没看什么大概都去写什么了把, 看看<a href="https://github.com/wssgcg1213" target="_blank" rel="external">github</a>的contributions还算有点  </p>
+<p>然后就让我先回去等消息了, 回到等候区看了下时间差不多40分钟左右, 喝了口水短信也发来了, 说是让我等待一会预祝面试成功什么什么的, 在校招官网后台查询到结果即将在xx点xx分揭晓. 也是没过几分钟就接到了二面通知, 得继续面~ </p>
+<p>这个面试官看起来沉着多了, 大概三十几岁的样子, 从他的MacBook Pro 15’ 差不多可以看出等级要比刚才的一面官(Macbook Air 13’)要高一截😂..</p>
+<p>未完待续…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.zeroling.com/2015/05/10/alimian-jing/" data-id="ciksdhsog002kahojmbco60l2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/" class="article-date">
+  <time datetime="2015-03-10T13:01:09.000Z" itemprop="datePublished">2015-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/">字体, Web设计中一个最关键的元素</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://dn-redrock.qbox.me/pics/ziti-cover.jpg" alt="cover-image"></p>
+<p>看了很多网站, 个人觉得字体的设计对于一个网站整体面貌的影响, 是巨大的.</p>
+<p>但是字体设计, 这个东西应该属于贯穿网页设计到前端开发者的一个难题. 好的字体排版, 可以让人耐心的看完长段的文字内容, 而糟糕的设计, 甚至会影响到阅读者的心情.</p>
+<p>废话不多说, 直接上干货.</p>
+<p>##字体分类</p>
 <ul>
-<li><p><a href="https://github.com/wssgcg1213/NB" target="_blank" rel="external">NB-Git</a>: 这是一个用nodejs写的blog, 还不是特别完善  </p>
-</li>
-<li><p><a href="http://gp.zeroling.com" target="_blank" rel="external">The Good Parts</a>: 这个是用PHP写的老套路博客系统, 没后台, 但是对这个style风格还算满意  </p>
-</li>
-<li><p><a href="http://www.zeroling.com/galleries" target="_blank" rel="external">CoverFlow</a>: 模仿Apple的CoverFlow效果的图库页面  </p>
-</li>
+<li>衬线体(serif)</li>
 </ul>
-<p>还有什么..去我的<a href="https://github.com/wssgcg1213" target="_blank" rel="external">git主页</a>上找找把…  </p>
-<p>##Others  </p>
-<p>另外还折腾了个VPS, 学了半个月的Linux, 大概大半个暑假是花在ssh上面了, 真是悲剧- -  </p>
-<p>大概就是这样把… </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/nothing-with-winter-summury/" data-id="cikscpayh000h4jojey57ml3h" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/寒假/">寒假</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-xiaomi-2a-wireless-charge" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/xiaomi-2a-wireless-charge/" class="article-date">
-  <time datetime="2014-05-24T04:23:47.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/xiaomi-2a-wireless-charge/">小米2A实现无线充电</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://wssgcg1213.qiniudn.com/2014-02-27.jpeg-800" alt="cover-image"></p>
-<p>Palm的点金石在高二就买了, 只可惜原来的HTC G10是金属后盖, 没法装在那个上面, 现在用的小米2A因为没过保修期一直不想动它  </p>
-<p>直到今天在淘宝看到有卖保修标识的易碎贴, 这样保修的问题也不怕了(2A已经修过充电口了, 而且6月才过保), 噶正好晚上没课, 一时兴起就把装备搬出来弄了.  </p>
-<p>###看看效果先<br><img src="http://wssgcg1213.qiniudn.com/2014-02-27.jpeg-800" alt="小米2A改装无线充电"></p>
-<p>因为忘记拍照了, 所以就只能晒一张成品图了  </p>
-<p>过程很简单, 用万用表找出正负极的引脚既可, 因为USB的结构是+5V和GND, 手机的接地线很好找, 直接用Micro-USB的固定脚既可, +5V的引脚在USB接口上方的电路区内, 在一个贴片电阻下方测得电压约+4.58V, 所以很快断定就是这个了.  </p>
-<p>点金石输出的电压是5.5V左右, 电流不大, 不过对于充手机已经够了. 一切装完之后还碰到一个小插曲, 充电灯死活不亮- -.. 后来发现因为2A是支持NFC的, 而NFC的基础也是电磁感应, 导致NFC的线圈吸收了点金石的电磁波, 导致贴在NFC后面的充电线圈一直没法充电, 没办法只好把充电线圈往下挪动一段距离, 重新装回去之后贴上Stone, 充电指示灯终于挺萌的的亮了…</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/xiaomi-2a-wireless-charge/" data-id="cikscpayp000m4joj9bbew6q1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小米/">小米</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/手机/">手机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/改装/">改装</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/无线充电/">无线充电</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-cqupt-mac-os-x-get-online" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/cqupt-mac-os-x-get-online/" class="article-date">
-  <time datetime="2014-05-24T04:18:12.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/cqupt-mac-os-x-get-online/">重邮Mac OS X, 寝室内外网联网教程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://wssgcg1213.qiniudn.com/netkeeper.png" alt="cover-image"><br><img src="http://wssgcg1213.qiniudn.com/netkeeper.png" alt="screenhot">  </p>
-<p>先来看看叠加之后的效果.172网段的是内网,重邮的内网是100Mbps不限速(入楼应该是千兆,但是入户只有百兆),可以通过内网上一些比如教务在线,红岩网校的系列网站,PT啦,速度还是不错的  </p>
-<p>###You Need:  </p>
-<ol>
-<li>a Mac  </li>
-<li>你的统一认证码和密码(用于内网)  </li>
-<li>一个用于NetKeeper上网的账号(用于外网连接)   </li>
-<li>如果你是<em>Air或者RMBP没有RJ45网线接口</em>,你还需要去买一个usb/雷电 转 网线接口的转换器一只   </li>
-<li>如果你的室友也有上网需求,就需要<em>交换机</em>一台以及连接交换机的网线若干  </li>
-</ol>
-<p><code>内网</code>:  <a href="http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2374946882" target="_blank" rel="external">http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2374946882</a>   </p>
-<p><code>外网</code>:  <a href="http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2417216665" target="_blank" rel="external">http://pan.baidu.com/share/link?uk=3154435625&amp;shareid=2417216665</a>    </p>
-<p>下载上面的内网文件,扩展名是mobileconfig,这种文件原先是从iPhone同步助手导出给iPhone的运营商设置文件,但是你要知道iOS是基于Mac OS X的,所以经过修改便可以导入OS X使用.  </p>
-<p>重邮使用的内网网关认证是基于MD5方式的802.1x认证,通过修改mobileconfig的字段既可破解支持.(听不懂可以忽略哈)  </p>
-<p>我们用一个文本编辑器打开这个文件,修改其中标注的统一认证码和密码,保存打开,会出现一个设置的导入界面,一路下一步并鉴权既可.  </p>
-<p>以后只要在网络设置中就可以看到802.1x的选项,在插网线的情况下可以认证了.  </p>
-<p>###关于外网  </p>
-<p>电信已经提供了Mac版本的netkeeper,在<a href="http://cq.189.cn" target="_blank" rel="external">cq电信官网</a>校园专区就可以找到,我这里另存了一份到百度网盘需要的自取</p>
-<p> PS:这个netkeeper for Mac程序也可以在WLAN-CQUPT环境下使用.<br> PPS:这个程序没加密,反汇编一下就全出来了,想破解NetKeeper的可以看看  </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/cqupt-mac-os-x-get-online/" data-id="cikscpaw300014jojznii8ohg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/重邮/">重邮</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-a-coverflow" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/a-coverflow/" class="article-date">
-  <time datetime="2014-05-24T04:14:55.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/a-coverflow/">写了一个 CoverFlow 的效果</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://wssgcg1213.qiniudn.com/QQ20140204-1.png" alt="cover-image"><br><a href="https://github.com/wssgcg1213/Coverflow/" target="_blank" rel="external">Fork Me At GitHub</a><br><a href="http://test.treeforests.com/coverflow/" target="_blank" rel="external">DEMO</a>  </p>
+<p>宋体就是一种典型的衬线体</p>
+<p><img src="https://dn-redrock.qbox.me/pics/font0.png" alt="宋体"></p>
+<hr>
+<ul>
+<li>非衬线体(sans-serif)</li>
+</ul>
+<p>非衬线体中最典型的就是微软雅黑</p>
+<p><img src="https://dn-redrock.qbox.me/pics/font1.png" alt="雅黑"></p>
+<hr>
+<p>不要问我到底这两个有什么区别! 我个人认为非衬线体更适合在电子屏幕上显示, 感觉也更舒服.</p>
+<p>##字体的选择</p>
+<p>如何在网页中选用最合适的字体呢? 也许这个是UI设计师需要考虑的问题, 但是我从前端的角度来说说.</p>
+<p>首先是不应该使用华而不实的字体. 文字是人类用来表达某种含义的工具, 如果一个文字不能被正确的识别, 那它的意义也没有了. 但是其实浏览器对于字体的选择, 不是仅仅一条CSS font-family就万事大吉了的, 第一就是用户的系统中需要有那个字体, 如果没有需要的字体, 那就只能使用默认的字体, 额外需要注意的一点是, 不同的系统比如xp, win8, OS X, android, 它们的自带系统字体并不是完全相同的, 这更给页面适配带来了难点. 这点, 设计师应该尤其注意, 少量的非系统自带字体比如Logo, 可以用图片代替, 但是大量的图片使用会带来大量额外的 HTTP 传输开销, 这应该是被避免的.</p>
+<p>###使用多个字体属性来兼容</p>
+<p>font-family 属性可以指定多个字体值, 如果前面的字体找不到, 则依次往后查找. 但是这个字体也不是随便写的, 也要按照一定的规范来, 顺序是  最想用的字体 &gt;&gt; 可以代替的相近字体 &gt;&gt; 相近通用字体, 中文字体 &gt;&gt; 英文字体.</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">font-family</span>: Arial, <span class="string">"Hiragino Sans GB"</span>, <span class="string">"Microsoft YaHei"</span>,</span><br><span class="line">             <span class="string">"WenQuanYi Micro Hei"</span>, sans-serif;</span><br></pre></td></tr></table></figure>
+<p>上面的意思就是, 英文字体使用Arial, 中文优先使用冬青黑, 其次雅黑, 然后是文泉驿微黑, 如果都没有就选择默认的非衬线字体.</p>
+<p>上面这个排序来自于这里, <a href="http://www.zhihu.com/question/19911793" target="_blank" rel="external">如何保证网页的字体在各平台都尽量显示为最高质量的黑体？</a>, 这里还给出了不同的操作系统中显示效果最好的字体:</p>
+<ul>
+<li>对于 Windows：在中易宋体和微软雅黑之间二选一。粗体和较大字号的文本用微软雅黑。没有微软雅黑的系统会回退到中易宋体。</li>
+<li>对于 OS X：尽量使用冬青黑体简体中文。没有冬青黑体简体中文的系统会回退到华文黑体。</li>
+<li>对于 iOS：系统会自动使用华文黑体。</li>
+<li>对于 Linux：尽量使用文泉驿微米黑。没有文泉驿微米黑的系统会回退到别的字体。</li>
+<li>对于 Android：系统会自动使用 Droid Sans。</li>
+</ul>
+<p>###使用webfont<br>CSS3 新增的 @font-face 属性，可以用来调用服务器上的字体，然后来渲染网页.</p>
+<p>但是这个东西暂时只建议用在英文上, 因为一个中文字体动辄10+MB的大小, 使得打开一个网页比看一个视频还慢, 更得照顾那些手机用户, 你一个页面打开我一天的流量就超标了. </p>
+<p>Google 提供了在线的 webfont 服务, 被墙了好一阵子, 但是听说最近几天fonts.googleapis.com这个域名已经指向北京的IP了. 国内有一个替代方案就是360公司前端的useso, 使用方式不赘述可以自行百度/谷歌.</p>
+<p>当然中文也不是不行, 我们中国人就想出了一个相对比较完美的解决方案<a href="http://font-spider.org/" target="_blank" rel="external">font-spider 字蛛</a>, 它基于 Nodejs 通过分析本地 CSS 与 HTML 文件获取 WebFont 中没有使用的字符，并将这些字符数据从字体中删除以实现压缩，同时生成跨浏览器使用的格式。这个方案就对前端自动化的要求比较高, 适合比较 Geek 的团队或者个人尝试, 个人使用过一次, 效果还是很棒的.</p>
+<p>##与字体有关的 CSS 属性<br>经常遇到美工的同学过来吐槽, 这个字体要<code>细</code>一点, 这个字要<code>立体</code>一点, 怎样把美工的术语转化成CSS属性呢, 来看看常用的字体属性.</p>
+<ul>
+<li>font-family：用于定义字体</li>
+<li>font-style: normal 正常、italic 斜体、oblique 倾斜。 关于后两者在FF和其他现代浏览器的区别请自行百度.</li>
+<li>font-weight: 文字的粗细</li>
+<li>font-size: 文字大小</li>
+<li>line-height: 行间距</li>
+<li>letter-spacing: 字间距</li>
+<li>word-spacing：单词间距</li>
+<li>text-align: 文本对齐方式</li>
+<li>text-decoration: 通常用来操作文字下划线</li>
+<li>-webkit-font-smoothing: antialiased: 抗锯齿, 这个属性的前缀表明了它是一个私有属性, 但是它可以改变浏览器的渲染方式, 使得字体看起来更加的平滑, 更加的细一些.</li>
+</ul>
+<p>更多请参阅 <a href="http://css.doyoe.com/" target="_blank" rel="external">CSS 参考</a></p>
+<p>##字体的渲染</p>
+<p>在不同的环境中, 字体的渲染效果是不同的.</p>
+<p>在 OS X 下把黑色字体放大, 可以看到字体的边缘出现了彩色.</p>
+<p><img src="https://dn-redrock.qbox.me/pics/font3.jpg" alt="OSX字体"></p>
+<p>为什么相同的字体，在Mac OS上的显示效果「看起来」要比Windows上好看？</p>
+<p>原因就是本段最开头那句话, 不同操作系统, 甚至不同的浏览器具有不同的渲染策略.</p>
+<p>###黑白渲染</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://dn-redrock.qbox.me/pics/font4.jpg" alt="黑白渲染"></h2><p>###灰度渲染</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="https://dn-redrock.qbox.me/pics/font5.jpg" alt="灰度渲染"></h2><p>###次像素渲染</p>
+<h2 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="https://dn-redrock.qbox.me/pics/font6.jpg" alt="次像素渲染"></h2><p>看过 Zealer 王自如视频的同学都知道, LCD的单个像素通常是由 RGB 三个次像素组成的, LCD 能够单独的控制这些次像素. 所谓的次像素渲染, 就是利用了这些像素点中的某一个或几个次像素来达到平滑字体的效果. </p>
+<p><img src="https://dn-redrock.qbox.me/pics/font7.jpg" alt="次像素"></p>
+<p>###Windows<br>在 Windows 下, 次像素渲染使用的是自家的 <code>ClearType</code> 技术, 由于兼容性需要, windows 同时保留了 GDI 和 DirectWrite 两套图形文字渲染接口, 这两个接口同时支持 <code>ClearType</code>.<br>XP 下 <code>ClearType</code> 是默认被关闭的, 我记得是在桌面右击 - 属性, 字体, 选择一个下拉菜单为<code>清晰</code>的选项即可打开, 直到 Vista, <code>ClearType</code> 才被设为缺省打开.</p>
+<p>字体渲染策略与浏览器和字体格式的关系：</p>
+<p><img src="https://dn-redrock.qbox.me/pics/font8.jpg" alt="字体渲染策略与浏览器和字体格式的关系"></p>
+<p>###OS X<br>OS X 很早就使用了字体平滑的技术, 但是 OS X 下的字体平滑在低 PPI 的显示器中会有<code>发虚</code>的倾向, 因为同样是次像素渲染来使字体平滑的技术, WIN/APPLE的理念是完全不同的. </p>
 <blockquote>
-<p>A beautiful gallery modelled after Apple’s CoverFlow.<br>Built on Flat-UI based on Bootstraps<br>Built on slimbox2 based on jQuery (1.8.3)<br>Using js(jQ)/HTML5/CSS3  </p>
+<p>苹果认为，（字体渲染）算法的目标应尽可能还原字体的设计，即使代价是造成些许模糊。</p>
+<p>微软认为，字符的形状应和像素契合，以防止模糊，提高可读性，即便扭曲了字体的构造。</p>
 </blockquote>
-<p><img src="http://wssgcg1213.qiniudn.com/QQ20140204-1.png" alt="wrap"></p>
-<p>##Display 5 Images<br>width: 730px; height: 480px;</p>
+<p>###手机</p>
+<p>拿起你手边的手机, 用原生浏览器找一个网页打开截屏，再把图片不断放大后，你会发现手机上的字体渲染并没有使用亚像素渲染，这是为什么?</p>
+<p>这是因为自从 Apple 推出 retina 屏的概念之后, 手机的 ppi 越来越高, 这个时候使用次像素渲染技术已经是没有必要了. 而且, 次像素渲染是要花费额外的 CPU 时间的, 带来的发热以及续航缩减问题也是厂商需要考虑的, 所以通常手机上都是使用的传统的字体渲染模式.</p>
+<p>##参考和推荐文献   </p>
+<p>本文部分参考并引用了以下网络资料，同时也推荐以下资料：</p>
+<ul>
+<li><a href="http://www.qianxingzhem.com/post-1588.html" target="_blank" rel="external">字体是网页设计中最重要的细节 - 潜行者m</a>  </li>
+<li><a href="http://www.zhihu.com/question/19911793" target="_blank" rel="external">如何保证网页的字体在各平台都尽量显示为最高质量的黑体？</a></li>
+<li><a href="http://blog.jobbole.com/50061/" target="_blank" rel="external">认识字体渲染</a></li>
+</ul>
+<p>引用部分，版权归原作者所有。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/a-coverflow/" data-id="cikscpazo001a4joj79875m34" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/" data-id="ciksdhsla000vahoj0e134yx2" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML5/">HTML5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-vps-simple-config" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/vps-simple-config/" class="article-date">
-  <time datetime="2014-05-24T04:12:19.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/vps-simple-config/">VPS的简单配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p> 原来US的两个虚拟主机连着抽风- -, 实在受不了,最近locvps搞活动弄来一个55折的code,于是拖着@ricter还有几个逗比合租了个HK的节点,一个月掏两顿饭钱给VPS还是有的…..so, 总算是圆了自己要一个HK VPS的愿望.  </p>
-<p>不过这VPS的配置对新手来讲太痛苦了 </p>
-<p>###step1<br>装的是ubuntu server 12.04 32bit,然后ape-get各种runtime,花了有一个多小时  </p>
-<p>###step2<br>configure,nginx和apache2的设置花了一天的时候弄明白了,关键是在设置各个用户的访问权限<br>目前还在混乱中,nginx暂以root权限运行 apache2,php-fcgi以www-data权限运行<br>还是先理一下整体架构,nginx做前端,监听80端口,在<em>/etc/nginx/nginx.conf</em>中设置<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    user root</span><br><span class="line">    include <span class="regexp">/etc/nginx/sites-enabled/</span>*</span><br><span class="line">`<span class="javascript"></span>``<span class="javascript">   </span><br><span class="line"></span><br><span class="line">再在</span>`sites-enabled`<span class="javascript">目录下面给每个人写对应的配置文件,php的sock修改到</span>`/tmp/zeroadmin.sock`<span class="javascript">,对应端口反代监听写法:</span></span><br></pre></td></tr></table></figure></p>
-<p>   location ~{  proxy-pass 127.0.0.1:xxxx;  }<br>```  </p>
-<p>apache2在8000端口监听,配置文件在<code>/etc/apache2/httpd.conf</code> 和<code>/etc/apache2/sites-enabled/*</code><br>php5的<code>php.ini</code>文件在<code>/etc/php5/xxx</code>下面,这里好几个文件夹都包含php.ini,每次改配置都是几个全改好郁闷T.T  </p>
-<p>###Now<br>PHP能欢快的跑起来了,除了phpmyadmin的配置有点小问题<br>由于是合租VPS,所以每个人都分配了管理员权限,接下来要考虑怎样让每个人的操作尽量不影响其他人  </p>
-<blockquote>
-<p>TASKINFO: <a href="http://vps.zeroling.com/taskinfo.php" target="_blank" rel="external">http://vps.zeroling.com/taskinfo.php</a></p>
-</blockquote>
-<p>###todo<br> 把php-fcgi的解析权归还给apache(目前是nginx)….我好像说漏了什么<br> 配置好phpmyadmin,然后需要再搞一个主机管理程序  </p>
-<p> 暂时先这样把,明天开始把这个博客先写写完 拖了好久没动了已经 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/vps-simple-config/" data-id="cikscpb1700214jojjc19eyna" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-crypto-mod-in-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/crypto-mod-in-nodejs/" class="article-date">
-  <time datetime="2014-05-23T17:06:01.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/crypto-mod-in-nodejs/">Nodejs之Crypto模块的使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/nodejs.png-cover" alt="cover-image"><br>好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&gt; &lt;。  </p>
-<p>其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： </p>
-<blockquote>
-<p>Welcome to game space<br>Your ip: 172.16.37.125<br>There have a question for you<br>If you pass it, i’ll give you the key. #$*!@#$!@<br>Question: the “S” is? (Hint “S” is string of alphanumeric)<br>(“K0M1OHNHn2WX” + “S”) -&gt; md5(fb61d14280636c25547a2482dacb5817)<br>Input “S”:</p>
-</blockquote>
-<p>大概意思就是把”K0M1OHNHn2WX”这个字符串和S这个字符串拼接之后md5然后得到后面那个MD5密码。  </p>
-<p>我们用js写一段代码来匹配这个东西。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载MD5.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">q = <span class="string">"K0M1OHNHn2WX"</span>;</span><br><span class="line">s = <span class="string">"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"</span>.split(<span class="string">''</span>);</span><br><span class="line">s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a1)</span></span>&#123;</span><br><span class="line">	s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a2)</span></span>&#123;</span><br><span class="line">		s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a3)</span></span>&#123;</span><br><span class="line">			s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a4)</span></span>&#123;</span><br><span class="line">				<span class="keyword">if</span>(hex_md5(q+a1+a2+a3+a4)==<span class="string">'fb61d14280636c25547a2482dacb5817'</span>)</span><br><span class="line">					<span class="keyword">return</span> a1+a2+a3+a4;</span><br><span class="line">&#125;);&#125;);&#125;);&#125;);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-<p>至于怎么知道是四位的，多试就知道了。还有一个细节是这个字符串每次都是会改变的。3位的话在我的Air上跑完大概只要十秒，可以忽略不计，四位的时候大概花了两分钟多，但是这个Telnet在60s的时候会断开连接，出题者限制了时间，如果按照这个程序，大概就要分组跑了，我猜是那个用于MD5加密的函数库比较慢的关系。  </p>
-<p>于是乎，回来拿node的crypto库写了个一样的程序，我们可以看到node是单线程的，四核心的处理器只能用一个线程，CPU100%。  </p>
-<p><img src="http://wssgcg1213.qiniudn.com/Screen%20Shot%202014-03-31%20at%2018.47.52.png" alt="node CPU">  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hex_md5 = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">	str = str.toString();</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'crypto'</span>).createHash(<span class="string">'md5'</span>).update(str, <span class="string">'utf-8'</span>).digest(<span class="string">'hex'</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="http://wssgcg1213.qiniudn.com/QQ20140331-1.png" alt="Node MD5">      </p>
-<p>我们可以看到尼玛这个坑爹啊 只要30多s就可以了啊=-=   </p>
-<p>好吧。下次CTF继续加油把~是时候撸高数去了。。。 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="cikscpb1u002a4joj0buwtauz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MD5/">MD5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crypto/">crypto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-change-the-user-who-runs-php-fmp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" class="article-date">
-  <time datetime="2014-05-23T17:00:58.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/change-the-user-who-runs-php-fmp/">修改PHP-FMP的运行用户</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover" alt="cover-image"><br>今天又折腾了一下VPS. </p>
-<p>把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  </p>
-<p>####流程如下…</p>
-<p>进入php5-fpm的配置目录<code>/etc/php5/fpm/pool.d/</code>为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[username]</span><br><span class="line"></span><br><span class="line">user = <span class="variable">$USERNAME</span></span><br><span class="line"><span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">listen = /tmp/<span class="variable">$USERNAME-fpm</span>.sock</span><br><span class="line">listen.owner = <span class="variable">$USERNAME</span></span><br><span class="line">listen.<span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line">listen.mode = <span class="number">0660</span></span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line">pm.max_children = <span class="number">10</span></span><br><span class="line">pm.start_servers = <span class="number">3</span></span><br><span class="line">pm.min_spare_servers = <span class="number">1</span></span><br><span class="line">pm.max_spare_servers = <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>进入nginx的配置目录<code>/etc/nginx/sites-enabled/</code>把用户的php套接字路径改为(也要替换$USERNAME)<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass unix:/tmp/<span class="variable">$USERNAME-fpm</span>.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    include fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">重启php5-fpm和装载nginx配置生效.</span><br></pre></td></tr></table></figure></p>
-<p>service php5-fpm restart<br>nginx -s reload<br>```</p>
-<p>###后话.</p>
-<p>其实还有一个问题仍然存在, 用nginx直接反代的配置并没有通过apache, 这在一些使用.htaccess文件来设置rewrite规则的程序来讲(比如wordpress等)是不可接受的, 因为nginx的rewrite规则与apache并不通用. 我查了一下, 要在apache2开启fastcgi_mod还是比较麻烦的, 然后上课的点到了先去上课了, 下回有空再折腾吧~ 那些用.htaccess的就先proxy_pass apache把~</p>
-<p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="cikscpazs001f4jojcfb51fak" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
-  <time datetime="2014-05-23T16:55:19.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/use-dropbox-to-backup-server/">利用Dropbox备份服务器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/Dropbox-clause.jpg-cover" alt="cover-image"><br>好叭.用了一段时间的VPS, 昨天想把一个文件改个名字, 手贱把mv写成了rm, 结果那个文件被删除了TvT. 这才算是意识到备份文件的重要性. 昨天用python写了一个备份的脚本, 大概长这样  </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backup</span><span class="params">(dirs, backTo)</span>:</span></span><br><span class="line">	tar_today = backTo + time.strftime(<span class="string">'%Y%m%d'</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(tar_today):</span><br><span class="line">		os.mkdir(tar_today)</span><br><span class="line">		<span class="keyword">print</span> <span class="string">"Successfully create directory"</span>, tar_today</span><br><span class="line">	<span class="keyword">for</span> s <span class="keyword">in</span> dirs:</span><br><span class="line">		directory = tar_today + os.sep + s + <span class="string">'.tar.gz'</span></span><br><span class="line">		command = <span class="string">"tar -zcvf %s %s"</span> % (directory, <span class="string">'/home/'</span> + s)</span><br><span class="line">		<span class="keyword">if</span> os.system(command) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Successfully create backup for"</span>, s</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"Backup Failed! For"</span>, s</span><br><span class="line">			</span><br><span class="line">source = [<span class="string">'zeroling'</span>] 	    <span class="comment">#balabala</span></span><br><span class="line">target_dir = <span class="string">'/backup/'</span></span><br><span class="line"></span><br><span class="line">backup(source, target_dir)</span><br></pre></td></tr></table></figure>
-<p>我的第一个python脚本好像命名有点乱啊0.0 不管了, 能用就好.<br>这样就能用crontab每晚半夜运行它来得到备份了</p>
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">30 02 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>  /root/backup.py</span><br></pre></td></tr></table></figure>
-<p>然后我们需要安装一下dropbox, 官网<a href="https://www.dropbox.com/install" target="_blank" rel="external">https://www.dropbox.com/install</a>, 我们选择我们需要的linux32位命令行式安装(!注意, 以下操作我都用的root账户)</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~ &amp;&amp; wget -O - <span class="string">"https://www.dropbox.com/download?plat=lnx.x86"</span> <span class="string">| tar xzf -</span></span><br></pre></td></tr></table></figure>
-<p>接着，从新建的 .dropbox-dist 文件夹运行 Dropbox 守护程序。</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~<span class="regexp">/.dropbox-dist/dropboxd</span></span><br></pre></td></tr></table></figure>
-<p>这个时候大概会出来一个提示, 大概意思是这台电脑还没有与dropbox账户连接, 我们用浏览器访问给出的那个网址按步骤连接即可, 注意这个时候不要按ctrl+c中止这个程序的运行, 等到出现<code>This computer is now linked to Dropbox.</code>字样的时候再按<code>Ctrl+C</code>中止这个程序.</p>
-<p>然后去官网下载一个python脚本, <a href="https://www.dropbox.com/download?dl=packages/dropbox.py" target="_blank" rel="external">https://www.dropbox.com/download?dl=packages/dropbox.py</a>放到自己的PATH里面, 例如我的是<code>/usr/local/bin</code> ,这里是为了方便直接执行. 记得给这个py赋予x(运行)权限</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">chmod</span> +<span class="tag">x</span> <span class="tag">dropbox</span><span class="class">.py</span></span><br></pre></td></tr></table></figure>
-<p>然后我们在自己的home目录也就是~下面创建一个Dropbox文件夹, 然后启动这个dropbox监听器</p>
-<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> Dropbox</span><br><span class="line">dropbox.py <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
-<p>接下来只要把东西往这里塞, dropbox就会自动的, 实时的把文件同步到网盘里面去.<br>我创建了一个软连接到/backup目录, 这样一旦备份完成, 也会自动同步备份到网盘里面.</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> ~<span class="regexp">/Dropbox/backup/</span></span><br></pre></td></tr></table></figure>
-<p>另外, 我们可以通过<code>dropbox.py status</code>命令来查看当前的同步情况, </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Syncing (<span class="number">4</span> files remaining, <span class="number">18</span> mins left)</span><br><span class="line">Uploading <span class="number">4</span> files (<span class="number">181.4</span> KB/sec, <span class="number">18</span> mins left)</span><br></pre></td></tr></table></figure>
-<p>它会告诉你当前的dropbox运行情况. </p>
-<p>其他的高级功能可以参阅<code>dropbox.py help</code></p>
-<p>对了, 还遗忘了一点, 数据库的备份, 我的VPS上安装了mysql和mongod, 下回再说如何创建这两货的备份.  </p>
-<p><a href="https://db.tt/KZ5xUsKm" target="_blank" rel="external">需要注册Dropbox的同学点这里</a>, 这是一个我的邀请链接, 通过这个注册可以额外获得500M免费空间.  </p>
-<p>睡觉咯.晚安~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="cikscpaze00134jojqe86mnjv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-backup-shell-for-mongodb-and-mysql" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/backup-shell-for-mongodb-and-mysql/" class="article-date">
-  <time datetime="2014-05-23T16:53:12.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/backup-shell-for-mongodb-and-mysql/">为Mongo和Mysql各写了一个备份的Shell</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/backup-database.jpg-cover" alt="cover-image"></p>
-<p>####查早读的同学越来越肆无忌惮了.<br>好吧.说到昨天给VPS搞全自动备份的事情, 还忘记了数据库备份的导出, 先来说说mysql数据库的备份脚本. 这一段是抄来的, 看起来linux shell也挺好玩的嘛…</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"> </span></span><br><span class="line"><span class="comment">#uncomment this for debug</span></span><br><span class="line"><span class="comment">#set -x</span></span><br><span class="line"> </span><br><span class="line">host=<span class="string">'localhost'</span></span><br><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line">pass=<span class="string">'PASSWORD'</span></span><br><span class="line">dbs=(<span class="string">'db_name_1'</span> <span class="string">'db_name_2'</span> <span class="string">'db_name_3'</span>)</span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +%Y%m%d`"</span></span><br><span class="line"> </span><br><span class="line">mkdir -p <span class="variable">$todaydir</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> db <span class="keyword">in</span> <span class="variable">$&#123;dbs[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">    mysqldump --add-drop-database -u<span class="string">"<span class="variable">$user</span>"</span> -p<span class="string">"<span class="variable">$pass</span>"</span> -h<span class="string">"<span class="variable">$host</span>"</span> -B <span class="variable">$db</span> &gt; <span class="string">"<span class="variable">$todaydir</span>/<span class="variable">$db</span>.dump.sql"</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#remove directories modified 15 days ago</span></span><br><span class="line">find <span class="string">"<span class="variable">$dir</span>"</span> -mindepth <span class="number">1</span> -maxdepth <span class="number">1</span> -type d -mtime +<span class="number">15</span> -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
-<p>再把这个sh放进crontab里面就搞定了  </p>
-<p>然后再根据这个YY出了mongodb的备份脚本</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">user=<span class="string">'USERNAME'</span></span><br><span class="line"><span class="keyword">pass</span>=<span class="string">'PASSWORD'</span></span><br><span class="line">dir=<span class="string">'/backup'</span></span><br><span class="line">todaydir=<span class="string">"$dir/`date +%Y%m%d`/mongodb"</span></span><br><span class="line"></span><br><span class="line">mkdir -p $todaydir</span><br><span class="line">mongodump -<span class="string">u"$user"</span> -p<span class="string">"$pass"</span> -o<span class="string">"$todaydir"</span></span><br></pre></td></tr></table></figure>
-<p>对于没有启用auth的mongodb用户可以这样三句话搞定</p>
-<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">todaydir=<span class="string">"<span class="variable">$dir</span>/`date +<span class="variable">%Y</span><span class="variable">%m</span><span class="variable">%d</span>`/mongodb"</span></span><br><span class="line"><span class="keyword">mkdir</span> -p <span class="variable">$todaydir</span></span><br><span class="line">mongodump -o<span class="string">"<span class="variable">$todaydir</span>"</span></span><br></pre></td></tr></table></figure>
-<p>也放进crontab里面就搞定了.<br>dropboxd会把放在/root/Dropbox目录下面的文件夹自动上传到dropbox空间, 配置好dropbox的同学只要创建一个软链接就ok了.</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s <span class="regexp">/backup/</span> <span class="regexp">/root/</span>Dropbox<span class="regexp">/backup/</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="cikscpb02001l4jojlrlif1gd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
-
     </footer>
   </div>
   
@@ -617,7 +282,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -630,7 +295,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AJAX/">AJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/">Apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dropbox/">Dropbox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/">MD5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PJAX/">PJAX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VPS/">VPS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/">XSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crypto/">crypto</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/googleapis/">googleapis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/underscore/">underscore</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/备份/">备份</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/寒假/">寒假</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/小米/">小米</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手机/">手机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/改装/">改装</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/无线充电/">无线充电</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/重邮/">重邮</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -639,7 +304,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
+      <a href="/tags/AJAX/" style="font-size: 10px;">AJAX</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Dropbox/" style="font-size: 10px;">Dropbox</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/PHP/" style="font-size: 10px;">PHP</a> <a href="/tags/PJAX/" style="font-size: 10px;">PJAX</a> <a href="/tags/VPS/" style="font-size: 16.67px;">VPS</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/googleapis/" style="font-size: 10px;">googleapis</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.33px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/underscore/" style="font-size: 10px;">underscore</a> <a href="/tags/前端/" style="font-size: 13.33px;">前端</a> <a href="/tags/备份/" style="font-size: 13.33px;">备份</a> <a href="/tags/寒假/" style="font-size: 10px;">寒假</a> <a href="/tags/小米/" style="font-size: 10px;">小米</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/手机/" style="font-size: 10px;">手机</a> <a href="/tags/改装/" style="font-size: 10px;">改装</a> <a href="/tags/无线充电/" style="font-size: 10px;">无线充电</a> <a href="/tags/服务器/" style="font-size: 20px;">服务器</a> <a href="/tags/脚本/" style="font-size: 10px;">脚本</a> <a href="/tags/重邮/" style="font-size: 10px;">重邮</a>
     </div>
   </div>
 
@@ -648,7 +313,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -658,6 +323,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/02/18/备份迁移ghost博客到hexo/">备份迁移ghost博客到hexo</a>
+          </li>
         
           <li>
             <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
@@ -673,10 +342,6 @@
         
           <li>
             <a href="/2015/05/10/alimian-jing/">Ali面经</a>
-          </li>
-        
-          <li>
-            <a href="/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/">字体, Web设计中一个最关键的元素</a>
           </li>
         
       </ul>
