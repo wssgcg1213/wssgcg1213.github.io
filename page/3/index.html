@@ -61,107 +61,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-crypto-mod-in-nodejs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/crypto-mod-in-nodejs/" class="article-date">
-  <time datetime="2014-05-23T17:06:01.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/crypto-mod-in-nodejs/">Nodejs之Crypto模块的使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/nodejs.png-cover" alt="cover-image"><br>好吧。好久没更新了，最近也是忙着考国二C语言，各种临时抱佛脚，也没心思写东西了。上礼拜日也是跟学长组队去参加了一个校内的CTF，神奇的是还拿了个第二名~其实我们是去纯打酱油的&gt; &lt;。  </p>
-<p>其中一道题挺有意思的，题设就记不清了，大概就是给了你一个IP和端口，我们telnet上去就显示这样： </p>
-<blockquote>
-<p>Welcome to game space<br>Your ip: 172.16.37.125<br>There have a question for you<br>If you pass it, i’ll give you the key. #$*!@#$!@<br>Question: the “S” is? (Hint “S” is string of alphanumeric)<br>(“K0M1OHNHn2WX” + “S”) -&gt; md5(fb61d14280636c25547a2482dacb5817)<br>Input “S”:</p>
-</blockquote>
-<p>大概意思就是把”K0M1OHNHn2WX”这个字符串和S这个字符串拼接之后md5然后得到后面那个MD5密码。  </p>
-<p>我们用js写一段代码来匹配这个东西。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载MD5.js</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">q = <span class="string">"K0M1OHNHn2WX"</span>;</span><br><span class="line">s = <span class="string">"qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"</span>.split(<span class="string">''</span>);</span><br><span class="line">s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a1)</span></span>&#123;</span><br><span class="line">	s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a2)</span></span>&#123;</span><br><span class="line">		s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a3)</span></span>&#123;</span><br><span class="line">			s.<span class="keyword">forEach</span>(<span class="function"><span class="keyword">function</span><span class="params">(a4)</span></span>&#123;</span><br><span class="line">				<span class="keyword">if</span>(hex_md5(q+a1+a2+a3+a4)==<span class="string">'fb61d14280636c25547a2482dacb5817'</span>)</span><br><span class="line">					<span class="keyword">return</span> a1+a2+a3+a4;</span><br><span class="line">&#125;);&#125;);&#125;);&#125;);</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-<p>至于怎么知道是四位的，多试就知道了。还有一个细节是这个字符串每次都是会改变的。3位的话在我的Air上跑完大概只要十秒，可以忽略不计，四位的时候大概花了两分钟多，但是这个Telnet在60s的时候会断开连接，出题者限制了时间，如果按照这个程序，大概就要分组跑了，我猜是那个用于MD5加密的函数库比较慢的关系。  </p>
-<p>于是乎，回来拿node的crypto库写了个一样的程序，我们可以看到node是单线程的，四核心的处理器只能用一个线程，CPU100%。  </p>
-<p><img src="http://wssgcg1213.qiniudn.com/Screen%20Shot%202014-03-31%20at%2018.47.52.png" alt="node CPU">  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hex_md5 = <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">	str = str.toString();</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">'crypto'</span>).createHash(<span class="string">'md5'</span>).update(str, <span class="string">'utf-8'</span>).digest(<span class="string">'hex'</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="http://wssgcg1213.qiniudn.com/QQ20140331-1.png" alt="Node MD5">      </p>
-<p>我们可以看到尼玛这个坑爹啊 只要30多s就可以了啊=-=   </p>
-<p>好吧。下次CTF继续加油把~是时候撸高数去了。。。 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/crypto-mod-in-nodejs/" data-id="cikscbszl002hkhojm9rn9x5e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MD5/">MD5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crypto/">crypto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-change-the-user-who-runs-php-fmp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/24/change-the-user-who-runs-php-fmp/" class="article-date">
-  <time datetime="2014-05-23T17:00:58.000Z" itemprop="datePublished">2014-05-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/24/change-the-user-who-runs-php-fmp/">修改PHP-FMP的运行用户</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg-cover" alt="cover-image"><br>今天又折腾了一下VPS. </p>
-<p>把php-fpm的运行用户改成了每个子用户, 而不是统一使用www-data用户, 这样的好处就是解决了php动态创建的文件属主和属主都是www-data, 普通用户反而没法删除这个文件的尴尬.  </p>
-<p>####流程如下…</p>
-<p>进入php5-fpm的配置目录<code>/etc/php5/fpm/pool.d/</code>为每个用户添加一个conf文件, 内容大概如下.(要替换$USERNAME)</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[username]</span><br><span class="line"></span><br><span class="line">user = <span class="variable">$USERNAME</span></span><br><span class="line"><span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">listen = /tmp/<span class="variable">$USERNAME-fpm</span>.sock</span><br><span class="line">listen.owner = <span class="variable">$USERNAME</span></span><br><span class="line">listen.<span class="keyword">group</span> = <span class="variable">$USERNAME</span></span><br><span class="line">listen.mode = <span class="number">0660</span></span><br><span class="line"></span><br><span class="line">pm = dynamic</span><br><span class="line">pm.max_children = <span class="number">10</span></span><br><span class="line">pm.start_servers = <span class="number">3</span></span><br><span class="line">pm.min_spare_servers = <span class="number">1</span></span><br><span class="line">pm.max_spare_servers = <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>进入nginx的配置目录<code>/etc/nginx/sites-enabled/</code>把用户的php套接字路径改为(也要替换$USERNAME)<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    fastcgi_pass unix:/tmp/<span class="variable">$USERNAME-fpm</span>.sock;</span><br><span class="line">    fastcgi_index index.php;</span><br><span class="line">    include fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">重启php5-fpm和装载nginx配置生效.</span><br></pre></td></tr></table></figure></p>
-<p>service php5-fpm restart<br>nginx -s reload<br>```</p>
-<p>###后话.</p>
-<p>其实还有一个问题仍然存在, 用nginx直接反代的配置并没有通过apache, 这在一些使用.htaccess文件来设置rewrite规则的程序来讲(比如wordpress等)是不可接受的, 因为nginx的rewrite规则与apache并不通用. 我查了一下, 要在apache2开启fastcgi_mod还是比较麻烦的, 然后上课的点到了先去上课了, 下回有空再折腾吧~ 那些用.htaccess的就先proxy_pass apache把~</p>
-<p><img src="http://redrock.u.qiniudn.com/pics/php-code.jpg" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/change-the-user-who-runs-php-fmp/" data-id="cikscbsyl001nkhojl00aj8mb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-use-dropbox-to-backup-server" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2014/05/24/use-dropbox-to-backup-server/" class="article-date">
@@ -210,7 +109,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="cikscbsye001bkhojfsctv040" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/use-dropbox-to-backup-server/" data-id="cikscdte8001bo7ojucy9blwp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dropbox/">Dropbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -258,7 +157,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="cikscbsyq001tkhojnhvfu63u" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/backup-shell-for-mongodb-and-mysql/" data-id="cikscdtem001to7ojrjp5quvg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/备份/">备份</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/脚本/">脚本</a></li></ul>
@@ -304,7 +203,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="cikscbsxh0006khojd0rtjivq" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/24/let-apache2-to-create-files-using-different-owner/" data-id="cikscdtd60006o7oj0alljzwe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache/">Apache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VPS/">VPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务器/">服务器</a></li></ul>
@@ -382,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="cikscbszf002bkhoje3q5fqau" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2014/05/23/strange-code-by-underscore/" data-id="cikscdtf3002ao7ojqwta65lx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/underscore/">underscore</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -427,7 +326,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">15</span></li></ul>
     </div>
   </div>
 
@@ -439,14 +338,6 @@
       <ul>
         
           <li>
-            <a href="/2016/02/18/Hello-Hexo/">Hello Hexo</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/18/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2015/12/28/2015nian-de-nian-zhong-zong-jie/">2015年的年终总结</a>
           </li>
         
@@ -456,6 +347,14 @@
         
           <li>
             <a href="/2015/12/03/ubuntusheng-ji-gccdao-4-8/">UBUNTU升级GCC到4.8</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/10/alimian-jing/">Ali面经</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/10/zi-ti-webshe-ji-zhong-ge-zui-guan-jian-de-yuan-su/">字体, Web设计中一个最关键的元素</a>
           </li>
         
       </ul>
