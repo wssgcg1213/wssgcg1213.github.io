@@ -19,7 +19,7 @@ tip: 怕慢可挂梯或用cnpm
 tip: 怕慢可挂梯或用cnpm
 我的hexo版本是3.1.1, 不同的版本配置有稍许差异
 然后配置_config.yml文">
-<meta property="og:updated_time" content="2016-02-18T15:11:51.000Z">
+<meta property="og:updated_time" content="2016-02-19T06:35:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="备份迁移ghost博客到hexo">
 <meta name="twitter:description" content="最近hexo很火, 于是乎打算弄一个玩玩. 配合gh-pages, 因为是纯静态的博客服务, 所以还不用担心服务器被攻击的问题.hero提供了ghost的migrate插件, 所以迁移起来比较容易.
@@ -101,7 +101,12 @@ tip: 怕慢可挂梯或用cnpm
 <p>然后配置_config.yml文件的deploy部分:</p>
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># Deployment</span></span><br><span class="line"><span class="preprocessor">## Docs: http:<span class="comment">//hexo.io/docs/deployment.html</span></span></span><br><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: https:<span class="comment">//github.com/wssgcg1213/wssgcg1213.github.io.git</span></span><br></pre></td></tr></table></figure>
 <p>generate and 发布:</p>
-<figure class="highlight"><figcaption><span>g && hexo deploy```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#35775;&#38382;[http://wssgcg1213.github.io](http://wssgcg1213.github.io)&#10;&#10;### &#36801;&#31227;ghost&#10;&#10;&#35775;&#38382;ghost&#21518;&#21488;&#37324;&#30340;lab: export.&#10;&#10;&#24471;&#21040;&#19968;&#20010;json&#25991;&#20214;&#10;&#10;&#23433;&#35013;&#10;&#10;```npm i hexo-migrator-ghost --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">hexo</span> g &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
+<p>访问<a href="http://wssgcg1213.github.io" target="_blank" rel="external">http://wssgcg1213.github.io</a></p>
+<h3 id="迁移ghost"><a href="#迁移ghost" class="headerlink" title="迁移ghost"></a>迁移ghost</h3><p>访问ghost后台里的lab: export.</p>
+<p>得到一个json文件</p>
+<p>安装</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="tag">i</span> hexo-migrator-ghost --save</span><br></pre></td></tr></table></figure>
 <p>导入</p>
 <p>导入之前需要修改 ./scaffolds/post.md 的模板内容为</p>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">title:</span> <span class="expansion">&#123;&#123; title &#125;&#125;</span></span><br><span class="line"><span class="symbol">date:</span> <span class="expansion">&#123;&#123; date &#125;&#125;</span></span><br><span class="line"><span class="symbol">tags:</span> <span class="expansion">&#123;&#123; tags &#125;&#125;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
@@ -118,7 +123,7 @@ tip: 怕慢可挂梯或用cnpm
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.zeroling.com/2016/02/18/备份迁移ghost博客到hexo/" data-id="cikseord7000xoioj19aw75rx" class="article-share-link">Share</a>
+      <a data-url="https://blog.zeroling.com/2016/02/18/备份迁移ghost博客到hexo/" data-id="ciktbp6h2000xxxoj2dx7bmdl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
